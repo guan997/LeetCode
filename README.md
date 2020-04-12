@@ -360,3 +360,44 @@ str.lower()方法转换字符串中所有大写字符为小写。
     def isPalindrome(self, s: str) -> bool:
         s = ''.join(i for i in s if i.isalnum()).lower()
         return s == s[::-1]
+#### [66. 加一](https://leetcode-cn.com/problems/plus-one/)
+
+难度简单
+
+给定一个由**整数**组成的**非空**数组所表示的非负整数，在该数的基础上加一。
+
+最高位数字存放在数组的首位， 数组中每个元素只存储**单个**数字。
+
+你可以假设除了整数 0 之外，这个整数不会以零开头。
+
+**示例 1:**
+
+```
+输入: [1,2,3]
+输出: [1,2,4]
+解释: 输入数组表示数字 123。
+
+```
+
+**示例 2:**
+
+```
+输入: [4,3,2,1]
+输出: [4,3,2,2]
+解释: 输入数组表示数字 4321。
+```
+
+1、将分开的数字变成一个整数，直接在整数上做加法就简单很多
+2、再将str转变成int即可
+
+    def plusOne(self, digits: List[int]) -> List[int]:
+         ##先变成一个整的数字，然后做加法，然后转换成str,再转int加到新的list中
+        nums_str = ""
+        for i in digits:
+            nums_str =nums_str+str(i)
+    
+        nums_int = int(nums_str)+1
+        res = []
+        for i in str(nums_int):
+            res.append(int(i))
+        return res
