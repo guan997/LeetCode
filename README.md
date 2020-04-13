@@ -1,5 +1,82 @@
 # LeetCode
 
+#### [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
+
+难度简单
+
+给定一个整数数组 `nums` 和一个目标值 `target`，请你在该数组中找出和为目标值的那 **两个** 整数，并返回他们的数组下标。
+
+你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。
+
+**示例:**
+
+```
+给定 nums = [2, 7, 11, 15], target = 9
+
+因为 nums[0] + nums[1] = 2 + 7 = 9
+所以返回 [0, 1]
+```
+
+##### JS：
+
+初始化一个 map = new Map()
+从第一个元素开始遍历 nums
+获取目标值与 nums[i] 的差值，即 k = target - nums[i] ，判断差值在 map 中是否存在
+不存在（ map.has(k) 为 false ） ，则将 nums[i] 加入到 map 中（key为nums[i], value为 i ，方便查找map中是否存在某值，并可以通过 get 方法直接拿到下标）
+存在（ map.has(k) ），返回 [map.get(k), i] ，求解结束
+遍历结束，则 nums 中没有符合条件的两个数，返回 []
+时间复杂度：O(n)
+
+```
+ /**
+
+- @param {number[]} nums
+- @param {number} target
+- @return {number[]}
+  */
+  var twoSum = function(nums, target) {
+  let map=new Map()
+  for(let i=0;i<nums.length;i++){
+	let k=target-nums[i]
+	if(map.has(k)){
+  		 return [map.get(k),i];
+   }
+	 map.set(nums[i],i)
+}
+ return [];
+
+};
+
+```
+
+
+##### PY
+
+enumerate() 函数用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列出数据和数据下标，一般用在 for 循环当中。
+
+enumerate(sequence, [start=0])
+
+sequence -- 一个序列、迭代器或其他支持迭代对象。
+
+start -- 下标起始位置。
+
+seq = ['one', 'two', 'three']
+
+for i, element in enumerate(seq):
+
+print i, element		(0 one 1 two 2 three)
+
+```python
+def twoSum(nums, target):
+    hashmap={}
+for ind,num in enumerate(nums):
+    hashmap[num] = ind
+for i,num in enumerate(nums):
+    j = hashmap.get(target - num)
+    if j is not None and i!=j:
+        return [i,j]
+```
+
 #### [237. 删除链表中的节点](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/)
 
 难度简单
