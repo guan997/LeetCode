@@ -478,3 +478,80 @@ str.lower()方法转换字符串中所有大写字符为小写。
         for i in str(nums_int):
             res.append(int(i))
         return res
+#### [387. 字符串中的第一个唯一字符](https://leetcode-cn.com/problems/first-unique-character-in-a-string/)
+
+难度简单
+
+给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1。
+
+**案例:**
+
+```
+s = "leetcode"
+返回 0.
+
+s = "loveleetcode",
+返回 2.
+```
+
+**注意事项：**您可以假定该字符串只包含小写字母。
+
+##### PY
+
+###### 第一种
+
+Counter类的目的是用来跟踪值出现的次数。它是一个无序的容器类型，以字典的键值对形式存储，其中元素作为key，其计数作为value。计数值可以是任意的Interger（包括0和负数）
+
+c = Counter("abcdefgab")		>>>		 c["a"]2
+
+```py
+class Solution:
+    def firstUniqChar(self, s: str) -> int:
+        """
+        :type s: str
+        :rtype: int
+        """
+        # build hash map : character and how often it appears
+        count = collections.Counter(s)
+        
+        # find the index
+        for idx, ch in enumerate(s):	
+            if count[ch] == 1:
+                return idx
+        return -1
+```
+
+###### 第二种
+
+ find() 方法检测字符串中是否包含子字符串 str ，如果指定 beg（开始） 和 end（结束） 范围，则检查是否包含在指定范围内，如果包含子字符串返回开始的索引值，否则返回-1。
+
+```py
+class Solution(object):
+    def firstUniqChar(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        for c in s:
+            if s.find(c) == s.rfind(c):
+                return s.find(c)
+        return -1
+```
+
+js
+
+```js
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var firstUniqChar = function(s) {
+    for(let i=0;i<s.length;i++){
+        if(s.indexOf(s[i])==s.lastIndexOf(s[i])){
+           return i
+           }
+    }
+    return -1
+};
+```
+
