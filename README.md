@@ -538,7 +538,9 @@ class Solution(object):
         return -1
 ```
 
-js
+###### js
+
+遍历，若indexof===lastIndexOf则代表只出现一次
 
 ```js
 /**
@@ -553,5 +555,84 @@ var firstUniqChar = function(s) {
     }
     return -1
 };
+```
+
+#### [189. 旋转数组](https://leetcode-cn.com/problems/rotate-array/)
+
+难度简单
+
+给定一个数组，将数组中的元素向右移动 *k *个位置，其中 *k *是非负数。
+
+**示例 1:**
+
+```
+输入: [1,2,3,4,5,6,7] 和 k = 3
+输出: [5,6,7,1,2,3,4]
+解释:
+向右旋转 1 步: [7,1,2,3,4,5,6]
+向右旋转 2 步: [6,7,1,2,3,4,5]
+向右旋转 3 步: [5,6,7,1,2,3,4]
+
+```
+
+**示例 2:**
+
+```
+输入: [-1,-100,3,99] 和 k = 2
+输出: [3,99,-1,-100]
+解释: 
+向右旋转 1 步: [99,-1,-100,3]
+向右旋转 2 步: [3,99,-1,-100]
+```
+
+**说明:**
+
+- 尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。
+- 要求使用空间复杂度为 O(1) 的 **原地 **算法。
+
+js
+
+解题思路
+1.使用while循环遍历，一次递减
+2.将最后一个弹出，同时插入到第一个的位置
+3.返回数组
+
+- unshift() 方法可向数组的开头添加一个或更多元素，并返回新的长度。
+- pop() 方法将删除 arrayObject 的最后一个元素，把数组长度减 1，并且返回它删除的元素的值。如果数组已经为空，则 pop() 不改变数组，并返回 undefined 值。
+
+```js
+/**
+- @param {number[]} nums
+- @param {number} k
+- @return {void} Do not return anything, modify nums in-place instead.
+  */
+  var rotate = function(nums, k) {
+  while (k>0) {
+  nums.unshift(nums.pop())
+  k = k-1
+    }
+    return nums
+  };
+
+```
+
+
+
+py
+
+解题思路
+还是切片最高效
+1、将-k个元素添加到nums的开始，
+2、注意，为什么是nums[lenth-k:]而不是nums[-k:]，因为是为了避免k=0的情况
+
+代码
+```py
+def rotate(self, nums: List[int], k: int) -> None:
+    """
+    Do not return anything, modify nums in-place instead.
+    """
+    ##用切片的方法：k就是将nums的最后k个数放在nums的开始位置即可
+    lenth = len(nums)
+    nums[:] = nums[lenth-k:]+nums[:lenth-k]
 ```
 
