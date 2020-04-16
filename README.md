@@ -1,5 +1,11 @@
 # LeetCode
 
+#### 关于LeetCode的Python和JavaScript解答
+
+350
+
+108
+
 #### [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
 
 难度简单
@@ -27,7 +33,7 @@
 遍历结束，则 nums 中没有符合条件的两个数，返回 []
 时间复杂度：O(n)
 
-```
+```py
  /**
 
 - @param {number[]} nums
@@ -46,7 +52,6 @@
  return [];
 
 };
-
 ```
 
 
@@ -540,7 +545,11 @@ class Solution(object):
 
 ###### js
 
+##### 解题思路
+
 遍历，若indexof===lastIndexOf则代表只出现一次
+
+##### 代码
 
 ```js
 /**
@@ -590,15 +599,19 @@ var firstUniqChar = function(s) {
 - 尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。
 - 要求使用空间复杂度为 O(1) 的 **原地 **算法。
 
-js
+##### js
 
-解题思路
+##### 解题思路
+
 1.使用while循环遍历，一次递减
 2.将最后一个弹出，同时插入到第一个的位置
 3.返回数组
 
 - unshift() 方法可向数组的开头添加一个或更多元素，并返回新的长度。
+
 - pop() 方法将删除 arrayObject 的最后一个元素，把数组长度减 1，并且返回它删除的元素的值。如果数组已经为空，则 pop() 不改变数组，并返回 undefined 值。
+
+  ##### 代码
 
 ```js
 /**
@@ -613,19 +626,18 @@ js
     }
     return nums
   };
-
 ```
 
+##### py
 
+##### 解题思路
 
-py
-
-解题思路
-还是切片最高效
+切片
 1、将-k个元素添加到nums的开始，
 2、注意，为什么是nums[lenth-k:]而不是nums[-k:]，因为是为了避免k=0的情况
 
-代码
+##### 代码
+
 ```py
 def rotate(self, nums: List[int], k: int) -> None:
     """
@@ -636,3 +648,254 @@ def rotate(self, nums: List[int], k: int) -> None:
     nums[:] = nums[lenth-k:]+nums[:lenth-k]
 ```
 
+#### [350. 两个数组的交集 II](https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/)
+
+难度简单262收藏分享切换为英文关注反馈
+
+给定两个数组，编写一个函数来计算它们的交集。
+
+**示例 1:**
+
+```
+输入: nums1 = [1,2,2,1], nums2 = [2,2]
+输出: [2,2]
+
+```
+
+**示例 2:**
+
+```
+输入: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+输出: [4,9]
+```
+
+**说明：**
+
+- 输出结果中每个元素出现的次数，应与元素在两个数组中出现的次数一致。
+- 我们可以不考虑输出结果的顺序。
+
+##### py
+
+##### 解题思路
+
+利用python List中append与remove方法的特点进行操作。循环遍历nums1中的元素，然后在nums2中查找是否存在。如果存在，加入临时list中，并且需要注意：把nums2中的对应元素删掉。比如nums1 = [1, 2, 2, 1]， nums2 = [2]。如果不删除，则会产生错误。因为nums1与nums2的元素个数要保持一致。
+
+##### 代码
+
+```python
+class Solution:
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        nums=[]
+        for i in nums1:
+            if i in nums2:
+                nums.append(i)
+                nums2.remove(i)
+        return nums
+```
+
+#### [283. 移动零](https://leetcode-cn.com/problems/move-zeroes/)
+
+难度简单
+
+给定一个数组 `nums`，编写一个函数将所有 `0` 移动到数组的末尾，同时保持非零元素的相对顺序。
+
+**示例:**
+
+```
+输入: [0,1,0,3,12]
+输出: [1,3,12,0,0]
+```
+
+**说明**:
+
+1. 必须在原数组上操作，不能拷贝额外的数组。
+2. 尽量减少操作次数。
+
+##### py
+
+##### 方法1
+
+##### 解题思路
+
+只要当前是0，就移除，同时在末尾在加上一个0。
+
+```python
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        for i in range(len(nums)):
+            if nums[i]==0:
+                nums.remove(0)
+                nums.append(0)
+```
+
+##### 方法2
+
+##### 解题思路
+
+双指针滑动，交换非零元素和零元素的位置
+
+循环遍历数组，当遇到非零元素则开始交换慢指针所指的0元素
+
+ i 为慢指针 指向最新一个0元素的位置
+
+```py
+def moveZeroes(self, nums: List[int]) -> None:
+    """
+    Do not return anything, modify nums in-place instead.
+    """
+    i = 0
+        for j in range(len(nums)):
+            if nums[j] != 0:
+                nums[i], nums[j] = nums[j], nums[i]
+                i += 1
+        return nums
+```
+
+#### [36. 有效的数独](https://leetcode-cn.com/problems/valid-sudoku/)
+
+难度中等314收藏分享切换为英文关注反馈
+
+判断一个 9x9 的数独是否有效。只需要**根据以下规则**，验证已经填入的数字是否有效即可。
+
+1. 数字 `1-9` 在每一行只能出现一次。
+2. 数字 `1-9` 在每一列只能出现一次。
+3. 数字 `1-9` 在每一个以粗实线分隔的 `3x3` 宫内只能出现一次。
+
+![img](https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Sudoku-by-L2G-20050714.svg/250px-Sudoku-by-L2G-20050714.svg.png)
+
+上图是一个部分填充的有效的数独。
+
+数独部分空格内已填入了数字，空白格用 `'.'` 表示。
+
+**示例 1:**
+
+```
+输入:
+[
+  ["5","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  [".",".",".",".","8",".",".","7","9"]
+]
+输出: true
+
+```
+
+**示例 2:**
+
+```
+输入:
+[
+  ["8","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  [".",".",".",".","8",".",".","7","9"]
+]
+输出: false
+解释: 除了第一行的第一个数字从 5 改为 8 以外，空格内其他数字均与 示例1 相同。
+     但由于位于左上角的 3x3 宫内有两个 8 存在, 因此这个数独是无效的。
+```
+
+**说明:**
+
+- 一个有效的数独（部分已被填充）不一定是可解的。
+- 只需要根据以上规则，验证已经填入的数字是否有效即可。
+- 给定数独序列只包含数字 `1-9` 和字符 `'.'` 。
+- 给定数独永远是 `9x9` 形式的。
+
+js
+
+##### 解题思路
+
+哈希判重
+行
+当前行9个数字不能有重复数字
+列
+当前列9个数字不能有重复数字
+九宫格
+当前子数独内没有重复数字
+9*9的数独划分为9个小的子数独
+boxIndex = Math.floor(row/3) * 3 + Math.floor(columns/3)
+
+##### 代码
+
+```js
+/**
+ * @param {character[][]} board
+ * @return {boolean}
+ */
+var isValidSudoku = function(board) {
+    // 三个方向判重
+    let rows = {};
+    let columns = {};
+    let boxes = {};
+    // 遍历数独
+    for(let i = 0;i < 9;i++){
+        for(let j = 0;j < 9;j++){
+            let num = board[i][j];
+            if(num != '.'){
+                // 子数独序号
+                let boxIndex = parseInt((i/3)) * 3 + parseInt(j/3);
+                if(rows[i+'-'+num] || columns[j+'-'+num] || boxes[boxIndex+'-'+num]){
+                    return false;
+                }
+                // 以各自方向 + 不能出现重复的数字 组成唯一键值，若出现第二次，即为重复
+                rows[i+'-'+num] = true;
+                columns[j+'-'+num] = true;
+                boxes[boxIndex+'-'+num] = true;
+            }
+        }
+    }
+    return true;
+};
+
+作者：Alexer-660
+链接：https://leetcode-cn.com/problems/valid-sudoku/solution/36-you-xiao-de-shu-du-by-alexer-660/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+py
+
+##### 解题思路
+
+按规则逐条判断，9行+9列+9块
+
+##### 代码
+
+```py
+def isValidSudoku(self, board: List[List[str]]) -> bool:
+    def isvaild9(lyst):
+        nums = list(filter(lambda x:x != '.', lyst))
+        return len(set(nums)) == len(nums)
+    
+    for row in board:#9行
+        if not isvaild9(row):
+            return False
+    
+    for column in zip(*board):#9列
+        if not isvaild9(column):
+            return False
+    
+    for row in range(3):#9块
+        for column in range(3):
+            tmp = [board[i][j] for i in range(row*3, row*3+3) for j in range(column*3, column*3+3)]
+            if not isvaild9(tmp):
+                return False
+    return True
+    
+#https://leetcode-cn.com/problems/valid-sudoku/solution/pythonji-ben-pan-duan-by-luanz/
+```
