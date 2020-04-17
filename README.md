@@ -899,3 +899,186 @@ def isValidSudoku(self, board: List[List[str]]) -> bool:
     
 #https://leetcode-cn.com/problems/valid-sudoku/solution/pythonji-ben-pan-duan-by-luanz/
 ```
+
+#### [48. 旋转图像](https://leetcode-cn.com/problems/rotate-image/)
+
+难度中等
+
+给定一个 *n *× *n* 的二维矩阵表示一个图像。
+
+将图像顺时针旋转 90 度。
+
+**说明：**
+
+你必须在**原地**旋转图像，这意味着你需要直接修改输入的二维矩阵。**请不要**使用另一个矩阵来旋转图像。
+
+**示例 1:**
+
+```
+给定 matrix = 
+[
+  [1,2,3],
+  [4,5,6],
+  [7,8,9]
+],
+
+原地旋转输入矩阵，使其变为:
+[
+  [7,4,1],
+  [8,5,2],
+  [9,6,3]
+]
+
+```
+
+**示例 2:**
+
+```
+给定 matrix =
+[
+  [ 5, 1, 9,11],
+  [ 2, 4, 8,10],
+  [13, 3, 6, 7],
+  [15,14,12,16]
+], 
+
+原地旋转输入矩阵，使其变为:
+[
+  [15,13, 2, 5],
+  [14, 3, 4, 1],
+  [12, 6, 8, 9],
+  [16, 7,10,11]
+]
+```
+
+###### js
+
+```js
+var rotate = function(matrix) {
+  // 时间复杂度O(n^2) 空间复杂度O(1)
+
+  // 做法： 先沿着对角线翻转，然后沿着水平线翻转
+  const n = matrix.length;
+  function swap(arr, [i, j], [m, n]) {
+    const temp = arr[i][j];
+    arr[i][j] = arr[m][n];
+    arr[m][n] = temp;
+  }
+  for (let i = 0; i < n - 1; i++) {
+    for (let j = 0; j < n - i; j++) {
+      swap(matrix, [i, j], [n - j - 1, n - i - 1]);
+    }
+  }
+
+  for (let i = 0; i < n / 2; i++) {
+    for (let j = 0; j < n; j++) {
+      swap(matrix, [i, j], [n - i - 1, j]);
+    }
+  }
+};
+```
+
+###### py
+
+```python
+def rotate(self, matrix: List[List[int]]) -> None:
+    """
+    Do not return anything, modify matrix in-place instead.
+    先做矩阵转置（即沿着对角线翻转），然后每个列表翻转；
+    """
+    n = len(matrix)
+    for i in range(n):
+        for j in range(i, n):
+            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+    for m in range(a):
+        matrix[m].reverse()
+```
+
+```python
+def rotate(self, matrix: List[List[int]]) -> None:
+    """
+    Do not return anything, modify matrix in-place instead.
+    通过内置函数zip，可以简单实现矩阵转置，下面的代码等于先整体翻转，后转置；
+    不过这种写法的空间复杂度其实是O(n);
+    """
+    matrix[:] = map(list, zip(*matrix[::-1]))
+#作者：fe-lcifer
+#链接：https://leetcode-cn.com/problems/rotate-image/solution/pythonjavascript-liang-ci-fan-zhuan-48-xuan-zhuan-/
+```
+
+#### [8. 字符串转换整数 (atoi)](https://leetcode-cn.com/problems/string-to-integer-atoi/)
+
+难度中等
+
+请你来实现一个 `atoi` 函数，使其能将字符串转换成整数。
+
+首先，该函数会根据需要丢弃无用的开头空格字符，直到寻找到第一个非空格的字符为止。接下来的转化规则如下：
+
+- 如果第一个非空字符为正或者负号时，则将该符号与之后面尽可能多的连续数字字符组合起来，形成一个有符号整数。
+- 假如第一个非空字符是数字，则直接将其与之后连续的数字字符组合起来，形成一个整数。
+- 该字符串在有效的整数部分之后也可能会存在多余的字符，那么这些字符可以被忽略，它们对函数不应该造成影响。
+
+注意：假如该字符串中的第一个非空格字符不是一个有效整数字符、字符串为空或字符串仅包含空白字符时，则你的函数不需要进行转换，即无法进行有效转换。
+
+在任何情况下，若函数不能进行有效的转换时，请返回 0 。
+
+**提示：**
+
+- 本题中的空白字符只包括空格字符 `' '` 。
+- 假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−231,  231 − 1]。如果数值超过这个范围，请返回  INT_MAX (231 − 1) 或 INT_MIN (−231) 。
+
+###### js
+
+###### 解题思路
+
+parseInt(string, radix)：
+
+string：要被解析的值。如果参数不是一个字符串，则将其转换为字符串。字符串开头的空白符将会被忽略。
+radix（可选）：需要转换的进制，介于 2 到 36。
+返回值： 如果被解析参数的第一个字符无法被转化成数值类型，则返回NaN。
+
+```js
+var myAtoi = function(str) {
+    const number = parseInt(str, 10);
+
+    if(isNaN(number)) {
+        return 0;
+    } else if (number < Math.pow(-2, 31) || number > Math.pow(2, 31) - 1) {
+        return number < Math.pow(-2, 31) ? Math.pow(-2, 31) : Math.pow(2, 31) - 1;
+    } else {
+        return number;
+    }
+};
+```
+
+###### py
+
+###### 解题思路
+
+使用正则表达式：
+
+```。
+^：匹配字符串开头
+[\+\-]：代表一个+字符或-字符
+?：前面一个字符可有可无
+\d：一个数字
++：前面一个字符的一个或多个
+\D：一个非数字字符
+*：前面一个字符的0个或多个
+str.lstrip([chars])		chars --指定截取的字符。返回截掉字符串最左边的空格或指定字符后生成的新字符串。
+str = "     this is string example....wow!!!     ";
+print str.lstrip();			>>>this is string example....wow!!!
+str = "88888888this is string example....wow!!!8888888";
+print str.lstrip('8');  	>>>this is string example....wow!!!8888888
+max(min(数字, 2**31 - 1), -2**31) 用来防止结果越界
+```
+
+```py
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        s=int(*re.findall('^[\+\-]?\d+',str.lstrip()))
+        s=min(s,2**31-1)
+        s=max(s,-2**31)
+        return s
+```
+
