@@ -6,6 +6,8 @@
 
 108
 
+20. 有效的括号
+
 #### [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
 
 难度简单
@@ -80,6 +82,95 @@ for i,num in enumerate(nums):
     j = hashmap.get(target - num)
     if j is not None and i!=j:
         return [i,j]
+```
+
+#### [20. 有效的括号](https://leetcode-cn.com/problems/valid-parentheses/)
+
+难度简单
+
+给定一个只包括 `'('`，`')'`，`'{'`，`'}'`，`'['`，`']'` 的字符串，判断字符串是否有效。
+
+有效字符串需满足：
+
+1. 左括号必须用相同类型的右括号闭合。
+2. 左括号必须以正确的顺序闭合。
+
+注意空字符串可被认为是有效字符串。
+
+**示例 1:**
+
+```
+输入: "()"
+输出: true
+
+```
+
+**示例 2:**
+
+```
+输入: "()[]{}"
+输出: true
+
+```
+
+**示例 3:**
+
+```
+输入: "(]"
+输出: false
+
+```
+
+**示例 4:**
+
+```
+输入: "([)]"
+输出: false
+
+```
+
+**示例 5:**
+
+```
+输入: "{[]}"
+输出: true
+```
+
+###### py
+
+使用replace()替代括号，最后判断字符串
+
+```py
+class Solution:
+    def isValid(self, s: str) -> bool:
+        while '{}' in s or '()' in s or '[]' in s:
+            s=s.replace('{}','')
+            s=s.replace('[]','')
+            s=s.replace('()','')
+        return s==''
+```
+
+js
+
+###### 解题思路
+
+边遍历边匹配。也就是遍历的时候遇到左括号存入数组，下次遇到的第一个右括号必须和数组中最后一个元素匹配，否则为无效字符串，匹配完成后从数组中删除此元素。若最终数组为空，表示括号已全部匹配完，字符串有效。
+
+```js
+var isValid = function (s) {
+    var map = {
+        "(": ")",
+        "[": "]",
+        "{": "}"
+    }
+    var leftArr = []
+    for (var ch of s){
+        if (ch in map) leftArr.push(ch); //为左括号时，顺序保存
+        else { //为右括号时，与数组末位匹配
+            if(ch != map[leftArr.pop()]) return false;
+        }
+    }
+    return !leftArr.length //防止全部为左括号
 ```
 
 #### [237. 删除链表中的节点](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/)
