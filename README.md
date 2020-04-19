@@ -2,11 +2,15 @@
 
 #### 关于LeetCode的Python和JavaScript解答
 
+13罗马数字转整数
+
+14. 最长公共前缀
+
+20有效的括号
+
 350
 
 108
-
-20. 有效的括号
 
 #### [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
 
@@ -82,6 +86,215 @@ for i,num in enumerate(nums):
     j = hashmap.get(target - num)
     if j is not None and i!=j:
         return [i,j]
+```
+
+#### [13. 罗马数字转整数](https://leetcode-cn.com/problems/roman-to-integer/)
+
+难度简单865收藏分享切换为英文关注反馈
+
+罗马数字包含以下七种字符: `I`， `V`， `X`， `L`，`C`，`D` 和 `M`。
+
+```
+字符          数值
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+```
+
+例如， 罗马数字 2 写做 `II` ，即为两个并列的 1。12 写做 `XII` ，即为 `X` + `II` 。 27 写做  `XXVII`, 即为 `XX` + `V` + `II` 。
+
+通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 `IIII`，而是 `IV`。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 `IX`。这个特殊的规则只适用于以下六种情况：
+
+- `I` 可以放在 `V` (5) 和 `X` (10) 的左边，来表示 4 和 9。
+- `X` 可以放在 `L` (50) 和 `C` (100) 的左边，来表示 40 和 90。 
+- `C` 可以放在 `D` (500) 和 `M` (1000) 的左边，来表示 400 和 900。
+
+给定一个罗马数字，将其转换成整数。输入确保在 1 到 3999 的范围内。
+
+**示例 1:**
+
+```
+输入: "III"
+输出: 3
+```
+
+**示例 2:**
+
+```
+输入: "IV"
+输出: 4
+```
+
+**示例 3:**
+
+```
+输入: "IX"
+输出: 9
+```
+
+**示例 4:**
+
+```
+输入: "LVIII"
+输出: 58
+解释: L = 50, V= 5, III = 3.
+
+```
+
+**示例 5:**
+
+```
+输入: "MCMXCIV"
+输出: 1994
+解释: M = 1000, CM = 900, XC = 90, IV = 4.
+```
+
+##### js
+
+首先将所有的组合可能性列出并添加到哈希表中
+然后对字符串进行遍历，由于组合只有两种，一种是 1 个字符，一种是 2 个字符，其中 2 个字符优先于 1 个字符
+先判断两个字符的组合在哈希表中是否存在，存在则将值取出加到结果 ans 中，并向后移2个字符。不存在则将判断当前 1 个字符是否存在，存在则将值取出加到结果 ans 中，并向后移 1 个字符
+遍历结束返回结果 ans
+
+##### 代码
+
+```javascript
+/**
+- @param {string} s
+- @return {number}
+  */
+  var romanToInt = function(s) {
+  const map = {
+	    I : 1,
+        IV: 4,
+        V: 5,
+        IX: 9,
+        X: 10,
+        XL: 40,
+        L: 50,
+        XC: 90,
+        C: 100,
+        CD: 400,
+        D: 500,
+        CM: 900,
+        M: 1000
+
+	};
+
+let ans = 0;
+
+for(let i = 0;i < s.length;) {
+
+    if(i + 1 < s.length && map[s.substring(i, i+2)]) {
+        ans += map[s.substring(i, i+2)];
+        i += 2;
+    } else {
+        ans += map[s.substring(i, i+1)];
+        i ++;
+    }
+}
+       return ans;
+};
+```
+
+##### py
+
+建立一个HashMap来映射符号和值，然后对字符串从左到右来，如果当前字符代表的值不小于其右边，就加上该值；否则就减去该值。以此类推到最左边的数，最终得到的结果即是答案
+
+```python
+class Solution:
+    def romanToInt(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        a = {'I':1, 'V':5, 'X':10, 'L':50, 'C':100, 'D':500, 'M':1000}        
+        ans=0        
+        for i in range(len(s)):            
+            if i<len(s)-1 and a[s[i]]<a[s[i+1]]:                
+                ans-=a[s[i]]
+            else:
+                ans+=a[s[i]]
+        return ans
+```
+
+#### [14. 最长公共前缀](https://leetcode-cn.com/problems/longest-common-prefix/)
+
+难度简单
+
+编写一个函数来查找字符串数组中的最长公共前缀。
+
+如果不存在公共前缀，返回空字符串 `""`。
+
+**示例 1:**
+
+```
+输入: ["flower","flow","flight"]
+输出: "fl"
+
+```
+
+**示例 2:**
+
+```
+输入: ["dog","racecar","car"]
+输出: ""
+解释: 输入不存在公共前缀。
+
+```
+
+**说明:**
+
+所有输入只包含小写字母 `a-z` 。
+
+##### JS
+
+##### 解题思路
+
+当字符串数组长度为 0 时公共前缀为空，直接返回
+初始化，令最长公共前缀 ans 的值为第一个字符串
+遍历后面的字符串，依次将其与 ans 进行比较，两两找出公共前缀，最终结果即为最长公共前缀
+如果查找过程中出现了 ans 为空的情况，则公共前缀不存在直接返回
+
+```js
+/**
+ * @param {string[]} strs
+ * @return {string}
+ */
+var longestCommonPrefix = function(strs) {
+    if(strs.length == 0) 
+        return "";
+    let ans = strs[0];
+    for(let i =1;i<strs.length;i++) {
+        let j=0;
+        for(;j<ans.length && j < strs[i].length;j++) {
+            if(ans[j] != strs[i][j])
+                break;
+        }
+        ans = ans.substr(0, j);
+        if(ans === "")
+            return ans;
+    }
+    return ans;
+};
+```
+
+##### py
+
+```py
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if len(strs) == 0:
+            return ''
+        s = strs[0]
+        for i in range(1, len(strs)):
+            while strs[i].find(s) != 0 :
+                s = s[:-1]
+        return s
 ```
 
 #### [20. 有效的括号](https://leetcode-cn.com/problems/valid-parentheses/)
