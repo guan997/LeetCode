@@ -386,6 +386,86 @@ var isValid = function (s) {
     return !leftArr.length //防止全部为左括号
 ```
 
+#### [27. 移除元素](https://leetcode-cn.com/problems/remove-element/)
+
+难度简单
+
+给你一个数组 *nums *和一个值 *val*，你需要 **原地** 移除所有数值等于 *val *的元素，并返回移除后数组的新长度。
+
+不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并 **原地 修改输入数组**。
+
+元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
+
+**示例 1:**
+
+```
+给定 nums = [3,2,2,3], val = 3,
+
+函数应该返回新的长度 2, 并且 nums 中的前两个元素均为 2。
+
+你不需要考虑数组中超出新长度后面的元素。
+
+```
+
+**示例 2:**
+
+```
+给定 nums = [0,1,2,2,3,0,4,2], val = 2,
+
+函数应该返回新的长度 5, 并且 nums 中的前五个元素为 0, 1, 3, 0, 4。
+
+注意这五个元素可为任意顺序。
+
+你不需要考虑数组中超出新长度后面的元素。
+
+```
+
+#####  js
+
+###### 拷贝覆盖
+
+遍历数组nums，每次取出的数字变量为num，同时设置一个下标ans
+在遍历过程中如果出现数字与需要移除的值不相同时，则进行拷贝覆盖nums[ans] = num，ans自增1
+如果相同的时候，则跳过该数字不进行拷贝覆盖，最后ans即为新的数组长度
+这种思路在移除元素较多时更适合使用，最极端的情况是全部元素都需要移除，遍历一遍结束即
+
+``` js
+var removeElement = function(nums, val) {
+    let ans = 0;
+    for(const num of nums) {
+        if(num != val) {
+            nums[ans] = num;
+            ans++;
+        }
+    }
+    return ans;
+};
+```
+
+###### 交换移除
+
+遍历数组nums，遍历指针为i，总长度为ans
+在遍历过程中如果出现数字与需要移除的值不相同时，则i自增1，继续下一次遍历
+如果相同的时候，则将nums[i]与nums[ans-1]交换，即当前数字和数组最后一个数字进行交换，交换后就少了一个元素，故而ans自减1
+在移除元素较少时更适合使用，最极端的情况是没有元素需要移除，遍历一遍结束即可
+
+```js
+var removeElement = function(nums, val) {
+    let ans = nums.length;
+    for (let i = 0; i < ans;) {
+        if (nums[i] == val) {
+            nums[i] = nums[ans - 1];
+            ans--;
+        } else {
+            i++;
+        }
+    }
+    return ans;
+};
+```
+
+
+
 #### [237. 删除链表中的节点](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/)
 
 难度简单
