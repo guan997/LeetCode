@@ -12,6 +12,8 @@
 
 108
 
+28实现strStr()
+
 #### [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
 
 难度简单
@@ -29,7 +31,7 @@
 所以返回 [0, 1]
 ```
 
-##### JS：
+JS：
 
 初始化一个 map = new Map()
 从第一个元素开始遍历 nums
@@ -60,8 +62,7 @@
 };
 ```
 
-
-##### PY
+PY
 
 enumerate() 函数用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列出数据和数据下标，一般用在 for 循环当中。
 
@@ -153,14 +154,14 @@ M             1000
 解释: M = 1000, CM = 900, XC = 90, IV = 4.
 ```
 
-##### js
+js
 
 首先将所有的组合可能性列出并添加到哈希表中
 然后对字符串进行遍历，由于组合只有两种，一种是 1 个字符，一种是 2 个字符，其中 2 个字符优先于 1 个字符
 先判断两个字符的组合在哈希表中是否存在，存在则将值取出加到结果 ans 中，并向后移2个字符。不存在则将判断当前 1 个字符是否存在，存在则将值取出加到结果 ans 中，并向后移 1 个字符
 遍历结束返回结果 ans
 
-##### 代码
+代码
 
 ```javascript
 /**
@@ -201,7 +202,7 @@ for(let i = 0;i < s.length;) {
 };
 ```
 
-##### py
+py
 
 建立一个HashMap来映射符号和值，然后对字符串从左到右来，如果当前字符代表的值不小于其右边，就加上该值；否则就减去该值。以此类推到最左边的数，最终得到的结果即是答案
 
@@ -251,9 +252,9 @@ class Solution:
 
 所有输入只包含小写字母 `a-z` 。
 
-##### JS
+JS
 
-##### 解题思路
+解题思路
 
 当字符串数组长度为 0 时公共前缀为空，直接返回
 初始化，令最长公共前缀 ans 的值为第一个字符串
@@ -283,7 +284,7 @@ var longestCommonPrefix = function(strs) {
 };
 ```
 
-##### py
+py
 
 ```py
 class Solution:
@@ -349,7 +350,7 @@ class Solution:
 输出: true
 ```
 
-###### py
+py
 
 使用replace()替代括号，最后判断字符串
 
@@ -365,7 +366,7 @@ class Solution:
 
 js
 
-###### 解题思路
+解题思路
 
 边遍历边匹配。也就是遍历的时候遇到左括号存入数组，下次遇到的第一个右括号必须和数组中最后一个元素匹配，否则为无效字符串，匹配完成后从数组中删除此元素。若最终数组为空，表示括号已全部匹配完，字符串有效。
 
@@ -420,9 +421,9 @@ var isValid = function (s) {
 
 ```
 
-#####  js
+js
 
-###### 拷贝覆盖
+拷贝覆盖
 
 遍历数组nums，每次取出的数字变量为num，同时设置一个下标ans
 在遍历过程中如果出现数字与需要移除的值不相同时，则进行拷贝覆盖nums[ans] = num，ans自增1
@@ -442,7 +443,7 @@ var removeElement = function(nums, val) {
 };
 ```
 
-###### 交换移除
+交换移除
 
 遍历数组nums，遍历指针为i，总长度为ans
 在遍历过程中如果出现数字与需要移除的值不相同时，则i自增1，继续下一次遍历
@@ -462,6 +463,114 @@ var removeElement = function(nums, val) {
     }
     return ans;
 };
+```
+
+#### [28. 实现 strStr()](https://leetcode-cn.com/problems/implement-strstr/)
+
+难度简单
+
+实现 [strStr()](https://baike.baidu.com/item/strstr/811469) 函数。
+
+给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  **-1**。
+
+**示例 1:**
+
+```
+输入: haystack = "hello", needle = "ll"
+输出: 2
+
+```
+
+**示例 2:**
+
+```
+输入: haystack = "aaaaa", needle = "bba"
+输出: -1
+```
+
+##### js
+
+1、indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。
+
+```js
+var strStr = function(haystack, needle) {
+    return haystack.indexOf(needle);
+};
+```
+
+2、Sunday 匹配机制
+
+```js
+#超时
+const strStr = function(haystack, needle) {
+    if (needle === "") return 0;
+    if (haystack === "") return -1;
+    let inc = [];
+    // 计算偏移量
+    for (let i = 0; i < needle.length; i++) {
+        for (let j = 0; j <= i; j++) {
+            if (needle[j] !== needle[i - j]) {
+                inc[i] = j + 1;
+                break;
+            }
+            if (j === i && needle[j] === needle[i - j]) {
+                inc[i] = j + 1;
+            }
+        }
+    }
+    let i = 0;
+    let l = needle.length
+    while (i < haystack.length) {
+        for (let j = 0; j < l; j++) {
+            if (needle[j] !== haystack[i + j]) {
+                i += inc[j];
+                break;
+            }
+            if (j === l - 1 && needle[j] === haystack[i + j]) {
+                return i;
+            }
+        }
+    }
+    return -1;
+};
+```
+
+#### [35. 搜索插入位置](https://leetcode-cn.com/problems/search-insert-position/)
+
+难度简单
+
+给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+
+你可以假设数组中无重复元素。
+
+**示例 1:**
+
+```
+输入: [1,3,5,6], 5
+输出: 2
+
+```
+
+**示例 2:**
+
+```
+输入: [1,3,5,6], 2
+输出: 1
+```
+
+js
+
+```js
+var searchInsert = function(nums, target) {
+    let j=nums.indexOf(target);
+    if(j!=-1)return j;
+
+
+    for(let i = 0 ; i < nums.length; i++){
+        if(nums[i]>target)return i;
+    }
+    return nums.length;
+}
 ```
 
 
@@ -733,7 +842,7 @@ or：如果 or 前面的表达式已经为 True，那么 or 之后的表达式�
     
         return major
 
-### 复杂度
+复杂度
 
 - 时间复杂度：O(n)，仅遍历一次数组
 - 空间复杂度：O(1)，没有使用额外空间
@@ -1060,7 +1169,7 @@ def rotate(self, nums: List[int], k: int) -> None:
 
 ##### py
 
-##### 解题思路
+解题思路
 
 利用python List中append与remove方法的特点进行操作。循环遍历nums1中的元素，然后在nums2中查找是否存在。如果存在，加入临时list中，并且需要注意：把nums2中的对应元素删掉。比如nums1 = [1, 2, 2, 1]， nums2 = [2]。如果不删除，则会产生错误。因为nums1与nums2的元素个数要保持一致。
 
