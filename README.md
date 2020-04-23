@@ -1,18 +1,19 @@
 # LeetCode
 
-#### 关于LeetCode的Python和JavaScript解答
+#### 关于LeetCode的JavaScript以及少部分Python解答
 
-13罗马数字转整数
+- 1. 两数之和
+- 13罗马数字转整数
 
-14. 最长公共前缀
+- 14. 最长公共前缀
 
-20有效的括号
-
-350
-
-108
-
-28实现strStr()
+- 20. 有效的括号
+- 27. 移除元素
+-  28实现strStr()
+- 35. 搜索插入位置
+- 58. 最后一个单词的长度
+- 69. x 的平方根
+  70. 237. 删除链表中的节点
 
 #### [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
 
@@ -708,7 +709,7 @@ var mySqrt = function(x) {
         node.next = node.next.next
 由于只输入了需要删除的节点node，因此无法获取删除节点node的前一个节点pre，从而也就无法将前一个节点pre指向删除节点的下一个节点nex；既然无法通过修改指针完成，那么肯定要修改链表节点的值了。将删除节点node的值和指针都改为下一个节点nex的值和指针即可。
 
-[88. 合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)
+#### [88. 合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)
 
 难度简单
 
@@ -729,10 +730,16 @@ nums2 = [2,5,6],       n = 3
 输出: [1,2,2,3,5,6]
 ```
 
-    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
-               nums1[:] = sorted(nums1[:m] + nums2)
+###### py
 
 将两个数组合并之后再排序。
+
+```py
+def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+           nums1[:] = sorted(nums1[:m] + nums2)
+```
+
+
 
 #### [21. 合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/)
 
