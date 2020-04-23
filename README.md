@@ -488,7 +488,7 @@ var removeElement = function(nums, val) {
 输出: -1
 ```
 
-##### js
+###### js
 
 1、indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。
 
@@ -571,6 +571,120 @@ var searchInsert = function(nums, target) {
     }
     return nums.length;
 }
+```
+
+#### [58. 最后一个单词的长度](https://leetcode-cn.com/problems/length-of-last-word/)
+
+难度简单191收藏分享切换为英文关注反馈
+
+给定一个仅包含大小写字母和空格 `' '` 的字符串 `s`，返回其最后一个单词的长度。如果字符串从左向右滚动显示，那么最后一个单词就是最后出现的单词。
+
+如果不存在最后一个单词，请返回 0 。
+
+**说明：**一个单词是指仅由字母组成、不包含任何空格字符的 **最大子字符串**。
+
+**示例:**
+
+```
+输入: "Hello World"
+输出: 5
+```
+
+###### js
+
+字符串遍历
+从字符串末尾开始向前遍历，其中主要有两种情况
+第一种情况，以字符串"Hello World"为例，从后向前遍历直到遍历到头或者遇到空格为止，即为最后一个单词"World"的长度5
+第二种情况，以字符串"Hello World "为例，需要先将末尾的空格过滤掉，再进行第一种情况的操作，即认为最后一个单词为"World"，长度为5
+所以完整过程为先从后过滤掉空格找到单词尾部，再从尾部向前遍历，找到单词头部，最后两者相减，即为单词的长度
+
+```js
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var lengthOfLastWord = function(s) {
+    let end = s.length - 1;
+    while(end >= 0 && s[end] == ' ') end--;
+    if(end < 0) return 0;
+    let start = end;
+    while(start >= 0 && s[start] != ' ') start--;
+    return end - start;
+};
+```
+
+2、
+
+```js
+var lengthOfLastWord = function(s) {
+  s = s.trim()
+  let end = s.length - 1
+  if (end === 1) {
+    return 0
+  }
+  let start = end
+  while (start >= 0 && s.charAt(start) !== ' ') {
+    start --
+  }
+  return end - start
+}
+```
+
+3、
+
+```js
+var lengthOfLastWord = function(s) {
+    s = s.trim();
+    return s.length-1 -s.lastIndexOf(' '); 
+};
+```
+
+#### [69. x 的平方根](https://leetcode-cn.com/problems/sqrtx/)
+
+难度简单
+
+实现 `int sqrt(int x)` 函数。
+
+计算并返回 *x* 的平方根，其中 *x *是非负整数。
+
+由于返回类型是整数，结果只保留整数的部分，小数部分将被舍去。
+
+**示例 1:**
+
+```
+输入: 4
+输出: 2
+
+```
+
+**示例 2:**
+
+```
+输入: 8
+输出: 2
+说明: 8 的平方根是 2.82842..., 
+     由于返回类型是整数，小数部分将被舍去。
+```
+
+###### js
+
+```js
+var mySqrt = function(x) {
+    return parseInt(Math.sqrt(x));
+};
+```
+
+牛顿法，迭代公式re_{n+1}=re_{n}-\frac{f(re_n)}{f'(re_n)}re 
+
+```js
+var mySqrt = function(x) {
+    if (x===0) return 0;
+    var re = 1;
+    while(!(re * re <= x && (re + 1) * (re + 1) > x)){
+        re = parseInt(re - ( re * re - x) / (2 * re));
+    }
+    return re;
+};
 ```
 
 
