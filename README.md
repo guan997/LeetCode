@@ -9,7 +9,7 @@
 
 - 20. 有效的括号
 - 27. 移除元素
--  28实现strStr()
+- 28实现strStr()
 - 35. 搜索插入位置
 - 58. 最后一个单词的长度
 - 69. x 的平方根
@@ -639,6 +639,132 @@ var lengthOfLastWord = function(s) {
     return s.length-1 -s.lastIndexOf(' '); 
 };
 ```
+
+#### [67. 二进制求和](https://leetcode-cn.com/problems/add-binary/)
+
+难度简单
+
+给你两个二进制字符串，返回它们的和（用二进制表示）。
+
+输入为 **非空 **字符串且只包含数字 `1` 和 `0`。
+
+**示例 1:**
+
+```
+输入: a = "11", b = "1"
+输出: "100"
+```
+
+**示例 2:**
+
+```
+输入: a = "1010", b = "1011"
+输出: "10101"
+```
+
+###### js
+
+**BigInt** 是一种内置对象，它提供了一种方法来表示大于 `253 - 1` 的整数。这原本是 Javascript中可以用 [`Number`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number) 表示的最大数字。**BigInt** 可以表示任意大的整数。
+
+```js
+var addBinary = function (a, b) {
+    let numA;
+    let numB;
+    if (a.length >= 53 || b.length >= 53) {
+        numA = BigInt("0b" + a);
+        numB = BigInt("0b" + b);
+    } else {
+        numA = parseInt(a, 2);
+        numB = parseInt(b, 2);
+    }
+    return (numA + numB).toString(2);
+};
+module.exports = {
+    addBinary
+}
+```
+
+#### [70. 爬楼梯](https://leetcode-cn.com/problems/climbing-stairs/)
+
+难度简单
+
+假设你正在爬楼梯。需要 *n* 阶你才能到达楼顶。
+
+每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
+
+**注意：**给定 *n* 是一个正整数。
+
+**示例 1：**
+
+```
+输入： 2
+输出： 2
+解释： 有两种方法可以爬到楼顶。
+1.  1 阶 + 1 阶
+2.  2 阶
+```
+
+**示例 2：**
+
+```
+输入： 3
+输出： 3
+解释： 有三种方法可以爬到楼顶。
+1.  1 阶 + 1 阶 + 1 阶
+2.  1 阶 + 2 阶
+3.  2 阶 + 1 阶
+```
+
+###### js
+
+#### 求第i个斐波那契数
+
+- 维护3个变量 每次递归更新前两个子问题所需步数
+- 可知递推公式 == f(n) = f(n-2) + f(n-1),n>=1
+
+```js
+var climbStairs = function(n) {
+    var f1 = 2;
+    var f2 = 3;
+    var f3 = 0;
+    if(n <= 3){
+        return n;
+    }
+    while(n>3){
+        f3 = f2 + f1;
+        f1 = f2;
+        f2 = f3;
+        n--;
+    }
+    return f2;
+};
+
+```
+
+###### 动态优化
+
+爬第n阶楼梯的方法数量，等于 2 部分之和
+
+爬上 n-1阶楼梯的方法数量。因为再爬1阶就能到第n阶
+爬上 n-2 阶楼梯的方法数量，因为再爬2阶就能到第n阶
+
+```js
+var climbStairs = function(n) {
+    // 求第n步 所以索引到n
+    var dp = new Array(n+1);
+    if(n <= 3){
+        return n;
+    }
+    dp[1] = 1;
+    dp[2] = 2;
+    for(var i = 3;i<=n;i++){
+        dp[i] = dp[i-2] + dp[i-1];
+    }
+    return dp[n];
+};
+```
+
+
 
 #### [69. x 的平方根](https://leetcode-cn.com/problems/sqrtx/)
 
