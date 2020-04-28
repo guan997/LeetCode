@@ -574,6 +574,47 @@ var searchInsert = function(nums, target) {
 }
 ```
 
+#### [53. 最大子序和](https://leetcode-cn.com/problems/maximum-subarray/)
+
+难度简单
+
+给定一个整数数组 `nums` ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+
+**示例:**
+
+```
+输入: [-2,1,-3,4,-1,2,1,-5,4],
+输出: 6
+解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+```
+
+###### js
+
+动态规划
+
+首先对数组进行遍历，当前最大连续子序列和为 sum，结果为 ans
+如果 sum > 0，则说明 sum 对结果有增益效果，则 sum 保留并加上当前遍历数字
+如果 sum <= 0，则说明 sum 对结果无增益效果，需要舍弃，则 sum 直接更新为当前遍历数字
+每次比较 sum 和 ans的大小，将最大值置为ans，遍历结束返回结果
+
+```js
+var maxSubArray = function(nums) {
+    let ans = nums[0];
+    let sum = 0;
+    for(const num of nums) {
+        if(sum > 0) {
+            sum += num;
+        } else {
+            sum = num;
+        }
+        ans = Math.max(ans, sum);
+    }
+    return ans;
+};
+```
+
+
+
 #### [58. 最后一个单词的长度](https://leetcode-cn.com/problems/length-of-last-word/)
 
 难度简单191收藏分享切换为英文关注反馈
@@ -946,6 +987,52 @@ or：如果 or 前面的表达式已经为 True，那么 or 之后的表达式�
             else:
                 pre,cur=pre+1,cur+1
         return len(nums)
+#### [121. 买卖股票的最佳时机](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/)
+
+难度简单
+
+给定一个数组，它的第 *i* 个元素是一支给定股票第 *i* 天的价格。
+
+如果你最多只允许完成一笔交易（即买入和卖出一支股票一次），设计一个算法来计算你所能获取的最大利润。
+
+注意：你不能在买入股票前卖出股票。
+
+**示例 1:**
+
+```
+输入: [7,1,5,3,6,4]
+输出: 5
+解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。
+
+```
+
+**示例 2:**
+
+```
+输入: [7,6,4,3,1]
+输出: 0
+解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
+```
+
+###### js
+
+动态规划dp法
+dp[i] = max(0, dp[i−1] + diff[i])
+max = max(max, dp[i])
+
+```js
+var maxProfit = function(prices) {
+    let last = 0
+    let max = 0
+    for (let i = 0; i < prices.length-1; i++) {
+        last = Math.max(0, last + prices[i+1]-prices[i])
+        max = Math.max(max,last)
+    }
+    return max
+}
+```
+
 #### [136. 只出现一次的数字](https://leetcode-cn.com/problems/single-number/)
 
 难度简单
