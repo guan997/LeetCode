@@ -2,18 +2,54 @@
 
 #### 关于LeetCode的JavaScript以及少部分Python解答
 
-- 1. 两数之和
-- 13罗马数字转整数
+1. 两数之和
 
-- 14. 最长公共前缀
 
-- 20. 有效的括号
-- 27. 移除元素
-- 28实现strStr()
-- 35. 搜索插入位置
-- 58. 最后一个单词的长度
-- 69. x 的平方根
-  70. 237. 删除链表中的节点
+8. 字符串转换整数 (atoi)
+
+13罗马数字转整数
+
+14. 最长公共前缀
+
+
+20. 有效的括号
+
+
+27. 移除元素
+
+28实现strStr()
+
+35. 搜索插入位置
+
+
+38. 外观数列
+
+
+53. 最大子序和
+
+
+58. 最后一个单词的长度
+
+
+67. 二进制求和
+
+69.x 的平方根
+
+70. 爬楼梯
+
+83. 删除排序链表中的重复元素
+
+88.删除排序链表中的重复元素
+
+ 237.删除链表中的节点
+
+
+
+
+
+
+
+
 
 #### [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
 
@@ -88,6 +124,82 @@ for i,num in enumerate(nums):
     j = hashmap.get(target - num)
     if j is not None and i!=j:
         return [i,j]
+```
+
+#### [8. 字符串转换整数 (atoi)](https://leetcode-cn.com/problems/string-to-integer-atoi/)
+
+难度中等
+
+请你来实现一个 `atoi` 函数，使其能将字符串转换成整数。
+
+首先，该函数会根据需要丢弃无用的开头空格字符，直到寻找到第一个非空格的字符为止。接下来的转化规则如下：
+
+- 如果第一个非空字符为正或者负号时，则将该符号与之后面尽可能多的连续数字字符组合起来，形成一个有符号整数。
+- 假如第一个非空字符是数字，则直接将其与之后连续的数字字符组合起来，形成一个整数。
+- 该字符串在有效的整数部分之后也可能会存在多余的字符，那么这些字符可以被忽略，它们对函数不应该造成影响。
+
+注意：假如该字符串中的第一个非空格字符不是一个有效整数字符、字符串为空或字符串仅包含空白字符时，则你的函数不需要进行转换，即无法进行有效转换。
+
+在任何情况下，若函数不能进行有效的转换时，请返回 0 。
+
+**提示：**
+
+- 本题中的空白字符只包括空格字符 `' '` 。
+- 假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−231,  231 − 1]。如果数值超过这个范围，请返回  INT_MAX (231 − 1) 或 INT_MIN (−231) 。
+
+###### js
+
+###### 解题思路
+
+parseInt(string, radix)：
+
+string：要被解析的值。如果参数不是一个字符串，则将其转换为字符串。字符串开头的空白符将会被忽略。
+radix（可选）：需要转换的进制，介于 2 到 36。
+返回值： 如果被解析参数的第一个字符无法被转化成数值类型，则返回NaN。
+
+```js
+var myAtoi = function(str) {
+    const number = parseInt(str, 10);
+
+    if(isNaN(number)) {
+        return 0;
+    } else if (number < Math.pow(-2, 31) || number > Math.pow(2, 31) - 1) {
+        return number < Math.pow(-2, 31) ? Math.pow(-2, 31) : Math.pow(2, 31) - 1;
+    } else {
+        return number;
+    }
+};
+```
+
+###### py
+
+###### 解题思路
+
+使用正则表达式：
+
+```。
+^：匹配字符串开头
+[\+\-]：代表一个+字符或-字符
+?：前面一个字符可有可无
+\d：一个数字
++：前面一个字符的一个或多个
+\D：一个非数字字符
+*：前面一个字符的0个或多个
+str.lstrip([chars])		chars --指定截取的字符。返回截掉字符串最左边的空格或指定字符后生成的新字符串。
+str = "     this is string example....wow!!!     ";
+print str.lstrip();			>>>this is string example....wow!!!
+str = "88888888this is string example....wow!!!8888888";
+print str.lstrip('8');  	>>>this is string example....wow!!!8888888
+max(min(数字, 2**31 - 1), -2**31) 用来防止结果越界
+```
+
+```py
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        s=int(*re.findall('^[\+\-]?\d+',str.lstrip()))
+        s=min(s,2**31-1)
+        s=max(s,-2**31)
+        return s
 ```
 
 #### [13. 罗马数字转整数](https://leetcode-cn.com/problems/roman-to-integer/)
@@ -574,6 +686,51 @@ var searchInsert = function(nums, target) {
 }
 ```
 
+#### [38. 外观数列](https://leetcode-cn.com/problems/count-and-say/)
+
+难度简单458
+
+「外观数列」是一个整数序列，从数字 1 开始，序列中的每一项都是对前一项的描述。前五项如下：
+
+```
+1.     1
+2.     11
+3.     21
+4.     1211
+5.     111221
+
+```
+
+`1` 被读作  `"one 1"`  (`"一个一"`) , 即 `11`。
+`11` 被读作 `"two 1s"` (`"两个一"`）, 即 `21`。
+`21` 被读作 `"one 2"`,  "`one 1"` （`"一个二"` ,  `"一个一"`) , 即 `1211`。
+
+给定一个正整数 *n*（1 ≤ *n* ≤ 30），输出外观数列的第 *n* 项。
+
+注意：整数序列中的每一项将表示为一个字符串。
+
+**示例 1:**
+
+```
+输入: 1
+输出: "1"
+解释：这是一个基本样例。
+```
+
+###### 通过正则合并相同元素完成累加
+
+```js
+var countAndSay = function(n) {
+    let prev = '1'
+    for(let i = 1; i < n; i++){
+        prev = prev.replace(/(\d)\1*/g, item =>`${item.length}${item[0]}`)
+    }
+    return prev
+};
+```
+
+
+
 #### [53. 最大子序和](https://leetcode-cn.com/problems/maximum-subarray/)
 
 难度简单
@@ -758,7 +915,7 @@ module.exports = {
 
 ###### js
 
-#### 求第i个斐波那契数
+###### 求第i个斐波那契数
 
 - 维护3个变量 每次递归更新前两个子问题所需步数
 - 可知递推公式 == f(n) = f(n-2) + f(n-1),n>=1
@@ -857,24 +1014,52 @@ var mySqrt = function(x) {
 
 
 
-#### [237. 删除链表中的节点](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/)
+
+
+#### [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/)
 
 难度简单
 
-请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点，你将只被给定要求被删除的节点。
+给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
 
-现有一个链表 -- head = [4,5,1,9]，它可以表示为:
+**示例 1:**
 
-![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2019/01/19/237_example.png)
+```
+输入: 1->1->2
+输出: 1->2
 
-    def deleteNode(self, node):
-        """
-        :type node: ListNode
-        :rtype: void Do not return anything, modify node in-place instead.
-        """
-        node.val = node.next.val
-        node.next = node.next.next
-由于只输入了需要删除的节点node，因此无法获取删除节点node的前一个节点pre，从而也就无法将前一个节点pre指向删除节点的下一个节点nex；既然无法通过修改指针完成，那么肯定要修改链表节点的值了。将删除节点node的值和指针都改为下一个节点nex的值和指针即可。
+```
+
+**示例 2:**
+
+```
+输入: 1->1->2->3->3
+输出: 1->2->3
+```
+
+###### js
+
+链表
+指定 cur 指针指向头部 head
+当 cur 和 cur.next 的存在为循环结束条件，当二者有一个不存在时说明链表没有去重复的必要了
+当 cur.val 和 cur.next.val 相等时说明需要去重，则将 cur 的下一个指针指向下一个的下一个，这样就能达到去重复的效果
+如果不相等则 cur 移动到下一个位置继续循环
+
+```js
+var deleteDuplicates = function(head) {
+    var cur = head;
+    while(cur && cur.next) {
+        if(cur.val == cur.next.val) {
+            cur.next = cur.next.next;
+        } else {
+            cur = cur.next;
+        }
+    }
+    return head;
+};
+```
+
+
 
 #### [88. 合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)
 
@@ -1520,6 +1705,28 @@ class Solution:
         return nums
 ```
 
+#### [237. 删除链表中的节点](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/)
+
+难度简单
+
+请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点，你将只被给定要求被删除的节点。
+
+现有一个链表 -- head = [4,5,1,9]，它可以表示为:
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2019/01/19/237_example.png)
+
+```
+def deleteNode(self, node):
+    """
+    :type node: ListNode
+    :rtype: void Do not return anything, modify node in-place instead.
+    """
+    node.val = node.next.val
+    node.next = node.next.next
+```
+
+由于只输入了需要删除的节点node，因此无法获取删除节点node的前一个节点pre，从而也就无法将前一个节点pre指向删除节点的下一个节点nex；既然无法通过修改指针完成，那么肯定要修改链表节点的值了。将删除节点node的值和指针都改为下一个节点nex的值和指针即可。
+
 #### [283. 移动零](https://leetcode-cn.com/problems/move-zeroes/)
 
 难度简单
@@ -1831,81 +2038,5 @@ def rotate(self, matrix: List[List[int]]) -> None:
     matrix[:] = map(list, zip(*matrix[::-1]))
 #作者：fe-lcifer
 #链接：https://leetcode-cn.com/problems/rotate-image/solution/pythonjavascript-liang-ci-fan-zhuan-48-xuan-zhuan-/
-```
-
-#### [8. 字符串转换整数 (atoi)](https://leetcode-cn.com/problems/string-to-integer-atoi/)
-
-难度中等
-
-请你来实现一个 `atoi` 函数，使其能将字符串转换成整数。
-
-首先，该函数会根据需要丢弃无用的开头空格字符，直到寻找到第一个非空格的字符为止。接下来的转化规则如下：
-
-- 如果第一个非空字符为正或者负号时，则将该符号与之后面尽可能多的连续数字字符组合起来，形成一个有符号整数。
-- 假如第一个非空字符是数字，则直接将其与之后连续的数字字符组合起来，形成一个整数。
-- 该字符串在有效的整数部分之后也可能会存在多余的字符，那么这些字符可以被忽略，它们对函数不应该造成影响。
-
-注意：假如该字符串中的第一个非空格字符不是一个有效整数字符、字符串为空或字符串仅包含空白字符时，则你的函数不需要进行转换，即无法进行有效转换。
-
-在任何情况下，若函数不能进行有效的转换时，请返回 0 。
-
-**提示：**
-
-- 本题中的空白字符只包括空格字符 `' '` 。
-- 假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−231,  231 − 1]。如果数值超过这个范围，请返回  INT_MAX (231 − 1) 或 INT_MIN (−231) 。
-
-###### js
-
-###### 解题思路
-
-parseInt(string, radix)：
-
-string：要被解析的值。如果参数不是一个字符串，则将其转换为字符串。字符串开头的空白符将会被忽略。
-radix（可选）：需要转换的进制，介于 2 到 36。
-返回值： 如果被解析参数的第一个字符无法被转化成数值类型，则返回NaN。
-
-```js
-var myAtoi = function(str) {
-    const number = parseInt(str, 10);
-
-    if(isNaN(number)) {
-        return 0;
-    } else if (number < Math.pow(-2, 31) || number > Math.pow(2, 31) - 1) {
-        return number < Math.pow(-2, 31) ? Math.pow(-2, 31) : Math.pow(2, 31) - 1;
-    } else {
-        return number;
-    }
-};
-```
-
-###### py
-
-###### 解题思路
-
-使用正则表达式：
-
-```。
-^：匹配字符串开头
-[\+\-]：代表一个+字符或-字符
-?：前面一个字符可有可无
-\d：一个数字
-+：前面一个字符的一个或多个
-\D：一个非数字字符
-*：前面一个字符的0个或多个
-str.lstrip([chars])		chars --指定截取的字符。返回截掉字符串最左边的空格或指定字符后生成的新字符串。
-str = "     this is string example....wow!!!     ";
-print str.lstrip();			>>>this is string example....wow!!!
-str = "88888888this is string example....wow!!!8888888";
-print str.lstrip('8');  	>>>this is string example....wow!!!8888888
-max(min(数字, 2**31 - 1), -2**31) 用来防止结果越界
-```
-
-```py
-class Solution:
-    def myAtoi(self, s: str) -> int:
-        s=int(*re.findall('^[\+\-]?\d+',str.lstrip()))
-        s=min(s,2**31-1)
-        s=max(s,-2**31)
-        return s
 ```
 
