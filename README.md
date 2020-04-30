@@ -37,9 +37,11 @@
 
 70. 爬楼梯
 
-83. 删除排序链表中的重复元素
+71. 删除排序链表中的重复元素
 
 88.删除排序链表中的重复元素
+
+110. 平衡二叉树
 
  237.删除链表中的节点
 
@@ -1123,37 +1125,6 @@ or：如果 or 前面的表达式已经为 True，那么 or 之后的表达式�
 修改 l1 的 next 属性为递归函数返回值
 返回 l1，注意：如果 l1 和 l2 同时为 None，此时递归停止返回 None
 
-#### [217. 存在重复元素](https://leetcode-cn.com/problems/contains-duplicate/)
-
-难度简单
-
-给定一个整数数组，判断是否存在重复元素。
-
-如果任意一值在数组中出现至少两次，函数返回 `true` 。如果数组中每个元素都不相同，则返回 `false` 
-
-解法1：集合法
-判断原数组和该数组的长度相不相等，一行解决：
-
-    def containsDuplicate(self, nums: List[int]) -> bool:
-        return len((set(nums))) != len(nums)
-解法2：哈希表
-    def containsDuplicate(self, nums: List[int]) -> bool:
-        dic = {}
-        for i in nums:
-            if dic.get(i):
-                return True
-            dic[i] = 1
-        return False
-解法3：排序法
-排序之后，相等元素必相邻：
-
-    def containsDuplicate(self, nums: List[int]) -> bool:
-        nums.sort()
-        for i in range(len(nums)-1):
-            if nums[i+1] == nums[i]:
-                return True
-        return False
-
 #### [26. 删除排序数组中的重复项](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/)
 
 难度简单
@@ -1172,6 +1143,98 @@ or：如果 or 前面的表达式已经为 True，那么 or 之后的表达式�
             else:
                 pre,cur=pre+1,cur+1
         return len(nums)
+#### [110. 平衡二叉树](https://leetcode-cn.com/problems/balanced-binary-tree/)
+
+难度简单
+
+给定一个二叉树，判断它是否是高度平衡的二叉树。
+
+本题中，一棵高度平衡二叉树定义为：
+
+> 一个二叉树*每个节点 *的左右两个子树的高度差的绝对值不超过1。
+
+**示例 1:**
+
+给定二叉树 `[3,9,20,null,null,15,7]`
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回 `true` 。
+**示例 2:**
+
+给定二叉树 `[1,2,2,3,3,null,null,4,4]`
+
+```
+       1
+      / \
+     2   2
+    / \
+   3   3
+  / \
+ 4   4
+
+```
+
+返回 `false` 。
+
+###### js
+
+从左到右递归树的节点，记录节点的最大深度
+在记录节点的同时对该树的节点的左子树与右子树的最大深度做一次对比，如果差值超过1则返回false
+
+```js
+function isBalanced1(root,result){
+    if(root == null){
+        return 0
+    }
+    let l = isBalanced1(root.left,result);
+    let r = isBalanced1(root.right,result);
+    if(l-r>1 || l-r<-1){
+        result[0] = false
+    }
+    return Math.max(l,r)+1;
+}
+var isBalanced = function(root) {
+    let a = [true];
+    isBalanced1(root,a);
+    return a[0]
+};
+```
+
+```js
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isBalanced = function(root) {
+    // 遍历到底还没有发现高度差超过 1 的左右子树，那么这个子树肯定符合平衡二叉树的规范
+    if (!root) {
+        return true
+    }
+    // 判断左右子树的高度差，如果超过 1 那么立即返回 false
+    if (Math.abs(getHeight(root.left) - getHeight(root.right)) > 1) {
+        return false
+    }
+    // 分别递归左右子树
+    return isBalanced(root.left) && isBalanced(root.right)
+    // 获取某个子树的高度
+    function getHeight (root) {
+        if (!root) {
+            return 0
+        }
+        return Math.max(getHeight(root.left), getHeight(root.right)) + 1
+    }
+};
+```
+
+
+
 #### [121. 买卖股票的最佳时机](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/)
 
 难度简单
@@ -1705,6 +1768,48 @@ class Solution:
         return nums
 ```
 
+#### [217. 存在重复元素](https://leetcode-cn.com/problems/contains-duplicate/)
+
+难度简单
+
+给定一个整数数组，判断是否存在重复元素。
+
+如果任意一值在数组中出现至少两次，函数返回 `true` 。如果数组中每个元素都不相同，则返回 `false` 
+
+解法1：集合法
+判断原数组和该数组的长度相不相等，一行解决：
+
+```
+def containsDuplicate(self, nums: List[int]) -> bool:
+    return len((set(nums))) != len(nums)
+```
+
+解法2：哈希表
+
+```
+def containsDuplicate(self, nums: List[int]) -> bool:
+    dic = {}
+    for i in nums:
+        if dic.get(i):
+            return True
+        dic[i] = 1
+    return False
+```
+
+解法3：排序法
+排序之后，相等元素必相邻：
+
+```
+def containsDuplicate(self, nums: List[int]) -> bool:
+    nums.sort()
+    for i in range(len(nums)-1):
+        if nums[i+1] == nums[i]:
+            return True
+    return False
+```
+
+#### 
+
 #### [237. 删除链表中的节点](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/)
 
 难度简单
@@ -1790,7 +1895,7 @@ def moveZeroes(self, nums: List[int]) -> None:
 
 #### [36. 有效的数独](https://leetcode-cn.com/problems/valid-sudoku/)
 
-难度中等314收藏分享切换为英文关注反馈
+难度中等
 
 判断一个 9x9 的数独是否有效。只需要**根据以下规则**，验证已经填入的数字是否有效即可。
 
