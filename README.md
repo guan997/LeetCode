@@ -2,6 +2,8 @@
 
 #### 关于LeetCode的JavaScript以及少部分Python解答
 
+#### 目录
+
 1. 两数之和
 
 
@@ -43,6 +45,8 @@
 
 100. 相同的树
 
+
+107.二叉树的层次遍历 II
 
 110. 平衡二叉树
 
@@ -1152,8 +1156,6 @@ def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
 
 
 
-
-
 #### [100. 相同的树](https://leetcode-cn.com/problems/same-tree/)
 
 难度简单
@@ -1207,6 +1209,59 @@ var isSameTree = function(p, q) {
     return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
 };
 ```
+
+#### [107. 二叉树的层次遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
+
+难度简单231
+
+给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
+
+例如：
+给定二叉树 `[3,9,20,null,null,15,7]`,
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+
+```
+
+返回其自底向上的层次遍历为：
+
+```
+[
+  [15,7],
+  [9,20],
+  [3]
+]
+```
+
+###### js
+
+DFS
+
+```js
+var levelOrderBottom = function(root) {
+    if(!root || root.length === 0) {
+        return []
+    }
+    let res = []
+    let dfs = (curr,lev)  => {
+        if(curr) {
+            !res[lev] && (res[lev] = [])
+            res[lev].push(curr.val)
+            if(curr.left) dfs(curr.left,lev+1)
+            if(curr.right) dfs(curr.right,lev+1)
+        }
+    }
+    dfs(root,0)
+    return res.reverse()
+};
+```
+
+
 
 #### [110. 平衡二叉树](https://leetcode-cn.com/problems/balanced-binary-tree/)
 
