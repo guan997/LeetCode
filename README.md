@@ -1,5 +1,3 @@
-# LeetCode
-
 #### 关于LeetCode的JavaScript以及少部分Python解答
 
 #### 目录
@@ -37,9 +35,15 @@
 
 69.x 的平方根
 
+##### 动态规划
+
 70. 爬楼梯
 
-71. 删除排序链表中的重复元素
+746.使用最小花费爬楼梯
+
+
+
+83.删除排序链表中的重复元素
 
 88.删除排序链表中的重复元素
 
@@ -674,41 +678,28 @@ var strStr = function(haystack, needle) {
 };
 ```
 
-2、Sunday 匹配机制
+2   slice() 方法可从已有的数组中返回选定的元素。
+
+返回一个新的数组，包含从 start 到 end （不包括该元素）的 arrayObject 中的元素。
 
 ```js
-#超时
-const strStr = function(haystack, needle) {
-    if (needle === "") return 0;
-    if (haystack === "") return -1;
-    let inc = [];
-    // 计算偏移量
-    for (let i = 0; i < needle.length; i++) {
-        for (let j = 0; j <= i; j++) {
-            if (needle[j] !== needle[i - j]) {
-                inc[i] = j + 1;
-                break;
-            }
-            if (j === i && needle[j] === needle[i - j]) {
-                inc[i] = j + 1;
-            }
-        }
+var strStr = function(haystack, needle) {
+  if (needle === '') return 0
+  let i = 0,
+    j = 1
+  while (i < haystack.length) {
+    if (haystack.slice(i, j) === needle) {
+      return i
     }
-    let i = 0;
-    let l = needle.length
-    while (i < haystack.length) {
-        for (let j = 0; j < l; j++) {
-            if (needle[j] !== haystack[i + j]) {
-                i += inc[j];
-                break;
-            }
-            if (j === l - 1 && needle[j] === haystack[i + j]) {
-                return i;
-            }
-        }
+    if (j < haystack.length) {
+      j++
+    } else {
+      i++
+      j = i + 1
     }
-    return -1;
-};
+  }
+  return -1
+}
 ```
 
 #### [35. 搜索插入位置](https://leetcode-cn.com/problems/search-insert-position/)
@@ -945,88 +936,6 @@ module.exports = {
 }
 ```
 
-#### [70. 爬楼梯](https://leetcode-cn.com/problems/climbing-stairs/)
-
-难度简单
-
-假设你正在爬楼梯。需要 *n* 阶你才能到达楼顶。
-
-每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
-
-**注意：**给定 *n* 是一个正整数。
-
-**示例 1：**
-
-```
-输入： 2
-输出： 2
-解释： 有两种方法可以爬到楼顶。
-1.  1 阶 + 1 阶
-2.  2 阶
-```
-
-**示例 2：**
-
-```
-输入： 3
-输出： 3
-解释： 有三种方法可以爬到楼顶。
-1.  1 阶 + 1 阶 + 1 阶
-2.  1 阶 + 2 阶
-3.  2 阶 + 1 阶
-```
-
-###### js
-
-###### 求第i个斐波那契数
-
-- 维护3个变量 每次递归更新前两个子问题所需步数
-- 可知递推公式 == f(n) = f(n-2) + f(n-1),n>=1
-
-```js
-var climbStairs = function(n) {
-    var f1 = 2;
-    var f2 = 3;
-    var f3 = 0;
-    if(n <= 3){
-        return n;
-    }
-    while(n>3){
-        f3 = f2 + f1;
-        f1 = f2;
-        f2 = f3;
-        n--;
-    }
-    return f2;
-};
-
-```
-
-###### 动态优化
-
-爬第n阶楼梯的方法数量，等于 2 部分之和
-
-爬上 n-1阶楼梯的方法数量。因为再爬1阶就能到第n阶
-爬上 n-2 阶楼梯的方法数量，因为再爬2阶就能到第n阶
-
-```js
-var climbStairs = function(n) {
-    // 求第n步 所以索引到n
-    var dp = new Array(n+1);
-    if(n <= 3){
-        return n;
-    }
-    dp[1] = 1;
-    dp[2] = 2;
-    for(var i = 3;i<=n;i++){
-        dp[i] = dp[i-2] + dp[i-1];
-    }
-    return dp[n];
-};
-```
-
-
-
 #### [69. x 的平方根](https://leetcode-cn.com/problems/sqrtx/)
 
 难度简单
@@ -1075,9 +984,212 @@ var mySqrt = function(x) {
 };
 ```
 
+### 动态规划
 
+#### [70. 爬楼梯](https://leetcode-cn.com/problems/climbing-stairs/)
 
+难度简单
 
+假设你正在爬楼梯。需要 *n* 阶你才能到达楼顶。
+
+每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
+
+**注意：**给定 *n* 是一个正整数。
+
+**示例 1：**
+
+```
+输入： 2
+输出： 2
+解释： 有两种方法可以爬到楼顶。
+1.  1 阶 + 1 阶
+2.  2 阶
+```
+
+**示例 2：**
+
+```
+输入： 3
+输出： 3
+解释： 有三种方法可以爬到楼顶。
+1.  1 阶 + 1 阶 + 1 阶
+2.  1 阶 + 2 阶
+3.  2 阶 + 1 阶
+```
+
+###### js
+
+###### 求第i个斐波那契数
+
+- 3个变量 每次递归更新前两个子问题所需步数
+- 可知递推公式  f(n) = f(n-2) + f(n-1),n>=1
+
+```js
+var climbStairs = function(n) {
+    var f1 = 2;
+    var f2 = 3;
+    var f3 = 0;
+    if(n <= 3){
+        return n;
+    }
+    while(n>3){
+        f3 = f2 + f1;
+        f1 = f2;
+        f2 = f3;
+        n--;
+    }
+    return f2;
+};
+
+```
+
+###### 2.动态规划
+
+爬第n阶楼梯的方法数量，等于 2 部分之和
+
+爬上 n-1阶楼梯的方法数量。因为再爬1阶就能到第n阶
+爬上 n-2 阶楼梯的方法数量，因为再爬2阶就能到第n阶
+
+```js
+var climbStairs = function(n) {
+    // 求第n步 所以索引到n
+    var dp = new Array(n+1);
+    if(n <= 3){
+        return n;
+    }
+    dp[1] = 1;
+    dp[2] = 2;
+    for(var i = 3;i<=n;i++){
+        dp[i] = dp[i-2] + dp[i-1];
+    }
+    return dp[n];
+};
+```
+
+#### [746. 使用最小花费爬楼梯](https://leetcode-cn.com/problems/min-cost-climbing-stairs/)
+
+难度简单
+
+数组的每个索引做为一个阶梯，第 `i`个阶梯对应着一个非负数的体力花费值 `cost[i]`(索引从0开始)。
+
+每当你爬上一个阶梯你都要花费对应的体力花费值，然后你可以选择继续爬一个阶梯或者爬两个阶梯。
+
+您需要找到达到楼层顶部的最低花费。在开始时，你可以选择从索引为 0 或 1 的元素作为初始阶梯。
+
+**示例 1:**
+
+```
+输入: cost = [10, 15, 20]
+输出: 15
+解释: 最低花费是从cost[1]开始，然后走两步即可到阶梯顶，一共花费15。
+
+```
+
+** 示例 2:**
+
+```
+输入: cost = [1, 100, 1, 1, 1, 100, 1, 1, 100, 1]
+输出: 6
+解释: 最低花费方式是从cost[0]开始，逐个经过那些1，跳过cost[3]，一共花费6。
+```
+
+###### 1.动态规划-分解
+
+动态转移方程为
+
+dp[i] = Math.min(dp[i-2] , dp[i-1]) + cost[i]
+
+如果最后一步正好是在最后一个台阶上时，最后一个台阶的花费值不算在内
+动态转移方程为
+i == n && dp[i] = Math.min(dp[i-2] , dp[i-1])
+
+```js
+var minCostClimbingStairs = function(cost) {
+    let n = cost.length;
+    let dp = new Array(n+1).fill(0);
+    dp[0] = cost[0]; 
+    dp[1] = cost[1]; 
+    for(let i = 2;i <= n;i++){
+        if(i == n){
+            dp[i] = Math.min(dp[i-2] , dp[i-1]);
+        }else{
+            dp[i] = Math.min(dp[i-2] , dp[i-1]) + cost[i];
+        }
+    }
+    return dp[n];
+};
+```
+
+###### 2.动态规划 - 合并
+
+最后一阶台阶不算的情况在内，就直接在最后加一个0(表示包含在这种特殊情况在内，加0就等于花费值为0)
+动态转移方程:
+dp[i] = Math.min(dp[i-2] , dp[i-1]) + cost[i]
+
+执行用时 :77 ms, 在所有 JavaScript 提交中击败了51.72%的用户
+
+内存消耗 :36 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+```js
+var minCostClimbingStairs = function(cost) {
+    cost.push(0);
+    let n = cost.length;
+    let dp = [];
+    dp[0] = cost[0]; 
+    dp[1] = cost[1]; 
+    for(let i = 2;i < n;i++){
+        dp[i] = Math.min(dp[i-2] , dp[i-1]) + cost[i];
+    }
+    return dp[n-1];
+};
+```
+
+###### 3.动态规划 - 比较
+
+最后一阶的台阶的花费值是否被算在内
+
+统一加最后一阶台阶，只在最后取结果的时候
+
+比较判断去掉最后一个台阶的走法情况是否花费更少
+
+执行用时 :68 ms, 在所有 JavaScript 提交中击败了85.25%的用户
+
+内存消耗 :35.5 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+```js
+var minCostClimbingStairs = function(cost) {
+    let n = cost.length;
+    let dp = [];
+    dp[0] = cost[0]; 
+    dp[1] = cost[1]; 
+    for(let i = 2;i < n;i++){
+        dp[i] = Math.min(dp[i-2] , dp[i-1]) + cost[i];
+    }
+    return dp[n-1] > dp[n-2] ? dp[n-2] : dp[n-1];
+};
+```
+
+###### 4.去维 - 变量
+
+时间复杂度最优的解法
+
+执行用时 :64 ms, 在所有 JavaScript 提交中击败了93.94%的用户
+
+内存消耗 :34.7 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+```js
+var minCostClimbingStairs = function(cost) {
+    let n = cost.length;
+    let pre = cost[0]; 
+    let next = cost[1]; 
+    for(let i = 2;i < n;i++){
+        let tmp = next;
+        next = Math.min(pre,next)+cost[i];
+        pre = tmp;
+    }
+    return Math.min(pre,next);
+};
+```
 
 #### [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/)
 
@@ -1996,6 +2108,8 @@ def moveZeroes(self, nums: List[int]) -> None:
         return nums
 ```
 
+
+
 #### [36. 有效的数独](https://leetcode-cn.com/problems/valid-sudoku/)
 
 难度中等
@@ -2244,7 +2358,7 @@ def rotate(self, matrix: List[List[int]]) -> None:
     不过这种写法的空间复杂度其实是O(n);
     """
     matrix[:] = map(list, zip(*matrix[::-1]))
-#作者：fe-lcifer
-#链接：https://leetcode-cn.com/problems/rotate-image/solution/pythonjavascript-liang-ci-fan-zhuan-48-xuan-zhuan-/
+//#作者：fe-lcifer
+//#链接：https://leetcode-cn.com/problems/rotate-image/solution/pythonjavascript-liang-ci-fan-zhuan-48-xuan-zhuan-/
 ```
 
