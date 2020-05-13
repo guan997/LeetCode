@@ -1234,6 +1234,66 @@ var deleteDuplicates = function(head) {
 };
 ```
 
+#### [198. 打家劫舍](https://leetcode-cn.com/problems/house-robber/)
+
+难度简单
+
+你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，**如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警**。
+
+给定一个代表每个房屋存放金额的非负整数数组，计算你**在不触动警报装置的情况下，**能够偷窃到的最高金额。
+
+**示例 1:**
+
+```
+输入: [1,2,3,1]
+输出: 4
+解释: 偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。
+     偷窃到的最高金额 = 1 + 3 = 4 。
+```
+
+**示例 2:**
+
+```
+输入: [2,7,9,3,1]
+输出: 12
+解释: 偷窃 1 号房屋 (金额 = 2), 偷窃 3 号房屋 (金额 = 9)，接着偷窃 5 号房屋 (金额 = 1)。
+     偷窃到的最高金额 = 2 + 9 + 1 = 12 。
+```
+
+###### 动态规划-去维
+
+- dp[n] = dp[n-1] + nums[n]
+- 由此可想到斐波那契数列，从而想到动态规划解决
+
+dp[i]的值，只与dp[i-1]和dp[i-2]的值有关，对应不偷当前i个房子和偷当前第i个房子
+所以只需要维护两个变量即可
+不到更新两个变量的值来保存前n-1个和前n-2个的值即可
+到了第n个时，n-1就变为n个的值,n-2就变为n-1个的值，依次递推，最后一个即为所求
+在此我们用
+preMax：n-2
+currMax：n-1
+因此当前i：n
+并且更新currMax为当前n
+preMax更新为上一个currMax
+重复即可
+
+```js
+var rob = function(nums) {
+    var n = nums.length;
+    if(n == 0){
+        return 0;
+    }
+    var prevMax = 0;
+    var currMax = 0;
+    for(var i = 0;i < n;i++){
+        var tmp = currMax;
+        currMax = Math.max(currMax,prevMax+nums[i]);
+        prevMax = tmp;
+    }
+    return currMax;
+};
+```
+
 
 
 #### [88. 合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)
