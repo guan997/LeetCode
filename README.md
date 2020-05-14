@@ -1,45 +1,43 @@
-#### 关于LeetCode的JavaScript以及少部分Python解答
+### 关于LeetCode的JavaScript以及少部分Python解答
 
-#### 目录
+### 目录
 
-1. 两数之和
+- 1. 两数之和
 
+- 8. 字符串转换整数 (atoi)
 
-8. 字符串转换整数 (atoi)
+- 13罗马数字转整数
 
-13罗马数字转整数
+- 14. 最长公共前缀
 
-14. 最长公共前缀
+- 20. 有效的括号
 
+- 27. 移除元素
 
-20. 有效的括号
+- 28实现strStr()
 
+- 35. 搜索插入位置
 
-27. 移除元素
+- 38. 外观数列
 
-28实现strStr()
+- 53. 最大子序和
 
-35. 搜索插入位置
+- 58. 最后一个单词的长度
 
+- 67. 二进制求和
 
-38. 外观数列
-
-
-53. 最大子序和
-
-
-58. 最后一个单词的长度
+- 69.x 的平方根
 
 
-67. 二进制求和
-
-69.x 的平方根
-
-##### 动态规划
+动态规划
 
 70. 爬楼梯
 
 746.使用最小花费爬楼梯
+
+121. 买卖股票的最佳时机
+
+198. 打家劫舍
 
 
 
@@ -55,12 +53,6 @@
 110. 平衡二叉树
 
  237.删除链表中的节点
-
-
-
-
-
-
 
 
 
@@ -1191,47 +1183,50 @@ var minCostClimbingStairs = function(cost) {
 };
 ```
 
-#### [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/)
+#### [121. 买卖股票的最佳时机](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/)
 
 难度简单
 
-给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
+给定一个数组，它的第 *i* 个元素是一支给定股票第 *i* 天的价格。
+
+如果你最多只允许完成一笔交易（即买入和卖出一支股票一次），设计一个算法来计算你所能获取的最大利润。
+
+注意：你不能在买入股票前卖出股票。
 
 **示例 1:**
 
 ```
-输入: 1->1->2
-输出: 1->2
+输入: [7,1,5,3,6,4]
+输出: 5
+解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。
 
 ```
 
 **示例 2:**
 
 ```
-输入: 1->1->2->3->3
-输出: 1->2->3
+输入: [7,6,4,3,1]
+输出: 0
+解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
 ```
 
 ###### js
 
-链表
-指定 cur 指针指向头部 head
-当 cur 和 cur.next 的存在为循环结束条件，当二者有一个不存在时说明链表没有去重复的必要了
-当 cur.val 和 cur.next.val 相等时说明需要去重，则将 cur 的下一个指针指向下一个的下一个，这样就能达到去重复的效果
-如果不相等则 cur 移动到下一个位置继续循环
+动态规划dp法
+dp[i] = max(0, dp[i−1] + diff[i])
+max = max(max, dp[i])
 
 ```js
-var deleteDuplicates = function(head) {
-    var cur = head;
-    while(cur && cur.next) {
-        if(cur.val == cur.next.val) {
-            cur.next = cur.next.next;
-        } else {
-            cur = cur.next;
-        }
+var maxProfit = function(prices) {
+    let last = 0
+    let max = 0
+    for (let i = 0; i < prices.length-1; i++) {
+        last = Math.max(0, last + prices[i+1]-prices[i])
+        max = Math.max(max,last)
     }
-    return head;
-};
+    return max
+}
 ```
 
 #### [198. 打家劫舍](https://leetcode-cn.com/problems/house-robber/)
@@ -1291,6 +1286,89 @@ var rob = function(nums) {
         prevMax = tmp;
     }
     return currMax;
+};
+```
+
+#### [122. 买卖股票的最佳时机 II](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/)
+
+难度简单698收藏分享切换为英文关注反馈
+
+给定一个数组，它的第 *i* 个元素是一支给定股票第 *i* 天的价格。
+
+设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。
+
+**注意：**你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
+
+**示例 1:**
+
+```
+输入: [7,1,5,3,6,4]
+输出: 7
+解释: 在第 2 天（股票价格 = 1）的时候买入，在第 3 天（股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5-1 = 4 。
+     随后，在第 4 天（股票价格 = 3）的时候买入，在第 5 天（股票价格 = 6）的时候卖出, 这笔交易所能获得利润 = 6-3 = 3 。
+
+```
+
+**示例 2:**
+
+```
+输入: [1,2,3,4,5]
+输出: 4
+解释: 在第 1 天（股票价格 = 1）的时候买入，在第 5 天 （股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5-1 = 4 。
+     注意你不能在第 1 天和第 2 天接连购买股票，之后再将它们卖出。
+     因为这样属于同时参与了多笔交易，你必须在再次购买前出售掉之前的股票。
+```
+
+**示例 3:**
+
+```
+输入: [7,6,4,3,1]
+输出: 0
+解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
+```
+
+
+
+#### [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/)
+
+难度简单
+
+给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
+
+**示例 1:**
+
+```
+输入: 1->1->2
+输出: 1->2
+
+```
+
+**示例 2:**
+
+```
+输入: 1->1->2->3->3
+输出: 1->2->3
+```
+
+###### js
+
+链表
+指定 cur 指针指向头部 head
+当 cur 和 cur.next 的存在为循环结束条件，当二者有一个不存在时说明链表没有去重复的必要了
+当 cur.val 和 cur.next.val 相等时说明需要去重，则将 cur 的下一个指针指向下一个的下一个，这样就能达到去重复的效果
+如果不相等则 cur 移动到下一个位置继续循环
+
+```js
+var deleteDuplicates = function(head) {
+    var cur = head;
+    while(cur && cur.next) {
+        if(cur.val == cur.next.val) {
+            cur.next = cur.next.next;
+        } else {
+            cur = cur.next;
+        }
+    }
+    return head;
 };
 ```
 
@@ -1506,54 +1584,6 @@ var isBalanced = function(root) {
         return Math.max(getHeight(root.left), getHeight(root.right)) + 1
     }
 };
-```
-
-
-
-#### [121. 买卖股票的最佳时机](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/)
-
-难度简单
-
-给定一个数组，它的第 *i* 个元素是一支给定股票第 *i* 天的价格。
-
-如果你最多只允许完成一笔交易（即买入和卖出一支股票一次），设计一个算法来计算你所能获取的最大利润。
-
-注意：你不能在买入股票前卖出股票。
-
-**示例 1:**
-
-```
-输入: [7,1,5,3,6,4]
-输出: 5
-解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
-     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。
-
-```
-
-**示例 2:**
-
-```
-输入: [7,6,4,3,1]
-输出: 0
-解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
-```
-
-###### js
-
-动态规划dp法
-dp[i] = max(0, dp[i−1] + diff[i])
-max = max(max, dp[i])
-
-```js
-var maxProfit = function(prices) {
-    let last = 0
-    let max = 0
-    for (let i = 0; i < prices.length-1; i++) {
-        last = Math.max(0, last + prices[i+1]-prices[i])
-        max = Math.max(max,last)
-    }
-    return max
-}
 ```
 
 #### [136. 只出现一次的数字](https://leetcode-cn.com/problems/single-number/)
