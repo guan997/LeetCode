@@ -37,7 +37,7 @@
 
 121. 买卖股票的最佳时机
 
-198. 打家劫舍
+122. 打家劫舍
 
 
 
@@ -46,6 +46,7 @@
 88.删除排序链表中的重复元素
 
 100. 相同的树
+101. 对称二叉树
 
 
 107.二叉树的层次遍历 II
@@ -1306,7 +1307,6 @@ var rob = function(nums) {
 输出: 7
 解释: 在第 2 天（股票价格 = 1）的时候买入，在第 3 天（股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5-1 = 4 。
      随后，在第 4 天（股票价格 = 3）的时候买入，在第 5 天（股票价格 = 6）的时候卖出, 这笔交易所能获得利润 = 6-3 = 3 。
-
 ```
 
 **示例 2:**
@@ -1325,6 +1325,20 @@ var rob = function(nums) {
 输入: [7,6,4,3,1]
 输出: 0
 解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
+```
+
+###### js
+
+```js
+var maxProfit = function(prices) {
+    var sum = 0;
+    for (var i = 1;i <prices.length; i++){
+        if (prices[i] - prices[i - 1] > 0) {
+            sum += prices[i] - prices[i - 1];
+        }
+    }
+    return sum;
+};
 ```
 
 
@@ -1459,6 +1473,52 @@ var isSameTree = function(p, q) {
     return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
 };
 ```
+
+#### [101. 对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
+
+难度简单
+
+给定一个二叉树，检查它是否是镜像对称的。
+
+例如，二叉树 `[1,2,2,3,4,4,3]` 是对称的。
+
+```
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+```
+
+但是下面这个 `[1,2,2,null,3,null,3]` 则不是镜像对称的:
+
+```
+    1
+   / \
+  2   2
+   \   \
+   3    3
+```
+
+```js
+var isSymmetric = function(root) {
+    return root ? checkNode(root.left, root.right) : true;
+};
+
+function checkNode(left, right) {
+  while (left || right) {
+    // 在这里打印日志观察访问顺序和镜像对应位置的值
+    // console.log(left && left.val, right && right.val);
+    if (!left || !right) return false;
+    if (!checkNode(left.right, right.left)) return false;
+    if (left.val !== right.val) return false;
+    left = left.left;
+    right = right.right;
+  }
+  return true;
+```
+
+
 
 #### [107. 二叉树的层次遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
 
