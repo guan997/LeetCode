@@ -2258,6 +2258,92 @@ def moveZeroes(self, nums: List[int]) -> None:
         return nums
 ```
 
+#### [371. 两整数之和](https://leetcode-cn.com/problems/sum-of-two-integers/)
+
+难度简单246收藏分享切换为英文关注反馈
+
+**不使用**运算符 `+` 和 `-` ，计算两整数 `a` 、`b` 之和。
+
+**示例 1:**
+
+```
+输入: a = 1, b = 2
+输出: 3
+
+```
+
+**示例 2:**
+
+```
+输入: a = -2, b = 3
+输出: 1
+```
+
+加法可通过&运算和^运算实现：
+
+两个二进制数相加，^运算的结果不考虑进位时的结果
+两个二进制数相加，&运算的结果是对应为是否有进位，如果结果出现1的话，则左移（<<）1位后和^运算的结果继续做加法，直到&运算的结果为0，此时&运算的结果就是两个数的和
+
+```js
+const getSum = (a, b) => {
+    return add(a, b)
+}
+const add = (a, b) => {
+    return b === 0 ? a : add(a ^ b, (a & b) << 1);
+}
+```
+
+2
+
+```js
+var getSum = function(a, b) {
+    let tmp = a ^ b
+    let res =(a & b) << 1
+    return res + tmp
+};
+```
+
+#### [2. 两数相加](https://leetcode-cn.com/problems/add-two-numbers/)
+
+难度中等4330收藏分享切换为英文关注反馈
+
+给出两个 **非空** 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 **逆序** 的方式存储的，并且它们的每个节点只能存储 **一位** 数字。
+
+如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。
+
+您可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+
+**示例：**
+
+```
+输入：(2 -> 4 -> 3) + (5 -> 6 -> 4)
+输出：7 -> 0 -> 8
+原因：342 + 465 = 807
+```
+
+```js
+var addTwoNumbers = function(l1, l2) {
+    let node = new ListNode('head');
+    let temp = node;//哑结点
+    let add = 0;//是否进一
+    let sum = 0;//新链表当前未取余的值 = 链表1值 + 链表2值 + add;
+
+    //遍历，直到最长的都为空
+    while(l1 || l2){
+        sum = (l1 ? l1.val : 0) + (l2 ? l2.val : 0) + add;
+        temp.next = new ListNode(sum % 10);//取余则为新链表的值
+        temp = temp.next;
+        add = sum >= 10 ? 1 : 0;
+        l1 && (l1 = l1.next);
+        l2 && (l2 = l2.next);
+    }
+    add && (temp.next = new ListNode(add));
+    return node.next;
+};
+```
+
+
+
 
 
 #### [36. 有效的数独](https://leetcode-cn.com/problems/valid-sudoku/)
