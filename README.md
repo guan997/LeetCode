@@ -4,6 +4,8 @@
 
 - 1. 两数之和
 
+    4. 寻找两个正序数组的中位数
+
 - 8. 字符串转换整数 (atoi)
 
 - 13罗马数字转整数
@@ -131,6 +133,96 @@ for i,num in enumerate(nums):
     if j is not None and i!=j:
         return [i,j]
 ```
+
+给定两个大小为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。
+
+请你找出这两个正序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
+
+你可以假设 nums1 和 nums2 不会同时为空。
+
+ [4. 寻找两个正序数组的中位数](https://leetcode-cn.com/problems/median-of-two-sorted-arrays/)
+
+难度困难
+
+给定两个大小为 m 和 n 的正序（从小到大）数组 `nums1` 和 `nums2`。
+
+请你找出这两个正序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
+
+你可以假设 `nums1` 和 `nums2` 不会同时为空。
+
+示例 1:
+
+nums1 = [1, 3]
+nums2 = [2]
+
+则中位数是 2.0
+示例 2:
+
+nums1 = [1, 2]
+nums2 = [3, 4]
+
+则中位数是 (2 + 3)/2 = 2.5
+
+```js
+var findMedianSortedArrays = function (nums1, nums2) {
+    let nums = []
+    let i =0,j=0;
+    let total = nums1.length+nums2.length
+    let mid = Math.floor(total/2) + 1
+    while(true) {
+        if(nums.length === mid) {
+            if( total%2 === 1) {
+                return nums[mid-1]
+            }else{
+                return (nums[mid-1]+nums[mid-2])/2
+            }
+        }
+        if(i < nums1.length && j === nums2.length) {
+            nums.push(nums1[i])
+            i++;
+            continue
+        }
+        if(i === nums1.length && j < nums2.length) {
+            nums.push(nums2[j])
+            j++;
+            continue
+        }
+        if(nums1[i] < nums2[j]) {
+            nums.push(nums1[i])
+            i++;
+            continue
+        }else{
+            nums.push(nums2[j])
+            j++;
+            continue
+        }
+    }
+};
+```
+
+当某一个数组为空另一个只有一个元素是为特殊情况，直接领出来返回即可
+合并两个数组并排序
+如果长度为奇数就直接返回中间的一个元素
+如果长度为偶数则是中间两位相加/2
+
+```js
+var findMedianSortedArrays = function(nums1, nums2) {
+    let result = []
+    result = nums1.concat(nums2)
+    if(result.length == 1){
+        return result[0]
+    }
+    result.sort((a,b) => a-b)
+    if( result.length%2 != 0){
+        return result[Math.floor(result.length/2)]
+    }
+    else{
+        return (result[result.length/2]+result[result.length/2-1])/2
+    }
+}
+```
+
+
 
 #### [8. 字符串转换整数 (atoi)](https://leetcode-cn.com/problems/string-to-integer-atoi/)
 
