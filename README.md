@@ -2,34 +2,39 @@
 
 ### 目录
 
-- 1. 两数之和
+1. 两数之和 
 
-    4. 寻找两个正序数组的中位数
+4.寻找两个正序数组的中位数
 
-- 8. 字符串转换整数 (atoi)
+8. 字符串转换整数 (atoi)
 
-- 13罗马数字转整数
+13罗马数字转整数
 
-- 14. 最长公共前缀
+14. 最长公共前缀
 
-- 20. 有效的括号
 
-- 27. 移除元素
+20. 有效的括号
 
-- 28实现strStr()
 
-- 35. 搜索插入位置
+27. 移除元素
 
-- 38. 外观数列
+28实现strStr()
 
-- 53. 最大子序和
+35. 搜索插入位置
 
-- 58. 最后一个单词的长度
 
-- 67. 二进制求和
+38. 外观数列
 
-- 69.x 的平方根
 
+53. 最大子序和
+
+
+58. 最后一个单词的长度
+
+
+67. 二进制求和
+
+69.x 的平方根
 
 动态规划
 
@@ -71,24 +76,23 @@
 
 ```
 给定 nums = [2, 7, 11, 15], target = 9
-
 因为 nums[0] + nums[1] = 2 + 7 = 9
 所以返回 [0, 1]
 ```
 
-JS：
+###### 哈希映射
 
 初始化一个 map = new Map()
 从第一个元素开始遍历 nums
 获取目标值与 nums[i] 的差值，即 k = target - nums[i] ，判断差值在 map 中是否存在
-不存在（ map.has(k) 为 false ） ，则将 nums[i] 加入到 map 中（key为nums[i], value为 i ，方便查找map中是否存在某值，并可以通过 get 方法直接拿到下标）
+
+不存在（ map.has(k) 为 false ） ，则将当前的 nums[i] 加入到 map 中（key为nums[i], value为 i ，方便查找map中是否存在某值，并可以通过 get 方法直接拿到下标）
 存在（ map.has(k) ），返回 [map.get(k), i] ，求解结束
 遍历结束，则 nums 中没有符合条件的两个数，返回 []
 时间复杂度：O(n)
 
-```py
+```js
  /**
-
 - @param {number[]} nums
 - @param {number} target
 - @return {number[]}
@@ -99,13 +103,35 @@ JS：
 	let k=target-nums[i]
 	if(map.has(k)){
   		 return [map.get(k),i];
-   }
+      }
 	 map.set(nums[i],i)
-}
- return [];
-
+   }
+  return [];
 };
 ```
+
+###### indexOf()
+
+index：目标值与 nums[i] 的差值在nums中的下标
+
+遍历数组，利用indexOf()查找有没有目标值与 nums[i] 的差值在nums中是否存在；
+
+如果存在，判断index是否大于-1以及index是不是不等于i
+
+```js
+var twoSum = function(nums, target) {
+    for (var i=0;i<nums.length;i++) {
+        var index = nums.indexOf(target-nums[i])
+        if(index > -1 && index !== i) {
+            return [i, index]
+        }
+    }
+};
+```
+
+执行用时 :192 ms, 在所有 JavaScript 提交中击败了19.73%的用户
+
+内存消耗 :32.7 MB, 在所有 JavaScript 提交中击败了100.00%的用户
 
 PY
 
@@ -220,6 +246,37 @@ var findMedianSortedArrays = function(nums1, nums2) {
         return (result[result.length/2]+result[result.length/2-1])/2
     }
 }
+```
+
+```js
+var getKth = function(num1, start1, end1, num2, start2, end2, k) {
+  const len1 = end1 - start1 + 1;
+  const len2 = end2 - start2 + 1;
+  // 保证 len1 比 len2 小。 那么最后如果存在空数组一定是落在 num1 上
+  if (len1 > len2) return getKth(num2, start2, end2, num1, start1, end1, k);
+  
+  if (len1 === 0) return num2[start2 + k - 1];
+  
+  if (k === 1) return Math.min(num1[start1], num2[start2]);
+  
+  // 如果 len1 比 k 的一半还小，那么直接取 num1 的最后一个元素进行比较
+  const i = start1 + Math.min(len1, Math.floor(k / 2)) - 1;
+  // 如果 len2 比 k 的一半还小，那么直接取 num2 的最后一个元素进行比较
+  const j = start2 + Math.min(len2, Math.floor(k / 2)) - 1;
+  // 如果 num1[i] 小，那么前半部分可以直接丢弃
+  if (num1[i] < num2[j]) return getKth(num1, i + 1, end1, num2, start2, end2, k - (i - start1 + 1));
+  return getKth(num1, start1, end1, num2, j + 1, end2, k - (j - start2 + 1));
+}
+var findMedianSortedArrays = function(nums1, nums2) {
+  const m = nums1.length;
+  const n = nums2.length;
+  const left = Math.floor((m + n + 1) / 2);
+  // 注意边界，这样可以即处理奇数的情况，又处理偶数的情况
+  const right = Math.floor((m + n + 2) / 2);
+  // 如果是奇数，那么 left === right, 如果为偶数，那么right = left + 1
+  // 奇数的情况，相当于求了两遍的中位数。
+  return (getKth(nums1, 0, m - 1, nums2, 0, n - 1, left) + getKth(nums1, 0, m - 1, nums2, 0, n - 1, right)) * 0.5;
+};
 ```
 
 
@@ -611,15 +668,9 @@ var isValid = function (s) {
 输出：1->1->2->3->4->4
 ```
 
-```
-def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
-    if l1 and l2:
-        if l1.val > l2.val: l1, l2 = l2, l1
-        l1.next = self.mergeTwoLists(l1.next, l2)
-    return l1 or l2
-```
+###### Python 
 
-备注： 在 Python 中，and 和 or 都有提前截至运算的功能。
+and 和 or 有提前截至运算的功能。
 
 and：如果 and 前面的表达式已经为 False，那么 and 之后的表达式将被 跳过，返回左表达式结果
 or：如果 or 前面的表达式已经为 True，那么 or 之后的表达式将被跳过，直接返回左表达式的结果
@@ -630,6 +681,41 @@ or：如果 or 前面的表达式已经为 True，那么 or 之后的表达式�
 对 l1 和 l2 重新赋值，使得 l1 指向比较小的那个节点对象
 修改 l1 的 next 属性为递归函数返回值
 返回 l1，注意：如果 l1 和 l2 同时为 None，此时递归停止返回 None
+
+```js
+def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+    if l1 and l2:
+        if l1.val > l2.val: l1, l2 = l2, l1
+        l1.next = self.mergeTwoLists(l1.next, l2)
+    return l1 or l2
+```
+
+###### js
+
+当 `l1` 为空或 `l2` 为空时结束
+
+如果 `l1` 的 `val` 值更小，则将 `l1.next` 与排序好的链表头相接，`l2` 同理
+
+```js
+var mergeTwoLists = function(l1, l2) {
+    if(l1 === null){
+        return l2;
+    }
+    if(l2 === null){
+        return l1;
+    }
+    if(l1.val < l2.val){
+        l1.next = mergeTwoLists(l1.next, l2);
+        return l1;
+    }else{
+        l2.next = mergeTwoLists(l1, l2.next);
+        return l2;
+    }
+};
+
+```
+
+
 
 #### [26. 删除排序数组中的重复项](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/)
 
@@ -2689,4 +2775,6 @@ def rotate(self, matrix: List[List[int]]) -> None:
 //#作者：fe-lcifer
 //#链接：https://leetcode-cn.com/problems/rotate-image/solution/pythonjavascript-liang-ci-fan-zhuan-48-xuan-zhuan-/
 ```
+
+
 
