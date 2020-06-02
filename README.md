@@ -4,6 +4,8 @@
 
 01.两数之和 
 
+15. 三数之和
+
 04.寻找两个正序数组的中位数
 
 06.Z 字形变换
@@ -36,7 +38,7 @@
 
 69.x 的平方根
 
-动态规划
+##### 动态规划
 
 70. 爬楼梯
 
@@ -62,7 +64,7 @@
 
 ##### 递归
 
-
+面试题64. 求1+2+…+n
 
 #### [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
 
@@ -92,12 +94,7 @@
 时间复杂度：O(n)
 
 ```js
- /**
-- @param {number[]} nums
-- @param {number} target
-- @return {number[]}
-  */
-  var twoSum = function(nums, target) {
+var twoSum = function(nums, target) {
   let map=new Map()
   for(let i=0;i<nums.length;i++){
 	let k=target-nums[i]
@@ -164,7 +161,63 @@ for i,num in enumerate(nums):
 
 请你找出这两个正序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
 
-你可以假设 nums1 和 nums2 不会同时为空。
+可以假设 nums1 和 nums2 不会同时为空。
+
+#### [15. 三数之和](https://leetcode-cn.com/problems/3sum/)
+
+难度中等2155收藏分享切换为英文关注反馈
+
+给你一个包含 *n* 个整数的数组 `nums`，判断 `nums` 中是否存在三个元素 *a，b，c ，*使得 *a + b + c =* 0 ？请你找出所有满足条件且不重复的三元组。
+
+**注意：**答案中不可以包含重复的三元组。
+
+**示例：**
+
+```
+给定数组 nums = [-1, 0, 1, 2, -1, -4]，
+
+满足要求的三元组集合为：
+[
+  [-1, 0, 1],
+  [-1, -1, 2]
+]
+```
+
+数组遍历
+首先对数组进行排序，排序后固定一个数 nums[i]，再使用左右指针指向 nums[i]后面的两端，数字分别为 nums[L] 和 nums[R]，计算三个数的和 sum 判断是否满足为 0，满足则添加进结果集
+如果 nums[i]大于 0，则三数之和必然无法等于 0，结束循环
+如果 nums[i]== nums[i−1]，则说明该数字重复，会导致结果重复，所以应该跳过
+当 sum == 0时，nums[L]== nums[L+1] 则会导致结果重复，应该跳过，L++
+当 sum == 0时，nums[R] == nums[R-1]则会导致结果重复，应该跳过，R--
+时间复杂度：O(n^2)，n 为数组长度
+
+```js
+var threeSum = function(nums) {
+    let ans = [];
+    const len = nums.length;
+    if(nums == null || len < 3) return ans;
+    nums.sort((a, b) => a - b); // 排序
+    for (let i = 0; i < len ; i++) {
+        if(nums[i] > 0) break; // 如果当前数字大于0，则三数之和一定大于0，所以结束循环
+        if(i > 0 && nums[i] == nums[i-1]) continue; // 去重
+        let L = i+1;
+        let R = len-1;
+        while(L < R){
+            const sum = nums[i] + nums[L] + nums[R];
+            if(sum == 0){
+                ans.push([nums[i],nums[L],nums[R]]);
+                while (L<R && nums[L] == nums[L+1]) L++; // 去重
+                while (L<R && nums[R] == nums[R-1]) R--; // 去重
+                L++;
+                R--;
+            }
+            else if (sum < 0) L++;
+            else if (sum > 0) R--;
+        }
+    }        
+    return ans;
+};
+```
 
  [4. 寻找两个正序数组的中位数](https://leetcode-cn.com/problems/median-of-two-sorted-arrays/)
 
@@ -650,6 +703,8 @@ class Solution:
                 s = s[:-1]
         return s
 ```
+
+
 
 #### [20. 有效的括号](https://leetcode-cn.com/problems/valid-parentheses/)
 
@@ -1241,6 +1296,28 @@ var mySqrt = function(x) {
 ```
 
 ### 动态规划
+
+#### [32. 最长有效括号](https://leetcode-cn.com/problems/longest-valid-parentheses/)
+
+难度困难666收藏分享切换为英文关注反馈
+
+给定一个只包含 `'('` 和 `')'` 的字符串，找出最长的包含有效括号的子串的长度。
+
+**示例 1:**
+
+```
+输入: "(()"
+输出: 2
+解释: 最长有效括号子串为 "()"
+```
+
+**示例 2:**
+
+```
+输入: ")()())"
+输出: 4
+解释: 最长有效括号子串为 "()()"
+```
 
 #### [70. 爬楼梯](https://leetcode-cn.com/problems/climbing-stairs/)
 
@@ -2568,7 +2645,7 @@ var getSum = function(a, b) {
 
 #### [2. 两数相加](https://leetcode-cn.com/problems/add-two-numbers/)
 
-难度中等4330收藏分享切换为英文关注反馈
+难度中等
 
 给出两个 **非空** 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 **逆序** 的方式存储的，并且它们的每个节点只能存储 **一位** 数字。
 
@@ -2631,7 +2708,11 @@ var addTwoNumbers = function(l1, l2) {
 
 ###### 递归 和 &&
 
-&& 特性：如果左边为 false，不执行右边； 左边为true继续执行右边。
+&& 特性：
+
+对于 A && B 这个表达式，如果 A 表达式返回 False ，那么 A && B 已经确定为 False ，此时不会去执行表达式 B。同理，对于逻辑运算符 ||， 对于 A || B 这个表达式，如果 A 表达式返回 True ，那么 A || B 已经确定为 True ，此时不会去执行表达式 B
+
+如果左边表达式为 false，不执行右边； 左边为true继续执行右边。
 
 传入 n
 return n && n + (n-1) => n + (n-1)
