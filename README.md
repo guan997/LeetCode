@@ -60,6 +60,8 @@
 
  237.删除链表中的节点
 
+##### 递归
+
 
 
 #### [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
@@ -347,7 +349,9 @@ var convert = function(s, numRows) {
 
     for(const c of s) {
         rows[curRow] += c;
+        //移动到最上面的行或向下移动到最下面的行
         if(curRow == 0 || curRow == numRows - 1)
+            //方向发生改变
             goingDown = !goingDown;
         curRow += goingDown ? 1 : -1;
     }
@@ -2601,7 +2605,45 @@ var addTwoNumbers = function(l1, l2) {
 };
 ```
 
+#### [面试题64. 求1+2+…+n](https://leetcode-cn.com/problems/qiu-12n-lcof/)
 
+难度中等
+
+求 `1+2+...+n` ，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。
+
+**示例 1：**
+
+```
+输入: n = 3
+输出: 6
+```
+
+**示例 2：**
+
+```
+输入: n = 9
+输出: 45
+```
+
+**限制：**
+
+- `1 <= n <= 10000`
+
+###### 递归 和 &&
+
+&& 特性：如果左边为 false，不执行右边； 左边为true继续执行右边。
+
+传入 n
+return n && n + (n-1) => n + (n-1)
+return 1 && n + (n-1) + ... + 1 => n + (n-1) + ... + 1
+return 0 && 不执行
+最后得到的结果： n + (n-1) + ... + 1
+
+```js
+var sumNums = function(n) {
+    return n && (n + sumNums(n - 1));
+};
+```
 
 
 
