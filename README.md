@@ -66,10 +66,6 @@
 
 11. 盛最多水的容器
 
-##### 递归
-
-面试题64. 求1+2+…+n
-
 #### [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
 
 难度简单
@@ -562,8 +558,6 @@ var maxArea = function(height) {
 };
 ```
 
-
-
 #### [13. 罗马数字转整数](https://leetcode-cn.com/problems/roman-to-integer/)
 
 难度简单865收藏分享切换为英文关注反馈
@@ -961,24 +955,16 @@ def removeDuplicates(self, nums: List[int]) -> int:
 
 ```
 给定 nums = [3,2,2,3], val = 3,
-
 函数应该返回新的长度 2, 并且 nums 中的前两个元素均为 2。
-
 你不需要考虑数组中超出新长度后面的元素。
-
 ```
 
 **示例 2:**
 
 ```
 给定 nums = [0,1,2,2,3,0,4,2], val = 2,
-
 函数应该返回新的长度 5, 并且 nums 中的前五个元素为 0, 1, 3, 0, 4。
-
-注意这五个元素可为任意顺序。
-
-你不需要考虑数组中超出新长度后面的元素。
-
+这五个元素可为任意顺序。
 ```
 
 js
@@ -2750,52 +2736,6 @@ var addTwoNumbers = function(l1, l2) {
     return node.next;
 };
 ```
-
-#### [面试题64. 求1+2+…+n](https://leetcode-cn.com/problems/qiu-12n-lcof/)
-
-难度中等
-
-求 `1+2+...+n` ，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。
-
-**示例 1：**
-
-```
-输入: n = 3
-输出: 6
-```
-
-**示例 2：**
-
-```
-输入: n = 9
-输出: 45
-```
-
-**限制：**
-
-- `1 <= n <= 10000`
-
-###### 递归 和 &&
-
-&& 特性：
-
-对于 A && B 这个表达式，如果 A 表达式返回 False ，那么 A && B 已经确定为 False ，此时不会去执行表达式 B。同理，对于逻辑运算符 ||， 对于 A || B 这个表达式，如果 A 表达式返回 True ，那么 A || B 已经确定为 True ，此时不会去执行表达式 B
-
-如果左边表达式为 false，不执行右边； 左边为true继续执行右边。
-
-传入 n
-return n && n + (n-1) => n + (n-1)
-return 1 && n + (n-1) + ... + 1 => n + (n-1) + ... + 1
-return 0 && 不执行
-最后得到的结果： n + (n-1) + ... + 1
-
-```js
-var sumNums = function(n) {
-    return n && (n + sumNums(n - 1));
-};
-```
-
-
 
 #### [36. 有效的数独](https://leetcode-cn.com/problems/valid-sudoku/)
 
