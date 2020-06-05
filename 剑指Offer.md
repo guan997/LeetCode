@@ -2,6 +2,10 @@
 
 面试题03. 数组中重复的数字
 
+面试题05. 替换空格
+
+面试题29. 顺时针打印矩阵
+
 面试题64. 求1+2+…+n
 
 #### [面试题03. 数组中重复的数字](https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/)
@@ -57,6 +61,112 @@ var findRepeatNumber = function(nums) {
     }
 };
 ```
+
+#### [面试题05. 替换空格](https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/)
+
+难度简单20
+
+请实现一个函数，把字符串 `s` 中的每个空格替换成"%20"。
+
+**示例 1：**
+
+```
+输入：s = "We are happy."
+输出："We%20are%20happy."
+```
+
+###### 正则表达式
+
+```js
+var replaceSpace = function(s) {
+    return s.replace(/ /g, '%20');
+};
+```
+
+###### split() + join()
+
+split() 方法用于把一个字符串分割成字符串数组。
+join() 方法用于把数组中的所有元素放入一个字符串。
+
+```js
+var replaceSpace = function(s) {
+   return s.split(" ").join("%20");
+};
+```
+
+###### 遍历字符串
+
+```js
+var replaceSpace = function(s) {
+  let res = "";
+  for (const el of s) {
+    if (el === " ") {
+      res += "%20";
+    } else {
+      res += el;
+    }
+  }
+  return res;
+};
+```
+
+#### [面试题29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/)
+
+难度简单
+
+输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。
+
+**示例 1：**
+
+```
+输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+输出：[1,2,3,6,9,8,7,4,5]
+```
+
+**示例 2：**
+
+```
+输入：matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+输出：[1,2,3,4,8,12,11,10,9,5,6,7]
+```
+
+**限制：**
+
+- `0 <= matrix.length <= 100`
+
+- `0 <= matrix[i].length <= 100`
+
+  ###### 模拟
+
+  可以模拟打印矩阵的路径。初始位置是矩阵的左上角，初始方向是向右，当路径超出界限或者进入之前访问过的位置时，则顺时针旋转，进入下一个方向。
+
+  - 一层层向里处理，按顺时针依次遍历：上层、右层、下层、左层
+  - 不再形成“环”了，剩下一行或一列，循环结束后单独判断
+
+```js
+var spiralOrder = function (matrix) {
+  if (matrix.length === 0) return []
+  const res = []
+  let top = 0, bottom = matrix.length - 1, left = 0, right = matrix[0].length - 1
+  while (top < bottom && left < right) {
+    for (let i = left; i < right; i++) res.push(matrix[top][i])   // 上层
+    for (let i = top; i < bottom; i++) res.push(matrix[i][right]) // 右层
+    for (let i = right; i > left; i--) res.push(matrix[bottom][i])// 下层
+    for (let i = bottom; i > top; i--) res.push(matrix[i][left])  // 左层
+    right--
+    top++
+    bottom--
+    left++  // 四个边界同时收缩，进入内层
+  }
+  if (top === bottom) // 剩下一行，从左到右依次添加
+    for (let i = left; i <= right; i++) res.push(matrix[top][i])
+  else if (left === right) // 剩下一列，从上到下依次添加
+    for (let i = top; i <= bottom; i++) res.push(matrix[i][left])
+  return res
+};
+```
+
+
 
 #### [面试题64. 求1+2+…+n](https://leetcode-cn.com/problems/qiu-12n-lcof/)
 
