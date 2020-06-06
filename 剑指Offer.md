@@ -4,6 +4,10 @@
 
 面试题05. 替换空格
 
+面试题10- I. 斐波那契数列
+
+面试题10- II. 青蛙跳台阶问题
+
 面试题29. 顺时针打印矩阵
 
 面试题64. 求1+2+…+n
@@ -110,6 +114,175 @@ var replaceSpace = function(s) {
 };
 ```
 
+#### [面试题10- I. 斐波那契数列](https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/)
+
+难度简单
+
+写一个函数，输入 `n` ，求斐波那契（Fibonacci）数列的第 `n` 项。斐波那契数列的定义如下：
+
+```
+F(0) = 0,   F(1) = 1
+F(N) = F(N - 1) + F(N - 2), 其中 N > 1.
+```
+
+斐波那契数列由 0 和 1 开始，之后的斐波那契数就是由之前的两数相加而得出。
+
+答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+
+**示例 1：**
+
+```
+输入：n = 2
+输出：1
+```
+
+**示例 2：**
+
+```
+输入：n = 5
+输出：5
+```
+
+**提示：**
+
+- `0 <= n <= 100`
+
+###### 递归1
+
+fib会重复计算之前的项，计算结果是一次性的，浪费时间和空间
+
+超出时间限制
+
+```js
+var fib = function(n) {
+    if(n<=1) return n;
+    return  (fib(n-1) + fib(n-2)) % 1000000007;
+};
+```
+
+###### 循环
+
+```js
+var fib = function(n) {
+    if(n === 0) return 0
+    if(n === 1) return 1
+    let a = 0
+    let b = 1
+    for(let i = 1;i < n;i++){
+        let t = a
+        a = b
+        b = (t + b) % 1000000007
+    }
+    return b
+};
+```
+
+执行用时 :72 ms, 在所有 JavaScript 提交中击败了31.28%的用户
+
+内存消耗 :32.2 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+
+
+#### [面试题10- II. 青蛙跳台阶问题](https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/)
+
+难度简单34
+
+一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 `n` 级的台阶总共有多少种跳法。
+
+答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+
+**示例 1：**
+
+```
+输入：n = 2
+输出：2
+```
+
+**示例 2：**
+
+```
+输入：n = 7
+输出：21
+```
+
+**提示：**
+
+- `0 <= n <= 100`
+
+注意：本题与主站 70 题相同
+
+###### 1.第i个斐波那契数
+
+- 3个变量 每次递归更新前两个子问题所需步数
+- 可知递推公式  f(n) = f(n-2) + f(n-1),n>=1
+
+```js
+var numWays = function(n) {
+    if(n == 0){
+        return 1;
+    }
+    if(n == 1){
+        return 1;
+    }
+    if(n == 2){
+        return 2;
+    }
+    //f1第一阶 f2第二阶 f3下一阶
+    var f1 = 1,f2 =2, f3 = 0;
+    while(n > 2) {
+        f3 = (f1 + f2) % 1000000007;
+        f1 = f2;
+        f2 = f3;
+        n--;
+    }
+    return f2;
+};
+```
+
+执行用时 :60 ms, 在所有 JavaScript 提交中击败了85.61%的用户
+
+内存消耗 :32.7 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+###### 2.递归
+
+```js
+var numWays = function(n) {
+    let arr = [1,1];
+    for(let i = 2; i <= n; i++) {
+        arr[i] = (arr[i - 1] + arr[i -2]) %1000000007;
+    }
+    return arr[n];
+};
+```
+
+执行用时 :64 ms, 在所有 JavaScript 提交中击败了70.67%的用户
+
+内存消耗 :32.8 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+###### 3.动态规划
+
+爬第n阶楼梯的方法数量，等于 2 部分之和
+
+爬上 n-1阶楼梯的方法数量。因为再爬1阶就能到第n阶
+爬上 n-2 阶楼梯的方法数量，因为再爬2阶就能到第n阶
+
+```js
+var numWays = function(n) {
+    var dp = new Array(n+1);
+    dp[0]=1;
+    dp[1]=1;
+    for (var i =2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+        dp[i] %= 1000000007;
+    }
+    return dp[n]
+};
+```
+
+执行用时 :64 ms, 在所有 JavaScript 提交中击败了70.67%的用户
+
+内存消耗 :32.6 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
 #### [面试题29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/)
 
 难度简单
@@ -136,12 +309,26 @@ var replaceSpace = function(s) {
 
 - `0 <= matrix[i].length <= 100`
 
-  ###### 模拟
+###### 模拟
 
-  可以模拟打印矩阵的路径。初始位置是矩阵的左上角，初始方向是向右，当路径超出界限或者进入之前访问过的位置时，则顺时针旋转，进入下一个方向。
+可以模拟打印矩阵的路径。初始位置是矩阵的左上角，初始方向是向右，当路径超出界限或者进入之前访问过的位置时，则顺时针旋转，进入下一个方向。
 
-  - 一层层向里处理，按顺时针依次遍历：上层、右层、下层、左层
-  - 不再形成“环”了，剩下一行或一列，循环结束后单独判断
+- 一层层向里处理，按顺时针依次遍历：上层、右层、下层、左层
+- - 不再形成“环”了，剩下一行或一列，循环结束后单独判断
+
+  ###### 矩阵不一定是方阵，循环结束时的情形：
+
+top < bottom && left < right 是 while 循环的条件
+无法构成“环”了，就退出循环，分 3 种情况：
+top === bottom && left < right —— 剩一行
+top < bottom && left === right —— 剩一列
+top === bottom && left === right —— 剩一项（也是一行/列）
+
+​     处理剩下的单行或单列
+
+因为是按顺时针推入结果数组的，所以
+剩下的一行，从左至右 依次推入结果数组
+剩下的一列，从上至下 依次推入结果数组
 
 ```js
 var spiralOrder = function (matrix) {
@@ -152,7 +339,7 @@ var spiralOrder = function (matrix) {
     for (let i = left; i < right; i++) res.push(matrix[top][i])   // 上层
     for (let i = top; i < bottom; i++) res.push(matrix[i][right]) // 右层
     for (let i = right; i > left; i--) res.push(matrix[bottom][i])// 下层
-    for (let i = bottom; i > top; i--) res.push(matrix[i][left])  // 左层
+    for (let i = bo5；ttom; i > top; i--) res.push(matrix[i][left])  // 左层
     right--
     top++
     bottom--
