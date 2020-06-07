@@ -12,6 +12,8 @@
 
 面试题64. 求1+2+…+n
 
+面试题 16.11. 跳水板
+
 #### [面试题03. 数组中重复的数字](https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/)
 
 难度简单
@@ -399,3 +401,53 @@ var sumNums = function(n) {
 };
 ```
 
+#### [面试题 16.11. 跳水板](https://leetcode-cn.com/problems/diving-board-lcci/)
+
+难度简单9
+
+你正在使用一堆木板建造跳水板。有两种类型的木板，其中长度较短的木板长度为`shorter`，长度较长的木板长度为`longer`。你必须正好使用`k`块木板。编写一个方法，生成跳水板所有可能的长度。
+
+返回的长度需要从小到大排列。
+
+**示例：**
+
+```
+输入：
+shorter = 1
+longer = 2
+k = 3
+输出： {3,4,5,6}
+```
+
+**提示：**
+
+- 0 < shorter <= longer
+- 0 <= k <= 100000
+
+###### 数学归纳法
+
+k 等于0 时返回 空数组
+shorter == longer 相等时 返回一个 值 [shorter*k]
+
+当两类板长度不同时，短板数越多则总长就最短，依次排列即可。
+
+根据数学归纳法，2种长度板子，必须用k块，不同的情况共k+1中，公式为(k - i) * shorter + i * longer
+
+```js
+var divingBoard = function(shorter, longer, k) {
+    if(k == 0) return []
+    if(shorter == longer) return [shorter*k]
+    var arr = []
+    for(let i = 0;i <= k;i++){
+        arr.push(i * longer + shorter * (k-i))
+    }
+    //for(let i = 0,j = k; i < k+1, j > -1;j--, i++){
+      //  arr.push(j * shorter + longer * i)
+    //}
+    return arr
+};
+```
+
+执行用时 :152 ms, 在所有 JavaScript 提交中击败了99.00%的用户
+
+内存消耗 :47.7 MB, 在所有 JavaScript 提交中击败了100.00%的用户
