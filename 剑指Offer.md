@@ -16,6 +16,8 @@
 
 面试题 16.11. 跳水板
 
+面试题17. 打印从1到最大的n位数
+
 #### [面试题03. 数组中重复的数字](https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/)
 
 难度简单
@@ -522,3 +524,41 @@ var divingBoard = function(shorter, longer, k) {
 执行用时 :152 ms, 在所有 JavaScript 提交中击败了99.00%的用户
 
 内存消耗 :47.7 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+#### [面试题17. 打印从1到最大的n位数](https://leetcode-cn.com/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/)
+
+难度简单
+
+输入数字 `n`，按顺序打印出从 1 到最大的 n 位十进制数。比如输入 3，则打印出 1、2、3 一直到最大的 3 位数 999。
+
+**示例 1:**
+
+```
+输入: n = 1
+输出: [1,2,3,4,5,6,7,8,9]
+```
+
+说明：
+
+- 用返回一个整数列表来代替打印
+- n 为正整数
+
+###### 内置函数
+
+先获取最大值，再建立一个循环，将1 - max的每一个值push到res数组中，最后返回
+
+```js
+var printNumbers = function(n) {
+    //const max = 10 ** n - 1;
+    const max = Math.pow(10, n) - 1;
+    const res = [];
+    for (let i = 1; i <= max; ++i) {
+        res.push(i);
+    }
+    return res;
+};
+```
+
+执行用时 :108 ms, 在所有 JavaScript 提交中击败了98.54%的用户
+
+内存消耗 :45.4 MB, 在所有 JavaScript 提交中击败了100.00%的用户
