@@ -18,6 +18,8 @@
 
 面试题17. 打印从1到最大的n位数
 
+面试题46. 把数字翻译成字符串
+
 #### [面试题03. 数组中重复的数字](https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/)
 
 难度简单
@@ -562,3 +564,138 @@ var printNumbers = function(n) {
 执行用时 :108 ms, 在所有 JavaScript 提交中击败了98.54%的用户
 
 内存消耗 :45.4 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+#### [面试题46. 把数字翻译成字符串](https://leetcode-cn.com/problems/ba-shu-zi-fan-yi-cheng-zi-fu-chuan-lcof/)
+
+难度中等
+
+给定一个数字，我们按照如下规则把它翻译为字符串：0 翻译成 “a” ，1 翻译成 “b”，……，11 翻译成 “l”，……，25 翻译成 “z”。一个数字可能有多个翻译。请编程实现一个函数，用来计算一个数字有多少种不同的翻译方法。
+
+**示例 1:**
+
+```
+输入: 12258
+输出: 5
+解释: 12258有5种不同的翻译，分别是"bccfi", "bwfi", "bczi", "mcfi"和"mzi"
+```
+
+###### 1.递归-在青蛙跳台阶基础上解题
+
+在跳台阶基础上增加跳两级的条件。
+
+当 num 对 100 取余的余数在 [0,26) 中，就可以跳两级，否则只能跳一级
+
+跳台阶，f(n) = f(n-1) + f(n-2)
+
+翻译，若 n % 100 ∈ [0,26)，则 f(n) = f(n // 10) + f(n // 100)；
+
+否则 f(n) = f(n // 10) 。// 表示向下取整。
+
+```js
+var translateNum = function(num) {
+    if(num == 0){
+        return 1;
+    }
+    if(num >= 10 && num < 26){
+        return 2;
+    }
+    let b1 = Math.floor(num / 10), r1 = num % 10,
+    b2 = Math.floor(num / 100), r2 = num % 100;
+    if(r2 >= 10 && r2 < 26){
+        return translateNum(b2) + translateNum(b1);
+    }
+    return translateNum(b1);
+};
+```
+
+执行用时 :72 ms, 在所有 JavaScript 提交中击败了32.11%的用户
+
+内存消耗 :32.3 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+```js
+var translateNum = function(num) {
+    if(num <10){
+        return 1;
+    }
+    let dual = num % 100;
+    let nextOne = Math.floor(num / 10);
+    let nextTwo = Math.floor(num / 100);
+    //10-25之间才有 可能双位数
+    if(dual >= 10 && dual <= 25){
+        return translateNum(nextOne) + translateNum(nextTwo);
+    } else {
+        return translateNum(nextOne)
+    }
+};
+```
+
+执行用时 :64 ms, 在所有 JavaScript 提交中击败了74.65%的用户
+
+内存消耗 :32.1 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+###### 2.动态规划
+
+dp[0]=1，dp[1]=1 ，dp[2]=2 
+
+dp[2]=dp[0]+dp[1]
+
+递推公式：dp[i]=dp[i−2]+dp[i−1]
+
+```js
+const translateNum = (num) => {
+  const str = num.toString()
+  const n = str.length
+  const dp = new Array(n + 1)
+  dp[0] = 1
+  dp[1] = 1
+  for (let i = 2; i < n + 1; i++) {
+    const temp = Number(str[i - 2] + str[i - 1])
+    if (temp >= 10 && temp <= 25) {
+      dp[i] = dp[i - 1] + dp[i - 2]
+    } else {
+      dp[i] = dp[i - 1]
+    }
+  }
+  return dp[n] // 翻译前n个数的方法数，翻译整个数字
+}
+```
+
+执行用时 :72 ms, 在所有 JavaScript 提交中击败了32.11%的用户
+
+内存消耗 :32.4 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+###### 降维 / 压缩空间
+
+当前 dp 项只和它前面的两项有关，我们无需用数组存储所有的 dp 项
+
+用两个变量去存dp 项前面的两项，在遍历中不断更新这两个变量，可将空间复杂度优化到 O(1)
+
+```js
+const translateNum = (num) => {
+  const str = num.toString()
+  const n = str.length
+  let prev = 1
+  let cur = 1
+  for (let i = 2; i < n + 1; i++) {
+    const temp = Number(str[i - 2] + str[i - 1])
+    if (temp >= 10 && temp <= 25) {
+      const t = cur // 缓存上个状态
+      cur = prev + cur // 当前状态=上上个状态+上个状态
+      prev = t // 更新上上个状态
+    } else {
+      // cur = cur
+      prev = cur // 这里容易忘了
+    }
+  }
+  return cur
+}
+```
+
+执行用时 :68 ms, 在所有 JavaScript 提交中击败了50.99%的用户
+
+内存消耗 :32.3 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+
+
+
+
