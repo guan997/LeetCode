@@ -62,6 +62,8 @@
 
 110. 平衡二叉树
 
+118. 杨辉三角
+
  237.删除链表中的节点
 
 ##### 双指针
@@ -2100,6 +2102,56 @@ var isBalanced = function(root) {
     }
 };
 ```
+
+#### [118. 杨辉三角](https://leetcode-cn.com/problems/pascals-triangle/)
+
+难度简单309
+
+给定一个非负整数 *numRows，*生成杨辉三角的前 *numRows* 行。
+
+![img](https://upload.wikimedia.org/wikipedia/commons/0/0d/PascalTriangleAnimated2.gif)
+
+在杨辉三角中，每个数是它左上方和右上方的数的和。
+
+**示例:**
+
+```
+输入: 5
+输出:
+[
+     [1],
+    [1,1],
+   [1,2,1],
+  [1,3,3,1],
+ [1,4,6,4,1]
+]
+```
+
+判断如果不是该列数组的首位或者最后一位，则值为`a[i-1][j-1] + a[i-1][j]` ，否则值为`1`
+
+```js
+var generate = function (numRows) {
+    const result = [];
+    if (numRows <= 0) {
+        return result;
+    }
+    let i = 0, j = 0;
+    for (let i = 0; i < numRows; i ++) {
+        const subArr = [];
+        for (let j = 0; j <= i; j++) {
+            if (j > 0 && j < i) {
+                subArr.push(result[i-1][j-1] + result[i-1][j]);
+            } else {
+                subArr.push(1);
+            }
+        }
+        result.push(subArr);
+    }
+    return result;
+};
+```
+
+
 
 #### [136. 只出现一次的数字](https://leetcode-cn.com/problems/single-number/)
 
