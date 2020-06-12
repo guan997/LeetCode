@@ -2,75 +2,77 @@
 
 ### 目录
 
-01.两数之和 
+[01.两数之和 ](#01.两数之和)
 
-15. 三数之和
+[15.三数之和](#15.三数之和)
 
-04.寻找两个正序数组的中位数
+[04.寻找两个正序数组的中位数](#04.寻找两个正序数组的中位数)
 
-06.Z 字形变换
+[06.Z 字形变换](#06.Z 字形变换)
 
-08.字符串转换整数 (atoi)
+[08.字符串转换整数 (atoi)](#08.字符串转换整数 (atoi))
 
-09.回文数
+[09.回文数](#09.回文数)
 
-13罗马数字转整数
+[13罗马数字转整数](#13罗马数字转整数)
 
-14.最长公共前缀
+[14.最长公共前缀](#14.最长公共前缀)
 
-20.有效的括号
+[20.有效的括号](#20.有效的括号)
 
-27.移除元素
+[27.移除元素](#27.移除元素)
 
-28实现strStr()
+[28实现strStr()](#28实现strStr())
 
-35.搜索插入位置
+[35.搜索插入位置](#35.搜索插入位置)
+
+[38.外观数列](#38.外观数列)
+
+[53.最大子序和](#53.最大子序和)
+
+[58.最后一个单词的长度](#58.最后一个单词的长度)
+
+[67.二进制求和](#67.二进制求和)
+
+[69.x 的平方根](#69.x 的平方根)
+
+##### [动态规划](#动态规划)
+
+[70.爬楼梯](#70.爬楼梯)
+
+[746.使用最小花费爬楼梯](#746.使用最小花费爬楼梯)
+
+[121.买卖股票的最佳时机](#121.买卖股票的最佳时机)
+
+[198.打家劫舍](#198.打家劫舍)
+
+[83.删除排序链表中的重复元素](#83.删除排序链表中的重复元素)
+
+[88.删除排序链表中的重复元素](#88.删除排序链表中的重复元素)
+
+[100.相同的树](#100.相同的树)
+
+[101.对称二叉树](#101.对称二叉树)
+
+[107.二叉树的层次遍历 II](#107.二叉树的层次遍历 II)
+
+[118.杨辉三角](#118.杨辉三角)
+
+[ 237.删除链表中的节点](# 237.删除链表中的节点)
+
+[283. 移动零](#283. 移动零)
+
+[371. 两整数之和](#371. 两整数之和)
+
+##### [双指针](#双指针)
+
+[11. 盛最多水的容器](#11. 盛最多水的容器)
+
+[15. 三数之和](#15. 三数之和)
 
 
-38. 外观数列
 
-
-53. 最大子序和
-
-
-58. 最后一个单词的长度
-
-
-67. 二进制求和
-
-69.x 的平方根
-
-##### 动态规划
-
-70. 爬楼梯
-
-746.使用最小花费爬楼梯
-
-121. 买卖股票的最佳时机
-
-122. 打家劫舍
-
-83.删除排序链表中的重复元素
-
-88.删除排序链表中的重复元素
-
-100. 相同的树
-101. 对称二叉树
-
-
-107.二叉树的层次遍历 II
-
-110. 平衡二叉树
-
-118. 杨辉三角
-
- 237.删除链表中的节点
-
-##### 双指针
-
-11. 盛最多水的容器
-
-#### [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
+#### 1. 两数之和
 
 难度简单
 
@@ -167,9 +169,9 @@ for i,num in enumerate(nums):
 
 可以假设 nums1 和 nums2 不会同时为空。
 
-#### [15. 三数之和](https://leetcode-cn.com/problems/3sum/)
+####15. 三数之和
 
-难度中等2155收藏分享切换为英文关注反馈
+难度中等
 
 给你一个包含 *n* 个整数的数组 `nums`，判断 `nums` 中是否存在三个元素 *a，b，c ，*使得 *a + b + c =* 0 ？请你找出所有满足条件且不重复的三元组。
 
@@ -223,7 +225,7 @@ var threeSum = function(nums) {
 };
 ```
 
- [4. 寻找两个正序数组的中位数](https://leetcode-cn.com/problems/median-of-two-sorted-arrays/)
+ 4. 寻找两个正序数组的中位数
 
 难度困难
 
@@ -336,7 +338,7 @@ var findMedianSortedArrays = function(nums1, nums2) {
 };
 ```
 
-#### [6. Z 字形变换](https://leetcode-cn.com/problems/zigzag-conversion/)
+#### 6. Z 字形变换
 
 难度中等686
 
@@ -423,7 +425,7 @@ var convert = function(s, numRows) {
 
 
 
-#### [8. 字符串转换整数 (atoi)](https://leetcode-cn.com/problems/string-to-integer-atoi/)
+#### 8. 字符串转换整数 (atoi)
 
 难度中等
 
@@ -499,7 +501,7 @@ class Solution:
         return s
 ```
 
-#### [9. 回文数](https://leetcode-cn.com/problems/palindrome-number/)
+#### 9. 回文数
 
 难度简单
 
@@ -557,7 +559,7 @@ var isPalindrome = function(x) {
 
 内存消耗 :44.5 MB, 在所有 JavaScript 提交中击败了98.00%的用户
 
-#### [11. 盛最多水的容器](https://leetcode-cn.com/problems/container-with-most-water/)
+#### 11. 盛最多水的容器
 
 难度中等1491
 
@@ -620,7 +622,7 @@ var maxArea = function(height) {
 };
 ```
 
-#### [13. 罗马数字转整数](https://leetcode-cn.com/problems/roman-to-integer/)
+#### 13. 罗马数字转整数
 
 难度简单865收藏分享切换为英文关注反馈
 
@@ -754,7 +756,7 @@ class Solution:
         return ans
 ```
 
-#### [14. 最长公共前缀](https://leetcode-cn.com/problems/longest-common-prefix/)
+#### 14. 最长公共前缀
 
 难度简单
 
@@ -831,7 +833,7 @@ class Solution:
 
 
 
-#### [20. 有效的括号](https://leetcode-cn.com/problems/valid-parentheses/)
+#### 20. 有效的括号
 
 难度简单
 
@@ -920,7 +922,7 @@ var isValid = function (s) {
     return !leftArr.length //防止全部为左括号
 ```
 
-#### [21. 合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/)
+#### 21. 合并两个有序链表
 
 难度简单
 
@@ -982,7 +984,7 @@ var mergeTwoLists = function(l1, l2) {
 
 
 
-#### [26. 删除排序数组中的重复项](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/)
+#### 26. 删除排序数组中的重复项
 
 难度简单
 
@@ -1003,7 +1005,7 @@ def removeDuplicates(self, nums: List[int]) -> int:
     return len(nums)
 ```
 
-#### [27. 移除元素](https://leetcode-cn.com/problems/remove-element/)
+#### 27. 移除元素
 
 难度简单
 
@@ -1073,7 +1075,7 @@ var removeElement = function(nums, val) {
 };
 ```
 
-#### [28. 实现 strStr()](https://leetcode-cn.com/problems/implement-strstr/)
+#### 28. 实现 strStr()
 
 难度简单
 
@@ -1130,7 +1132,7 @@ var strStr = function(haystack, needle) {
 }
 ```
 
-#### [35. 搜索插入位置](https://leetcode-cn.com/problems/search-insert-position/)
+#### 35. 搜索插入位置
 
 难度简单
 
@@ -1168,7 +1170,7 @@ var searchInsert = function(nums, target) {
 }
 ```
 
-#### [38. 外观数列](https://leetcode-cn.com/problems/count-and-say/)
+#### 38. 外观数列
 
 难度简单458
 
@@ -1213,7 +1215,7 @@ var countAndSay = function(n) {
 
 
 
-#### [53. 最大子序和](https://leetcode-cn.com/problems/maximum-subarray/)
+#### 53. 最大子序和
 
 难度简单
 
@@ -1254,7 +1256,7 @@ var maxSubArray = function(nums) {
 
 
 
-#### [58. 最后一个单词的长度](https://leetcode-cn.com/problems/length-of-last-word/)
+#### 58. 最后一个单词的长度
 
 难度简单191收藏分享切换为英文关注反馈
 
@@ -1320,7 +1322,7 @@ var lengthOfLastWord = function(s) {
 };
 ```
 
-#### [67. 二进制求和](https://leetcode-cn.com/problems/add-binary/)
+#### 67. 二进制求和
 
 难度简单
 
@@ -1364,7 +1366,7 @@ module.exports = {
 }
 ```
 
-#### [69. x 的平方根](https://leetcode-cn.com/problems/sqrtx/)
+#### 69. x 的平方根
 
 难度简单
 
@@ -1414,7 +1416,7 @@ var mySqrt = function(x) {
 
 ### 动态规划
 
-#### [32. 最长有效括号](https://leetcode-cn.com/problems/longest-valid-parentheses/)
+#### 32. 最长有效括号
 
 难度困难666收藏分享切换为英文关注反馈
 
@@ -2704,7 +2706,7 @@ def deleteNode(self, node):
 
 由于只输入了需要删除的节点node，因此无法获取删除节点node的前一个节点pre，从而也就无法将前一个节点pre指向删除节点的下一个节点nex；既然无法通过修改指针完成，那么肯定要修改链表节点的值了。将删除节点node的值和指针都改为下一个节点nex的值和指针即可。
 
-#### [283. 移动零](https://leetcode-cn.com/problems/move-zeroes/)
+#### 283. 移动零
 
 难度简单
 
@@ -2765,9 +2767,9 @@ def moveZeroes(self, nums: List[int]) -> None:
         return nums
 ```
 
-#### [371. 两整数之和](https://leetcode-cn.com/problems/sum-of-two-integers/)
+#### 371. 两整数之和
 
-难度简单246收藏分享切换为英文关注反馈
+难度简单
 
 **不使用**运算符 `+` 和 `-` ，计算两整数 `a` 、`b` 之和。
 
