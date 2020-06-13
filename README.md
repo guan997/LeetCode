@@ -1438,7 +1438,7 @@ var mySqrt = function(x) {
 解释: 最长有效括号子串为 "()()"
 ```
 
-#### [70. 爬楼梯](https://leetcode-cn.com/problems/climbing-stairs/)
+#### 70. 爬楼梯
 
 难度简单
 
@@ -1468,8 +1468,6 @@ var mySqrt = function(x) {
 2.  1 阶 + 2 阶
 3.  2 阶 + 1 阶
 ```
-
-###### js
 
 ###### 求第i个斐波那契数
 
