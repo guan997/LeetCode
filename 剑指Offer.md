@@ -1,24 +1,26 @@
 ### 剑指OFFER
 
-面试题03. 数组中重复的数字
+[面试题03. 数组中重复的数字](#面试题03. 数组中重复的数字)
 
-面试题05. 替换空格
+[面试题05. 替换空格](#面试题05. 替换空格)
 
-面试题 08.06. 汉诺塔问题
+[面试题06. 从尾到头打印链表](#面试题06. 从尾到头打印链表)
 
-面试题10- I. 斐波那契数列
+[面试题 08.06. 汉诺塔问题](#面试题 08.06. 汉诺塔问题)
 
-面试题10- II. 青蛙跳台阶问题
+[面试题10- I. 斐波那契数列](#面试题10- I. 斐波那契数列)
 
-面试题29. 顺时针打印矩阵
+[面试题10- II. 青蛙跳台阶问题](#面试题10- II. 青蛙跳台阶问题)
 
-面试题64. 求1+2+…+n
+[面试题29. 顺时针打印矩阵](#面试题29. 顺时针打印矩阵)
 
-面试题 16.11. 跳水板
+[面试题64. 求1+2+…+n](#面试题64. 求1+2+…+n)
 
-面试题17. 打印从1到最大的n位数
+[面试题 16.11. 跳水板](#面试题 16.11. 跳水板)
 
-面试题46. 把数字翻译成字符串
+[面试题17. 打印从1到最大的n位数](#面试题17. 打印从1到最大的n位数)
+
+[面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
 
 #### [面试题03. 数组中重复的数字](https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/)
 
@@ -76,7 +78,7 @@ var findRepeatNumber = function(nums) {
 
 #### [面试题05. 替换空格](https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/)
 
-难度简单20
+难度简单
 
 请实现一个函数，把字符串 `s` 中的每个空格替换成"%20"。
 
@@ -121,6 +123,71 @@ var replaceSpace = function(s) {
   return res;
 };
 ```
+
+#### [面试题06. 从尾到头打印链表](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)
+
+难度简单
+
+输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。
+
+**示例 1：**
+
+```
+输入：head = [1,3,2]
+输出：[2,3,1]
+```
+
+###### 1.reverse() 反转法
+
+```js
+var reversePrint = function (head) {
+  if (head === null) return []
+  const res = []
+  while (head) {
+    res.push(head.val)
+    head = head.next
+  }
+  return res.reverse()
+}
+```
+
+执行用时 :84 ms, 在所有 JavaScript 提交中击败了42.73%的用户
+
+内存消耗 :36.6 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+###### 2.反转链表
+
+```js
+function reverseLink(head) {
+    if(!head) return [];
+    
+    let arr = [];
+    do{
+        arr.push(head.val);
+    }while(head = head.next);
+    arr.reverse();
+    return arr;
+}
+```
+
+执行用时 :68 ms, 在所有 JavaScript 提交中击败了95.75%的用户
+
+内存消耗 :36.3 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+###### 3.递归反转链表
+
+```js
+function reverseLink(head) {
+    if(!head) return []
+    let arr = reversePrint(head.next)
+    arr.push(head.val)
+    return arr
+}
+```
+
+执行用时 :80 ms, 在所有 JavaScript 提交中击败了60.56%的用户
+
+内存消耗 :37.3 MB, 在所有 JavaScript 提交中击败了100.00%的用户
 
 #### [面试题 08.06. 汉诺塔问题](https://leetcode-cn.com/problems/hanota-lcci/)
 
@@ -478,7 +545,7 @@ var sumNums = function(n) {
 
 #### [面试题 16.11. 跳水板](https://leetcode-cn.com/problems/diving-board-lcci/)
 
-难度简单9
+难度简单
 
 你正在使用一堆木板建造跳水板。有两种类型的木板，其中长度较短的木板长度为`shorter`，长度较长的木板长度为`longer`。你必须正好使用`k`块木板。编写一个方法，生成跳水板所有可能的长度。
 
