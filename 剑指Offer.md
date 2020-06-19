@@ -20,6 +20,8 @@
 
 [面试题17. 打印从1到最大的n位数](#面试题17. 打印从1到最大的n位数)
 
+[剑指 Offer 24. 反转链表](#剑指 Offer 24. 反转链表)
+
 [面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
 
 #### [面试题03. 数组中重复的数字](https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/)
@@ -256,9 +258,7 @@ var hanota = function(A, B, C) {
 };
 ```
 
-
-
-#### [面试题10- I. 斐波那契数列](https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/)
+#### 面试题10- I. 斐波那契数列
 
 难度简单
 
@@ -325,9 +325,7 @@ var fib = function(n) {
 
 内存消耗 :32.2 MB, 在所有 JavaScript 提交中击败了100.00%的用户
 
-
-
-#### [面试题10- II. 青蛙跳台阶问题](https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/)
+#### 面试题10- II. 青蛙跳台阶问题
 
 难度简单34
 
@@ -427,7 +425,7 @@ var numWays = function(n) {
 
 内存消耗 :32.6 MB, 在所有 JavaScript 提交中击败了100.00%的用户
 
-#### [面试题29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/)
+#### 面试题29. 顺时针打印矩阵
 
 难度简单
 
@@ -497,9 +495,7 @@ var spiralOrder = function (matrix) {
 };
 ```
 
-
-
-#### [面试题64. 求1+2+…+n](https://leetcode-cn.com/problems/qiu-12n-lcof/)
+#### 面试题64. 求1+2+…+n
 
 难度中等
 
@@ -543,7 +539,7 @@ var sumNums = function(n) {
 };
 ```
 
-#### [面试题 16.11. 跳水板](https://leetcode-cn.com/problems/diving-board-lcci/)
+#### 面试题 16.11. 跳水板
 
 难度简单
 
@@ -594,7 +590,7 @@ var divingBoard = function(shorter, longer, k) {
 
 内存消耗 :47.7 MB, 在所有 JavaScript 提交中击败了100.00%的用户
 
-#### [面试题17. 打印从1到最大的n位数](https://leetcode-cn.com/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/)
+#### 面试题17. 打印从1到最大的n位数
 
 难度简单
 
@@ -632,7 +628,39 @@ var printNumbers = function(n) {
 
 内存消耗 :45.4 MB, 在所有 JavaScript 提交中击败了100.00%的用户
 
-#### [面试题46. 把数字翻译成字符串](https://leetcode-cn.com/problems/ba-shu-zi-fan-yi-cheng-zi-fu-chuan-lcof/)
+#### 剑指 Offer 24. 反转链表
+
+难度简单50
+
+定义一个函数，输入一个链表的头节点，反转该链表并输出反转后链表的头节点。
+
+**示例:**
+
+```
+输入: 1->2->3->4->5->NULL
+输出: 5->4->3->2->1->NULL
+```
+
+###### 双指针原地反转
+
+cur:游标，一直往后循环，最后会为null
+prev:记录前一个节点
+oldNext:变更方向时，需要先用oldNext记住改变前的next节点，否则无法向后循环
+
+```js
+var reverseList = function(head) {
+    var prev = null,cur = head,temp;
+    while(cur){
+        temp = cur.next;//修改前先记住下一个节点
+        cur.next = prev; //改别指向，第一个节点prev是null,
+        prev = cur; //记录前一个节点，供下次循环使用
+        cur = temp; // cur通过temp指向下一节点
+    }
+    return prev;//cur会多循环直到null
+};
+```
+
+#### 面试题46. 把数字翻译成字符串
 
 难度中等
 
