@@ -2301,7 +2301,7 @@ var generate = function (numRows) {
 - 时间复杂度：O(n)，仅遍历一次数组
 - 空间复杂度：O(1)，没有使用额外空间
 
-#### [151. 翻转字符串里的单词](https://leetcode-cn.com/problems/reverse-words-in-a-string/)
+#### 151. 翻转字符串里的单词
 
 难度中等
 
@@ -2353,7 +2353,7 @@ chars -- 移除字符串头尾指定的字符序列。
   # return ' '.join(s.strip().split()[::-1])
 ```
 
-#### [125. 验证回文串](https://leetcode-cn.com/problems/valid-palindrome/)
+#### 125. 验证回文串
 
 难度简单
 
@@ -2376,15 +2376,37 @@ chars -- 移除字符串头尾指定的字符序列。
 输出: false
 ```
 
-```
-str.isalnum()方法检测字符串是否由字母和数字组成。
-如果 string 至少有一个字符并且所有字符都是字母或数字则返回 True,否则返回 False
+###### 正则加双指针
+
+正则处理字符串去掉不是字母和数字的
+
+双指针首尾字符对比
+
+```js
+var isPalindrome = function(s) {
+    let str = s.replace(/\W|_/g, '').toLowerCase()
+    let left = 0
+    let right = str.length - 1
+    while(left < right){
+      if(str[left] !== str[right]) return false
+      left++
+      right--
+    }
+    return true
+  };
 ```
 
-```
+执行用时：72 ms, 在所有 JavaScript 提交中击败了97.91%的用户
+
+内存消耗：37.9 MB, 在所有 JavaScript 提交中击败了38.46%的用户
+
+Python
+
+str.isalnum()方法检测字符串是否由字母和数字组成。
+如果 string 至少有一个字符并且所有字符都是字母或数字则返回 True,否则返回 False
+
 str.lower()方法转换字符串中所有大写字符为小写。
 返回将字符串中所有大写字符转换为小写后生成的字符串。
-```
 
     def isPalindrome(self, s: str) -> bool:
         s = ''.join(i for i in s if i.isalnum()).lower()
