@@ -4,21 +4,23 @@
 
 [01.两数之和 ](#01.两数之和)
 
-[15.三数之和](#15.三数之和)
-
-[04.寻找两个正序数组的中位数](#04.寻找两个正序数组的中位数)
-
 [06.Z 字形变换](#06.Z 字形变换)
 
 [08.字符串转换整数 (atoi)](#08.字符串转换整数 (atoi))
 
 [09.回文数](#09.回文数)
 
+[11. 盛最多水的容器](#11. 盛最多水的容器)
+
 [13罗马数字转整数](#13罗马数字转整数)
 
 [14.最长公共前缀](#14.最长公共前缀)
 
 [20.有效的括号](#20.有效的括号)
+
+[21. 合并两个有序链表](#21. 合并两个有序链表)
+
+[26. 删除排序数组中的重复项](#26. 删除排序数组中的重复项)
 
 [27.移除元素](#27.移除元素)
 
@@ -36,7 +38,15 @@
 
 [69.x 的平方根](#69.x 的平方根)
 
+
+
+##### [双指针](#双指针)
+
+[11. 盛最多水的容器](#11. 盛最多水的容器)
+
 ##### [动态规划](#动态规划)
+
+[32. 最长有效括号](#32. 最长有效括号)
 
 [70.爬楼梯](#70.爬楼梯)
 
@@ -45,6 +55,8 @@
 [121.买卖股票的最佳时机](#121.买卖股票的最佳时机)
 
 [198.打家劫舍](#198.打家劫舍)
+
+[122. 买卖股票的最佳时机 II](#122. 买卖股票的最佳时机 II)
 
 [83.删除排序链表中的重复元素](#83.删除排序链表中的重复元素)
 
@@ -58,19 +70,19 @@
 
 [118.杨辉三角](#118.杨辉三角)
 
+[112. 路径总和](#112. 路径总和)
+
 [ 237.删除链表中的节点](# 237.删除链表中的节点)
 
 [283. 移动零](#283. 移动零)
 
 [371. 两整数之和](#371. 两整数之和)
 
-##### [双指针](#双指针)
-
-[11. 盛最多水的容器](#11. 盛最多水的容器)
-
-[15. 三数之和](#15. 三数之和)
 
 
+[15. 三数之和](#15.三数之和)
+
+[04.寻找两个正序数组的中位数](#04.寻找两个正序数组的中位数)
 
 #### 1. 两数之和
 
@@ -136,7 +148,7 @@ var twoSum = function(nums, target) {
 
 内存消耗 :32.7 MB, 在所有 JavaScript 提交中击败了100.00%的用户
 
-PY
+###### enumerate() 函数
 
 enumerate() 函数用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列出数据和数据下标，一般用在 for 循环当中。
 
@@ -169,178 +181,9 @@ for i,num in enumerate(nums):
 
 可以假设 nums1 和 nums2 不会同时为空。
 
-####15. 三数之和
-
-难度中等
-
-给你一个包含 *n* 个整数的数组 `nums`，判断 `nums` 中是否存在三个元素 *a，b，c ，*使得 *a + b + c =* 0 ？请你找出所有满足条件且不重复的三元组。
-
-**注意：**答案中不可以包含重复的三元组。
-
-**示例：**
-
-```
-给定数组 nums = [-1, 0, 1, 2, -1, -4]，
-
-满足要求的三元组集合为：
-[
-  [-1, 0, 1],
-  [-1, -1, 2]
-]
-```
-
-数组遍历
-首先对数组进行排序，排序后固定一个数 nums[i]，再使用左右指针指向 nums[i]后面的两端，数字分别为 nums[L] 和 nums[R]，计算三个数的和 sum 判断是否满足为 0，满足则添加进结果集
-如果 nums[i]大于 0，则三数之和必然无法等于 0，结束循环
-如果 nums[i]== nums[i−1]，则说明该数字重复，会导致结果重复，所以应该跳过
-当 sum == 0时，nums[L]== nums[L+1] 则会导致结果重复，应该跳过，L++
-当 sum == 0时，nums[R] == nums[R-1]则会导致结果重复，应该跳过，R--
-时间复杂度：O(n^2)，n 为数组长度
-
-```js
-var threeSum = function(nums) {
-    let ans = [];
-    const len = nums.length;
-    if(nums == null || len < 3) return ans;
-    nums.sort((a, b) => a - b); // 排序
-    for (let i = 0; i < len ; i++) {
-        if(nums[i] > 0) break; // 如果当前数字大于0，则三数之和一定大于0，所以结束循环
-        if(i > 0 && nums[i] == nums[i-1]) continue; // 去重
-        let L = i+1;
-        let R = len-1;
-        while(L < R){
-            const sum = nums[i] + nums[L] + nums[R];
-            if(sum == 0){
-                ans.push([nums[i],nums[L],nums[R]]);
-                while (L<R && nums[L] == nums[L+1]) L++; // 去重
-                while (L<R && nums[R] == nums[R-1]) R--; // 去重
-                L++;
-                R--;
-            }
-            else if (sum < 0) L++;
-            else if (sum > 0) R--;
-        }
-    }        
-    return ans;
-};
-```
-
- 4. 寻找两个正序数组的中位数
-
-难度困难
-
-给定两个大小为 m 和 n 的正序（从小到大）数组 `nums1` 和 `nums2`。
-
-请你找出这两个正序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
-
-你可以假设 `nums1` 和 `nums2` 不会同时为空。
-
-示例 1:
-
-nums1 = [1, 3]
-nums2 = [2]
-
-则中位数是 2.0
-示例 2:
-
-nums1 = [1, 2]
-nums2 = [3, 4]
-
-则中位数是 (2 + 3)/2 = 2.5
-
-```js
-var findMedianSortedArrays = function (nums1, nums2) {
-    let nums = []
-    let i =0,j=0;
-    let total = nums1.length+nums2.length
-    let mid = Math.floor(total/2) + 1
-    while(true) {
-        if(nums.length === mid) {
-            if( total%2 === 1) {
-                return nums[mid-1]
-            }else{
-                return (nums[mid-1]+nums[mid-2])/2
-            }
-        }
-        if(i < nums1.length && j === nums2.length) {
-            nums.push(nums1[i])
-            i++;
-            continue
-        }
-        if(i === nums1.length && j < nums2.length) {
-            nums.push(nums2[j])
-            j++;
-            continue
-        }
-        if(nums1[i] < nums2[j]) {
-            nums.push(nums1[i])
-            i++;
-            continue
-        }else{
-            nums.push(nums2[j])
-            j++;
-            continue
-        }
-    }
-};
-```
-
-当某一个数组为空另一个只有一个元素是为特殊情况，直接领出来返回即可
-合并两个数组并排序
-如果长度为奇数就直接返回中间的一个元素
-如果长度为偶数则是中间两位相加/2
-
-```js
-var findMedianSortedArrays = function(nums1, nums2) {
-    let result = []
-    result = nums1.concat(nums2)
-    if(result.length == 1){
-        return result[0]
-    }
-    result.sort((a,b) => a-b)
-    if( result.length%2 != 0){
-        return result[Math.floor(result.length/2)]
-    }
-    else{
-        return (result[result.length/2]+result[result.length/2-1])/2
-    }
-}
-```
-
-```js
-var getKth = function(num1, start1, end1, num2, start2, end2, k) {
-  const len1 = end1 - start1 + 1;
-  const len2 = end2 - start2 + 1;
-  // 保证 len1 比 len2 小。 那么最后如果存在空数组一定是落在 num1 上
-  if (len1 > len2) return getKth(num2, start2, end2, num1, start1, end1, k);
-  
-  if (len1 === 0) return num2[start2 + k - 1];
-  
-  if (k === 1) return Math.min(num1[start1], num2[start2]);
-  
-  // 如果 len1 比 k 的一半还小，那么直接取 num1 的最后一个元素进行比较
-  const i = start1 + Math.min(len1, Math.floor(k / 2)) - 1;
-  // 如果 len2 比 k 的一半还小，那么直接取 num2 的最后一个元素进行比较
-  const j = start2 + Math.min(len2, Math.floor(k / 2)) - 1;
-  // 如果 num1[i] 小，那么前半部分可以直接丢弃
-  if (num1[i] < num2[j]) return getKth(num1, i + 1, end1, num2, start2, end2, k - (i - start1 + 1));
-  return getKth(num1, start1, end1, num2, j + 1, end2, k - (j - start2 + 1));
-}
-var findMedianSortedArrays = function(nums1, nums2) {
-  const m = nums1.length;
-  const n = nums2.length;
-  const left = Math.floor((m + n + 1) / 2);
-  // 注意边界，这样可以即处理奇数的情况，又处理偶数的情况
-  const right = Math.floor((m + n + 2) / 2);
-  // 如果是奇数，那么 left === right, 如果为偶数，那么right = left + 1
-  // 奇数的情况，相当于求了两遍的中位数。
-  return (getKth(nums1, 0, m - 1, nums2, 0, n - 1, left) + getKth(nums1, 0, m - 1, nums2, 0, n - 1, right)) * 0.5;
-};
-```
-
 #### 6. Z 字形变换
 
-难度中等686
+难度中等
 
 将一个给定字符串根据给定的行数，以从上往下、从左到右进行 Z 字形排列。
 
@@ -423,8 +266,6 @@ var convert = function(s, numRows) {
 };
 ```
 
-
-
 #### 8. 字符串转换整数 (atoi)
 
 难度中等
@@ -446,9 +287,7 @@ var convert = function(s, numRows) {
 - 本题中的空白字符只包括空格字符 `' '` 。
 - 假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−231,  231 − 1]。如果数值超过这个范围，请返回  INT_MAX (231 − 1) 或 INT_MIN (−231) 。
 
-###### js
-
-###### 解题思路
+###### 内置函数
 
 parseInt(string, radix)：
 
@@ -470,11 +309,7 @@ var myAtoi = function(str) {
 };
 ```
 
-###### py
-
-###### 解题思路
-
-使用正则表达式：
+###### py正则表达式：
 
 ```。
 ^：匹配字符串开头
@@ -484,12 +319,6 @@ var myAtoi = function(str) {
 +：前面一个字符的一个或多个
 \D：一个非数字字符
 *：前面一个字符的0个或多个
-str.lstrip([chars])		chars --指定截取的字符。返回截掉字符串最左边的空格或指定字符后生成的新字符串。
-str = "     this is string example....wow!!!     ";
-print str.lstrip();			>>>this is string example....wow!!!
-str = "88888888this is string example....wow!!!8888888";
-print str.lstrip('8');  	>>>this is string example....wow!!!8888888
-max(min(数字, 2**31 - 1), -2**31) 用来防止结果越界
 ```
 
 ```py
@@ -581,8 +410,6 @@ var isPalindrome = function(x) {
 ```
 
 ###### 双指针
-
-
 
 ```js
 var maxArea = function(height) {
@@ -687,21 +514,15 @@ M             1000
 解释: M = 1000, CM = 900, XC = 90, IV = 4.
 ```
 
-js
+###### 遍历
 
 首先将所有的组合可能性列出并添加到哈希表中
 然后对字符串进行遍历，由于组合只有两种，一种是 1 个字符，一种是 2 个字符，其中 2 个字符优先于 1 个字符
 先判断两个字符的组合在哈希表中是否存在，存在则将值取出加到结果 ans 中，并向后移2个字符。不存在则将判断当前 1 个字符是否存在，存在则将值取出加到结果 ans 中，并向后移 1 个字符
 遍历结束返回结果 ans
 
-代码
-
 ```javascript
-/**
-- @param {string} s
-- @return {number}
-  */
-  var romanToInt = function(s) {
+var romanToInt = function(s) {
   const map = {
 	    I : 1,
         IV: 4,
@@ -716,7 +537,6 @@ js
         D: 500,
         CM: 900,
         M: 1000
-
 	};
 
 let ans = 0;
@@ -735,7 +555,7 @@ for(let i = 0;i < s.length;) {
 };
 ```
 
-py
+###### pyHashMap映射
 
 建立一个HashMap来映射符号和值，然后对字符串从左到右来，如果当前字符代表的值不小于其右边，就加上该值；否则就减去该值。以此类推到最左边的数，最终得到的结果即是答案
 
@@ -785,9 +605,7 @@ class Solution:
 
 所有输入只包含小写字母 `a-z` 。
 
-JS
-
-解题思路
+###### 遍历
 
 当字符串数组长度为 0 时公共前缀为空，直接返回
 初始化，令最长公共前缀 ans 的值为第一个字符串
@@ -795,10 +613,6 @@ JS
 如果查找过程中出现了 ans 为空的情况，则公共前缀不存在直接返回
 
 ```js
-/**
- * @param {string[]} strs
- * @return {string}
- */
 var longestCommonPrefix = function(strs) {
     if(strs.length == 0) 
         return "";
@@ -817,7 +631,7 @@ var longestCommonPrefix = function(strs) {
 };
 ```
 
-py
+###### py遍历
 
 ```py
 class Solution:
@@ -830,8 +644,6 @@ class Solution:
                 s = s[:-1]
         return s
 ```
-
-
 
 #### 20. 有效的括号
 
@@ -885,7 +697,7 @@ class Solution:
 输出: true
 ```
 
-py
+###### py replace()
 
 使用replace()替代括号，最后判断字符串
 
@@ -899,9 +711,7 @@ class Solution:
         return s==''
 ```
 
-js
-
-解题思路
+###### 遍历
 
 边遍历边匹配。也就是遍历的时候遇到左括号存入数组，下次遇到的第一个右括号必须和数组中最后一个元素匹配，否则为无效字符串，匹配完成后从数组中删除此元素。若最终数组为空，表示括号已全部匹配完，字符串有效。
 
@@ -935,7 +745,7 @@ var isValid = function (s) {
 输出：1->1->2->3->4->4
 ```
 
-###### Python 
+###### py and 和 or
 
 and 和 or 有提前截至运算的功能。
 
@@ -957,11 +767,11 @@ def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
     return l1 or l2
 ```
 
-###### js
+###### 递归
 
-当 `l1` 为空或 `l2` 为空时结束
+当 l1 为空或 l2 为空时结束
 
-如果 `l1` 的 `val` 值更小，则将 `l1.next` 与排序好的链表头相接，`l2` 同理
+如果 l1 的 val 值更小，则将 l1.next 与排序好的链表头相接，l2 同理
 
 ```js
 var mergeTwoLists = function(l1, l2) {
@@ -979,10 +789,7 @@ var mergeTwoLists = function(l1, l2) {
         return l2;
     }
 };
-
 ```
-
-
 
 #### 26. 删除排序数组中的重复项
 
@@ -1031,9 +838,7 @@ def removeDuplicates(self, nums: List[int]) -> int:
 这五个元素可为任意顺序。
 ```
 
-js
-
-拷贝覆盖
+###### 拷贝覆盖
 
 遍历数组nums，每次取出的数字变量为num，同时设置一个下标ans
 在遍历过程中如果出现数字与需要移除的值不相同时，则进行拷贝覆盖nums[ans] = num，ans自增1
@@ -1053,7 +858,7 @@ var removeElement = function(nums, val) {
 };
 ```
 
-交换移除
+###### 交换移除
 
 遍历数组nums，遍历指针为i，总长度为ans
 在遍历过程中如果出现数字与需要移除的值不相同时，则i自增1，继续下一次遍历
@@ -1098,7 +903,7 @@ var removeElement = function(nums, val) {
 输出: -1
 ```
 
-###### js
+###### indexOf()
 
 1、indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。
 
@@ -1107,6 +912,8 @@ var strStr = function(haystack, needle) {
     return haystack.indexOf(needle);
 };
 ```
+
+###### slice()
 
 2   slice() 方法可从已有的数组中返回选定的元素。
 
@@ -1155,7 +962,7 @@ var strStr = function(haystack, needle) {
 输出: 1
 ```
 
-js
+###### indexOf()
 
 ```js
 var searchInsert = function(nums, target) {
@@ -1172,7 +979,7 @@ var searchInsert = function(nums, target) {
 
 #### 38. 外观数列
 
-难度简单458
+难度简单
 
 「外观数列」是一个整数序列，从数字 1 开始，序列中的每一项都是对前一项的描述。前五项如下：
 
@@ -1229,9 +1036,7 @@ var countAndSay = function(n) {
 解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
 ```
 
-###### js
-
-动态规划
+###### 动态规划
 
 首先对数组进行遍历，当前最大连续子序列和为 sum，结果为 ans
 如果 sum > 0，则说明 sum 对结果有增益效果，则 sum 保留并加上当前遍历数字
@@ -1273,19 +1078,14 @@ var maxSubArray = function(nums) {
 输出: 5
 ```
 
-###### js
+###### 字符串遍历
 
-字符串遍历
 从字符串末尾开始向前遍历，其中主要有两种情况
 第一种情况，以字符串"Hello World"为例，从后向前遍历直到遍历到头或者遇到空格为止，即为最后一个单词"World"的长度5
 第二种情况，以字符串"Hello World "为例，需要先将末尾的空格过滤掉，再进行第一种情况的操作，即认为最后一个单词为"World"，长度为5
 所以完整过程为先从后过滤掉空格找到单词尾部，再从尾部向前遍历，找到单词头部，最后两者相减，即为单词的长度
 
 ```js
-/**
- * @param {string} s
- * @return {number}
- */
 var lengthOfLastWord = function(s) {
     let end = s.length - 1;
     while(end >= 0 && s[end] == ' ') end--;
@@ -1344,7 +1144,7 @@ var lengthOfLastWord = function(s) {
 输出: "10101"
 ```
 
-###### js
+###### 内置函数
 
 **BigInt** 是一种内置对象，它提供了一种方法来表示大于 `253 - 1` 的整数。这原本是 Javascript中可以用 [`Number`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number) 表示的最大数字。**BigInt** 可以表示任意大的整数。
 
@@ -1393,7 +1193,7 @@ module.exports = {
      由于返回类型是整数，小数部分将被舍去。
 ```
 
-###### js
+###### 内置函数
 
 ```js
 var mySqrt = function(x) {
@@ -1401,7 +1201,7 @@ var mySqrt = function(x) {
 };
 ```
 
-牛顿法，迭代公式re_{n+1}=re_{n}-\frac{f(re_n)}{f'(re_n)}re 
+###### 牛顿法，迭代公式re_{n+1}=re_{n}-\frac{f(re_n)}{f'(re_n)}re 
 
 ```js
 var mySqrt = function(x) {
@@ -1418,7 +1218,7 @@ var mySqrt = function(x) {
 
 #### 32. 最长有效括号
 
-难度困难666收藏分享切换为英文关注反馈
+难度困难
 
 给定一个只包含 `'('` 和 `')'` 的字符串，找出最长的包含有效括号的子串的长度。
 
@@ -1516,7 +1316,7 @@ var climbStairs = function(n) {
 };
 ```
 
-#### [746. 使用最小花费爬楼梯](https://leetcode-cn.com/problems/min-cost-climbing-stairs/)
+#### 746. 使用最小花费爬楼梯
 
 难度简单
 
@@ -1641,7 +1441,7 @@ var minCostClimbingStairs = function(cost) {
 };
 ```
 
-#### [121. 买卖股票的最佳时机](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/)
+#### 121. 买卖股票的最佳时机
 
 难度简单
 
@@ -1669,9 +1469,8 @@ var minCostClimbingStairs = function(cost) {
 解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
 ```
 
-###### js
+###### 动态规划dp法
 
-动态规划dp法
 dp[i] = max(0, dp[i−1] + diff[i])
 max = max(max, dp[i])
 
@@ -1687,7 +1486,7 @@ var maxProfit = function(prices) {
 }
 ```
 
-#### [198. 打家劫舍](https://leetcode-cn.com/problems/house-robber/)
+#### 198. 打家劫舍
 
 难度简单
 
@@ -1747,9 +1546,9 @@ var rob = function(nums) {
 };
 ```
 
-#### [122. 买卖股票的最佳时机 II](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/)
+#### 122. 买卖股票的最佳时机 II
 
-难度简单698收藏分享切换为英文关注反馈
+难度简单
 
 给定一个数组，它的第 *i* 个元素是一支给定股票第 *i* 天的价格。
 
@@ -1784,7 +1583,7 @@ var rob = function(nums) {
 解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
 ```
 
-###### js
+###### 动态规划
 
 ```js
 var maxProfit = function(prices) {
@@ -1800,7 +1599,7 @@ var maxProfit = function(prices) {
 
 
 
-#### [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/)
+#### 83. 删除排序链表中的重复元素
 
 难度简单
 
@@ -1821,9 +1620,8 @@ var maxProfit = function(prices) {
 输出: 1->2->3
 ```
 
-###### js
+###### 链表
 
-链表
 指定 cur 指针指向头部 head
 当 cur 和 cur.next 的存在为循环结束条件，当二者有一个不存在时说明链表没有去重复的必要了
 当 cur.val 和 cur.next.val 相等时说明需要去重，则将 cur 的下一个指针指向下一个的下一个，这样就能达到去重复的效果
@@ -1843,9 +1641,7 @@ var deleteDuplicates = function(head) {
 };
 ```
 
-
-
-#### [88. 合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)
+#### 88. 合并两个有序数组
 
 难度简单
 
@@ -1875,9 +1671,7 @@ def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
            nums1[:] = sorted(nums1[:m] + nums2)
 ```
 
-
-
-#### [100. 相同的树](https://leetcode-cn.com/problems/same-tree/)
+#### 100. 相同的树
 
 难度简单
 
@@ -1905,7 +1699,7 @@ def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
 输出: false
 ```
 
-深度优先遍历
+###### 深度优先遍历
 
 终止条件与返回值：
 
@@ -1931,7 +1725,7 @@ var isSameTree = function(p, q) {
 };
 ```
 
-#### [101. 对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
+#### 101. 对称二叉树
 
 难度简单
 
@@ -1975,11 +1769,9 @@ function checkNode(left, right) {
   return true;
 ```
 
+#### 107. 二叉树的层次遍历 II
 
-
-#### [107. 二叉树的层次遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
-
-难度简单231
+难度简单
 
 给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
 
@@ -2005,9 +1797,7 @@ function checkNode(left, right) {
 ]
 ```
 
-###### js
-
-DFS
+###### DFS
 
 ```js
 var levelOrderBottom = function(root) {
@@ -2028,9 +1818,7 @@ var levelOrderBottom = function(root) {
 };
 ```
 
-
-
-#### [110. 平衡二叉树](https://leetcode-cn.com/problems/balanced-binary-tree/)
+#### 110. 平衡二叉树
 
 难度简单
 
@@ -2070,7 +1858,7 @@ var levelOrderBottom = function(root) {
 
 返回 `false` 。
 
-###### js
+###### 递归
 
 从左到右递归树的节点，记录节点的最大深度
 在记录节点的同时对该树的节点的左子树与右子树的最大深度做一次对比，如果差值超过1则返回false
@@ -2103,7 +1891,49 @@ var isBalanced = function(root) {
 };
 ```
 
-#### [118. 杨辉三角](https://leetcode-cn.com/problems/pascals-triangle/)
+#### 112. 路径总和
+
+难度简单
+
+给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。
+
+**说明:** 叶子节点是指没有子节点的节点。
+
+**示例:** 
+给定如下二叉树，以及目标和 `sum = 22`，
+
+```
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \      \
+        7    2      1
+```
+
+返回 `true`, 因为存在目标和为 22 的根节点到叶子节点的路径 `5->4->11->2`。
+
+###### 递归
+
+如果当前节点不是叶子节点，递归它的所有子节点，传递的参数就是 sum 减去当前的节点值；
+如果当前节点是叶子节点，判断参数 sum 是否等于当前节点值，如果相等就返回 true，否则返回 false。
+
+```js
+var hasPathSum = function(root, sum) {
+  // 根节点为空
+  if (root === null) return false;
+  
+  // 叶节点 同时 sum 参数等于叶节点值
+  if (root.left === null && root.right === null) return root.val === sum;
+
+  // 总和减去当前值，并递归
+  sum = sum - root.val
+  return hasPathSum(root.left, sum) || hasPathSum(root.right, sum);
+};
+```
+
+#### 118. 杨辉三角
 
 难度简单309
 
@@ -2151,9 +1981,7 @@ var generate = function (numRows) {
 };
 ```
 
-
-
-#### [136. 只出现一次的数字](https://leetcode-cn.com/problems/single-number/)
+#### 136. 只出现一次的数字
 
 难度简单
 
@@ -2189,7 +2017,7 @@ var generate = function (numRows) {
 - 任何数与0异或为其本身 0 ^ n = n
 - 相同的数异或为0: n ^ n = 0
 
-#### [169. 多数元素](https://leetcode-cn.com/problems/majority-element/)
+#### 169. 多数元素
 
 难度简单
 
@@ -2411,7 +2239,7 @@ str.lower()方法转换字符串中所有大写字符为小写。
     def isPalindrome(self, s: str) -> bool:
         s = ''.join(i for i in s if i.isalnum()).lower()
         return s == s[::-1]
-#### [66. 加一](https://leetcode-cn.com/problems/plus-one/)
+#### 66. 加一
 
 难度简单
 
@@ -2452,7 +2280,7 @@ str.lower()方法转换字符串中所有大写字符为小写。
         for i in str(nums_int):
             res.append(int(i))
         return res
-#### [387. 字符串中的第一个唯一字符](https://leetcode-cn.com/problems/first-unique-character-in-a-string/)
+#### 387. 字符串中的第一个唯一字符
 
 难度简单
 
@@ -2470,7 +2298,20 @@ s = "loveleetcode",
 
 **注意事项：**您可以假定该字符串只包含小写字母。
 
-##### PY
+###### 遍历
+
+indexof===lastIndexOf则代表只出现一次
+
+```js
+var firstUniqChar = function(s) {
+    for(let i=0;i<s.length;i++){
+        if(s.indexOf(s[i])==s.lastIndexOf(s[i])){
+           return i
+           }
+    }
+    return -1
+};
+```
 
 ###### 第一种
 
@@ -2512,34 +2353,11 @@ class Solution(object):
         return -1
 ```
 
-###### js
-
-##### 解题思路
-
-遍历，若indexof===lastIndexOf则代表只出现一次
-
-##### 代码
-
-```js
-/**
- * @param {string} s
- * @return {number}
- */
-var firstUniqChar = function(s) {
-    for(let i=0;i<s.length;i++){
-        if(s.indexOf(s[i])==s.lastIndexOf(s[i])){
-           return i
-           }
-    }
-    return -1
-};
-```
-
-#### [189. 旋转数组](https://leetcode-cn.com/problems/rotate-array/)
+#### 189. 旋转数组
 
 难度简单
 
-给定一个数组，将数组中的元素向右移动 *k *个位置，其中 *k *是非负数。
+给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。
 
 **示例 1:**
 
@@ -2568,9 +2386,7 @@ var firstUniqChar = function(s) {
 - 尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。
 - 要求使用空间复杂度为 O(1) 的 **原地 **算法。
 
-##### js
-
-##### 解题思路
+###### 遍历
 
 1.使用while循环遍历，一次递减
 2.将最后一个弹出，同时插入到第一个的位置
@@ -2580,28 +2396,19 @@ var firstUniqChar = function(s) {
 
 - pop() 方法将删除 arrayObject 的最后一个元素，把数组长度减 1，并且返回它删除的元素的值。如果数组已经为空，则 pop() 不改变数组，并返回 undefined 值。
 
-  ##### 代码
 
 ```js
-/**
-- @param {number[]} nums
-- @param {number} k
-- @return {void} Do not return anything, modify nums in-place instead.
-  */
-  var rotate = function(nums, k) {
-  while (k>0) {
-  nums.unshift(nums.pop())
-  k = k-1
-    }
-    return nums
-  };
+ var rotate = function(nums, k) {
+      while (k>0) {
+          nums.unshift(nums.pop())
+          k = k-1
+      }
+      return nums
+ };
 ```
 
-##### py
+###### 切片
 
-##### 解题思路
-
-切片
 1、将-k个元素添加到nums的开始，
 2、注意，为什么是nums[lenth-k:]而不是nums[-k:]，因为是为了避免k=0的情况
 
@@ -2617,9 +2424,9 @@ def rotate(self, nums: List[int], k: int) -> None:
     nums[:] = nums[lenth-k:]+nums[:lenth-k]
 ```
 
-#### [350. 两个数组的交集 II](https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/)
+#### 350. 两个数组的交集 II]
 
-难度简单262收藏分享切换为英文关注反馈
+难度简单
 
 给定两个数组，编写一个函数来计算它们的交集。
 
@@ -2643,13 +2450,9 @@ def rotate(self, nums: List[int], k: int) -> None:
 - 输出结果中每个元素出现的次数，应与元素在两个数组中出现的次数一致。
 - 我们可以不考虑输出结果的顺序。
 
-##### py
-
-解题思路
+###### 内置函数
 
 利用python List中append与remove方法的特点进行操作。循环遍历nums1中的元素，然后在nums2中查找是否存在。如果存在，加入临时list中，并且需要注意：把nums2中的对应元素删掉。比如nums1 = [1, 2, 2, 1]， nums2 = [2]。如果不删除，则会产生错误。因为nums1与nums2的元素个数要保持一致。
-
-##### 代码
 
 ```python
 class Solution:
@@ -2662,7 +2465,7 @@ class Solution:
         return nums
 ```
 
-#### [217. 存在重复元素](https://leetcode-cn.com/problems/contains-duplicate/)
+#### 217. 存在重复元素
 
 难度简单
 
@@ -2702,9 +2505,7 @@ def containsDuplicate(self, nums: List[int]) -> bool:
     return False
 ```
 
-#### 
-
-#### [237. 删除链表中的节点](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/)
+#### 237. 删除链表中的节点
 
 难度简单
 
@@ -2744,11 +2545,7 @@ def deleteNode(self, node):
 1. 必须在原数组上操作，不能拷贝额外的数组。
 2. 尽量减少操作次数。
 
-##### py
-
-##### 方法1
-
-##### 解题思路
+###### 内置函数
 
 只要当前是0，就移除，同时在末尾在加上一个0。
 
@@ -2764,9 +2561,7 @@ class Solution:
                 nums.append(0)
 ```
 
-##### 方法2
-
-##### 解题思路
+###### 双指针
 
 双指针滑动，交换非零元素和零元素的位置
 
@@ -2808,7 +2603,7 @@ def moveZeroes(self, nums: List[int]) -> None:
 输出: 1
 ```
 
-加法可通过&运算和^运算实现：
+###### 通过&运算和^运算实现加法
 
 两个二进制数相加，^运算的结果不考虑进位时的结果
 两个二进制数相加，&运算的结果是对应为是否有进位，如果结果出现1的话，则左移（<<）1位后和^运算的结果继续做加法，直到&运算的结果为0，此时&运算的结果就是两个数的和
@@ -2832,7 +2627,7 @@ var getSum = function(a, b) {
 };
 ```
 
-#### [2. 两数相加](https://leetcode-cn.com/problems/add-two-numbers/)
+#### 2. 两数相加
 
 难度中等
 
@@ -2871,7 +2666,111 @@ var addTwoNumbers = function(l1, l2) {
 };
 ```
 
-#### [36. 有效的数独](https://leetcode-cn.com/problems/valid-sudoku/)
+####15. 三数之和
+
+难度中等
+
+给你一个包含 *n* 个整数的数组 `nums`，判断 `nums` 中是否存在三个元素 *a，b，c ，*使得 *a + b + c =* 0 ？请你找出所有满足条件且不重复的三元组。
+
+**注意：**答案中不可以包含重复的三元组。
+
+**示例：**
+
+```
+给定数组 nums = [-1, 0, 1, 2, -1, -4]，
+
+满足要求的三元组集合为：
+[
+  [-1, 0, 1],
+  [-1, -1, 2]
+]
+```
+
+###### 数组遍历
+
+首先对数组进行排序，排序后固定一个数 nums[i]，再使用左右指针指向 nums[i]后面的两端，数字分别为 nums[L] 和 nums[R]，计算三个数的和 sum 判断是否满足为 0，满足则添加进结果集
+如果 nums[i]大于 0，则三数之和必然无法等于 0，结束循环
+如果 nums[i]== nums[i−1]，则说明该数字重复，会导致结果重复，所以应该跳过
+当 sum == 0时，nums[L]== nums[L+1] 则会导致结果重复，应该跳过，L++
+当 sum == 0时，nums[R] == nums[R-1]则会导致结果重复，应该跳过，R--
+时间复杂度：O(n^2)，n 为数组长度
+
+```js
+var threeSum = function(nums) {
+    let ans = [];
+    const len = nums.length;
+    if(nums == null || len < 3) return ans;
+    nums.sort((a, b) => a - b); // 排序
+    for (let i = 0; i < len ; i++) {
+        if(nums[i] > 0) break; // 如果当前数字大于0，则三数之和一定大于0，所以结束循环
+        if(i > 0 && nums[i] == nums[i-1]) continue; // 去重
+        let L = i+1;
+        let R = len-1;
+        while(L < R){
+            const sum = nums[i] + nums[L] + nums[R];
+            if(sum == 0){
+                ans.push([nums[i],nums[L],nums[R]]);
+                while (L<R && nums[L] == nums[L+1]) L++; // 去重
+                while (L<R && nums[R] == nums[R-1]) R--; // 去重
+                L++;
+                R--;
+            }
+            else if (sum < 0) L++;
+            else if (sum > 0) R--;
+        }
+    }        
+    return ans;
+};
+```
+
+#### 4.寻找两个正序数组的中位数
+
+难度困难
+
+给定两个大小为 m 和 n 的正序（从小到大）数组 `nums1` 和 `nums2`。
+
+请你找出这两个正序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
+
+你可以假设 `nums1` 和 `nums2` 不会同时为空。
+
+示例 1:
+
+nums1 = [1, 3]
+nums2 = [2]
+
+则中位数是 2.0
+示例 2:
+
+nums1 = [1, 2]
+nums2 = [3, 4]
+
+则中位数是 (2 + 3)/2 = 2.5
+
+###### 合并两个数组并排序
+
+当某一个数组为空另一个只有一个元素是为特殊情况，直接领出来返回即可
+合并两个数组并排序
+如果长度为奇数就直接返回中间的一个元素
+如果长度为偶数则是中间两位相加/2
+
+```js
+var findMedianSortedArrays = function(nums1, nums2) {
+    let result = []
+    result = nums1.concat(nums2)
+    if(result.length == 1){
+        return result[0]
+    }
+    result.sort((a,b) => a-b)
+    if( result.length%2 != 0){
+        return result[Math.floor(result.length/2)]
+    }
+    else{
+        return (result[result.length/2]+result[result.length/2-1])/2
+    }
+}
+```
+
+#### 36. 有效的数独
 
 难度中等
 
@@ -2933,11 +2832,8 @@ var addTwoNumbers = function(l1, l2) {
 - 给定数独序列只包含数字 `1-9` 和字符 `'.'` 。
 - 给定数独永远是 `9x9` 形式的。
 
-js
+###### 哈希判重
 
-##### 解题思路
-
-哈希判重
 行
 当前行9个数字不能有重复数字
 列
@@ -2985,11 +2881,7 @@ var isValidSudoku = function(board) {
 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 ```
 
-py
-
-##### 解题思路
-
-按规则逐条判断，9行+9列+9块
+###### py按规则逐条判断，9行+9列+9块
 
 ##### 代码
 
@@ -3013,11 +2905,9 @@ def isValidSudoku(self, board: List[List[str]]) -> bool:
             if not isvaild9(tmp):
                 return False
     return True
-    
-#https://leetcode-cn.com/problems/valid-sudoku/solution/pythonji-ben-pan-duan-by-luanz/
 ```
 
-#### [48. 旋转图像](https://leetcode-cn.com/problems/rotate-image/)
+#### 48. 旋转图像
 
 难度中等
 
@@ -3093,34 +2983,6 @@ var rotate = function(matrix) {
     }
   }
 };
-```
-
-###### py
-
-```python
-def rotate(self, matrix: List[List[int]]) -> None:
-    """
-    Do not return anything, modify matrix in-place instead.
-    先做矩阵转置（即沿着对角线翻转），然后每个列表翻转；
-    """
-    n = len(matrix)
-    for i in range(n):
-        for j in range(i, n):
-            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
-    for m in range(a):
-        matrix[m].reverse()
-```
-
-```python
-def rotate(self, matrix: List[List[int]]) -> None:
-    """
-    Do not return anything, modify matrix in-place instead.
-    通过内置函数zip，可以简单实现矩阵转置，下面的代码等于先整体翻转，后转置；
-    不过这种写法的空间复杂度其实是O(n);
-    """
-    matrix[:] = map(list, zip(*matrix[::-1]))
-//#作者：fe-lcifer
-//#链接：https://leetcode-cn.com/problems/rotate-image/solution/pythonjavascript-liang-ci-fan-zhuan-48-xuan-zhuan-/
 ```
 
 
