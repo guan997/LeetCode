@@ -62,15 +62,19 @@
 
 [88.删除排序链表中的重复元素](#88.删除排序链表中的重复元素)
 
+
+
 [100.相同的树](#100.相同的树)
 
 [101.对称二叉树](#101.对称二叉树)
 
 [107.二叉树的层次遍历 II](#107.二叉树的层次遍历 II)
 
-[118.杨辉三角](#118.杨辉三角)
+[111. 二叉树的最小深度](#111. 二叉树的最小深度)
 
 [112. 路径总和](#112. 路径总和)
+
+[118.杨辉三角](#118.杨辉三角)
 
 [ 237.删除链表中的节点](# 237.删除链表中的节点)
 
@@ -1890,6 +1894,74 @@ var isBalanced = function(root) {
     }
 };
 ```
+
+#### 111. 二叉树的最小深度
+
+难度简单
+
+给定一个二叉树，找出其最小深度。
+
+最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+
+**说明:** 叶子节点是指没有子节点的节点。
+
+**示例:**
+
+给定二叉树 `[3,9,20,null,null,15,7]`,
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回它的最小深度  2.
+
+###### 递归
+
+```js
+var minDepth = function(root) {
+    if(root === null) return 0;
+    const left = minDepth(root.left);
+    const right = minDepth(root.right);
+    return (left == 0 || right == 0) ? left + right + 1: Math.min(left,right) + 1;
+};
+```
+
+执行用时：80 ms, 在所有 JavaScript 提交中击败了58.38%的用户
+
+内存消耗：39.6 MB, 在所有 JavaScript 提交中击败了50.00%的用户
+
+###### 递归DFS
+
+当前节点root为空时，最小深度为0
+当前节点root的左子树和右子树都为空时，说明此处树的最小深度为1
+如果为其他情况，则说明当前节点有值，且需要分别计算其左右子树的最小深度，返回最小深度+1，+1表示当前节点存在有1个深度
+
+```js
+var minDepth = function(root) {
+    if(root == null) {
+        return 0;
+    }
+    if(root.left == null && root.right == null) {
+        return 1;
+    }
+    let ans = Number.MAX_SAFE_INTEGER;//最大的安全整数
+    if(root.left != null) {
+        ans = Math.min(minDepth(root.left), ans);
+    }
+    if(root.right != null) {
+        ans = Math.min(minDepth(root.right), ans);
+    }
+    return ans + 1;
+};
+```
+
+执行用时：88 ms, 在所有 JavaScript 提交中击败了26.43%的用户
+
+内存消耗：39.9 MB, 在所有 JavaScript 提交中击败了50.00%的用户
 
 #### 112. 路径总和
 
