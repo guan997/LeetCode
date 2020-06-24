@@ -2855,8 +2855,6 @@ if (s[i] === s[j] && dp[i + 1][j - 1]) {
 }
 ```
 
-
-
 ```js
 var longestPalindrome = function(s) {
   if (!s || s.length === 0) return "";
@@ -2881,8 +2879,6 @@ var longestPalindrome = function(s) {
   return res;
 };
 ```
-
-
 
 #### 36. 有效的数独
 
