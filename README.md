@@ -2822,52 +2822,67 @@ var threeSum = function(nums) {
 };
 ```
 
-#### 4.寻找两个正序数组的中位数
+#### 5. 最长回文子串
 
-难度困难
+难度中等
 
-给定两个大小为 m 和 n 的正序（从小到大）数组 `nums1` 和 `nums2`。
+给定一个字符串 `s`，找到 `s` 中最长的回文子串。你可以假设 `s` 的最大长度为 1000。
 
-请你找出这两个正序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
+**示例 1：**
 
-你可以假设 `nums1` 和 `nums2` 不会同时为空。
+```
+输入: "babad"
+输出: "bab"
+注意: "aba" 也是一个有效答案。
+```
 
-示例 1:
+**示例 2：**
 
-nums1 = [1, 3]
-nums2 = [2]
+```
+输入: "cbbd"
+输出: "bb"
+```
 
-则中位数是 2.0
-示例 2:
+###### 动态规划
 
-nums1 = [1, 2]
-nums2 = [3, 4]
+如果一个字符串是回文串，那么在它左右分别加上一个相同的字符，那么它一定还是一个回文串
+如果在一个不是回文字符串的字符串两端添加任何字符，或者在回文串左右分别加不同的字符，得到的一定不是回文串
 
-则中位数是 (2 + 3)/2 = 2.5
-
-###### 合并两个数组并排序
-
-当某一个数组为空另一个只有一个元素是为特殊情况，直接领出来返回即可
-合并两个数组并排序
-如果长度为奇数就直接返回中间的一个元素
-如果长度为偶数则是中间两位相加/2
-
-```js
-var findMedianSortedArrays = function(nums1, nums2) {
-    let result = []
-    result = nums1.concat(nums2)
-    if(result.length == 1){
-        return result[0]
-    }
-    result.sort((a,b) => a-b)
-    if( result.length%2 != 0){
-        return result[Math.floor(result.length/2)]
-    }
-    else{
-        return (result[result.length/2]+result[result.length/2-1])/2
-    }
+```
+//状态转移方程
+if (s[i] === s[j] && dp[i + 1][j - 1]) {
+  dp[i][j] = true;
 }
 ```
+
+
+
+```js
+var longestPalindrome = function(s) {
+  if (!s || s.length === 0) return "";
+  let res = s[0];
+
+  const dp = [];
+  for (let i = s.length - 1; i >= 0; i--) {
+    dp[i] = [];
+    for (let j = i; j < s.length; j++) {
+      if (j - i === 0) dp[i][j] = true;
+      else if (j - i === 1 && s[i] === s[j]) dp[i][j] = true;
+      else if (s[i] === s[j] && dp[i + 1][j - 1]) {
+        dp[i][j] = true;
+      }
+
+      if (dp[i][j] && j - i + 1 > res.length) {
+        res = s.slice(i, j + 1);
+      }
+    }
+  }
+
+  return res;
+};
+```
+
+
 
 #### 36. 有效的数独
 
@@ -3084,5 +3099,52 @@ var rotate = function(matrix) {
 };
 ```
 
+#### 4.寻找两个正序数组的中位数
 
+难度困难
+
+给定两个大小为 m 和 n 的正序（从小到大）数组 `nums1` 和 `nums2`。
+
+请你找出这两个正序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
+
+你可以假设 `nums1` 和 `nums2` 不会同时为空。
+
+示例 1:
+
+nums1 = [1, 3]
+nums2 = [2]
+
+则中位数是 2.0
+示例 2:
+
+nums1 = [1, 2]
+nums2 = [3, 4]
+
+则中位数是 (2 + 3)/2 = 2.5
+
+###### 合并两个数组并排序
+
+当某一个数组为空另一个只有一个元素是为特殊情况，直接领出来返回即可
+合并两个数组并排序
+如果长度为奇数就直接返回中间的一个元素
+如果长度为偶数则是中间两位相加/2
+
+```js
+var findMedianSortedArrays = function(nums1, nums2) {
+    let result = []
+    result = nums1.concat(nums2)
+    if(result.length == 1){
+        return result[0]
+    }
+    result.sort((a,b) => a-b)
+    if( result.length%2 != 0){
+        return result[Math.floor(result.length/2)]
+    }
+    else{
+        return (result[result.length/2]+result[result.length/2-1])/2
+    }
+}
+```
+
+#### 
 
