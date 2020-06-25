@@ -14,6 +14,8 @@
 
 [面试题29. 顺时针打印矩阵](#面试题29. 顺时针打印矩阵)
 
+[剑指 Offer 57. 和为s的两个数字](#剑指 Offer 57. 和为s的两个数字)
+
 [面试题64. 求1+2+…+n](#面试题64. 求1+2+…+n)
 
 [面试题 16.11. 跳水板](#面试题 16.11. 跳水板)
@@ -24,7 +26,7 @@
 
 [面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
 
-#### [面试题03. 数组中重复的数字](https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/)
+#### 面试题03. 数组中重复的数字
 
 难度简单
 
@@ -78,7 +80,7 @@ var findRepeatNumber = function(nums) {
 };
 ```
 
-#### [面试题05. 替换空格](https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/)
+#### 面试题05. 替换空格
 
 难度简单
 
@@ -191,7 +193,7 @@ function reverseLink(head) {
 
 内存消耗 :37.3 MB, 在所有 JavaScript 提交中击败了100.00%的用户
 
-#### [面试题 08.06. 汉诺塔问题](https://leetcode-cn.com/problems/hanota-lcci/)
+#### 面试题 08.06. 汉诺塔问题
 
 难度简单
 
@@ -492,6 +494,52 @@ var spiralOrder = function (matrix) {
   else if (left === right) // 剩下一列，从上到下依次添加
     for (let i = top; i <= bottom; i++) res.push(matrix[i][left])
   return res
+};
+```
+
+#### 剑指 Offer 57. 和为s的两个数字
+
+难度简单
+
+输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可。
+
+**示例 1：**
+
+```
+输入：nums = [2,7,11,15], target = 9
+输出：[2,7] 或者 [7,2]
+```
+
+**示例 2：**
+
+```
+输入：nums = [10,26,30,31,47,60], target = 40
+输出：[10,30] 或者 [30,10]
+```
+
+###### 双指针法
+
+设置左右两个指针，左指针指向数组首元素，右指针指向数组尾元素
+当左右指针指向的两个元素的和大于target时，右指针减一
+当左右指针指向的两个元素的和小于target时，左指针加一
+当左右指针指向的两个元素的和等于target时，将两元素保存到结果数组中，退出循环即可。
+
+```js
+var twoSum = function(nums, target) {
+    let left = 0;
+    let right = nums.length-1;
+    
+    while(left < right) {
+        let sum = nums[left] + nums[right];
+        if(sum === target) {
+            return [nums[left], nums[right]];
+        }else if(sum > target) {
+            -- right;
+        }else if(sum < target) {
+            ++ left;
+        }
+    }
+    return -1;
 };
 ```
 
