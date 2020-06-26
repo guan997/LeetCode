@@ -1,5 +1,7 @@
 ### 剑指OFFER
 
+[面试题 02.01. 移除重复节点](#面试题 02.01. 移除重复节点)
+
 [面试题03. 数组中重复的数字](#面试题03. 数组中重复的数字)
 
 [面试题05. 替换空格](#面试题05. 替换空格)
@@ -25,6 +27,82 @@
 [剑指 Offer 24. 反转链表](#剑指 Offer 24. 反转链表)
 
 [面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
+
+#### 面试题 02.01. 移除重复节点
+
+难度简单
+
+编写代码，移除未排序链表中的重复节点。保留最开始出现的节点。
+
+**示例1:**
+
+```
+ 输入：[1, 2, 3, 3, 2, 1]
+ 输出：[1, 2, 3]
+```
+
+**示例2:**
+
+```
+ 输入：[1, 1, 1, 1, 2]
+ 输出：[1, 2]
+```
+
+**提示：**
+
+1. 链表长度在[0, 20000]范围内。
+2. 链表元素在[0, 20000]范围内。
+
+###### hash 去重
+
+ 利用 map，边遍历边移除
+ 如果节点值没出现过，那么正常两个指针向后走，
+ 如果节点值出现过了，那么 curr 向后走，prev.next 指向 curr，跳过这个节点
+
+```js
+var removeDuplicateNodes = function(head) {
+    let map = {}, 
+     newHead = new ListNode(null),
+     prev = newHead, 
+     curr = head;
+     newHead.next = head;
+
+    while(curr) {
+        let currVal = curr.val;
+        if(map[currVal] === undefined) {
+            map[currVal] = true;
+            prev = curr;
+            curr = curr.next;
+        }else {
+            curr = curr.next;
+            prev.next = curr;
+        }
+    }
+     return newHead.next;
+};
+```
+
+###### 双指针
+
+固定p指针，右侧q指针扫描，然后移动p，指针q再次扫描
+
+```js
+var removeDuplicateNodes = function(head) {
+    let p = head;
+    while (p) {
+        let q = p;
+        while (q.next) {
+            if (q.next.val == p.val) {
+                q.next = q.next.next;
+            } else {
+                q = q.next;
+            }
+        }
+        p = p.next;
+    }
+    return head;
+};
+```
 
 #### 面试题03. 数组中重复的数字
 
