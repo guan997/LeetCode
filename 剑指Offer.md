@@ -206,7 +206,7 @@ var replaceSpace = function(s) {
 };
 ```
 
-#### [面试题06. 从尾到头打印链表](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)
+#### 面试题06. 从尾到头打印链表
 
 难度简单
 
@@ -407,7 +407,7 @@ var fib = function(n) {
 
 #### 面试题10- II. 青蛙跳台阶问题
 
-难度简单34
+难度简单
 
 一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 `n` 级的台阶总共有多少种跳法。
 
@@ -450,7 +450,7 @@ var numWays = function(n) {
         return 2;
     }
     //f1第一阶 f2第二阶 f3下一阶
-    var f1 = 1,f2 =2, f3 = 0;
+    var f1 = 1,f2 = 2, f3 = 0;
     while(n > 2) {
         f3 = (f1 + f2) % 1000000007;
         f1 = f2;
@@ -493,7 +493,7 @@ var numWays = function(n) {
     var dp = new Array(n+1);
     dp[0]=1;
     dp[1]=1;
-    for (var i =2; i <= n; i++) {
+    for (var i = 2; i <= n; i++) {
         dp[i] = dp[i - 1] + dp[i - 2];
         dp[i] %= 1000000007;
     }
