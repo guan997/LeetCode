@@ -1,4 +1,4 @@
-### 关于LeetCode的JavaScript以及少部分Python解答
+### 关于LeetCode的JavaScriptn解答
 
 ### 目录
 
@@ -38,14 +38,6 @@
 
 [69.x 的平方根](#69. x 的平方根)
 
-
-
-##### [双指针](#双指针)
-
-[11. 盛最多水的容器](#11. 盛最多水的容器)
-
-##### [动态规划](#动态规划)
-
 [32. 最长有效括号](#32. 最长有效括号)
 
 [70.爬楼梯](#70.爬楼梯)
@@ -62,19 +54,23 @@
 
 [88.删除排序链表中的重复元素](#88.删除排序链表中的重复元素)
 
-
-
 [100.相同的树](#100.相同的树)
 
 [101.对称二叉树](#101.对称二叉树)
 
 [107.二叉树的层次遍历 II](#107.二叉树的层次遍历 II)
 
+[108. 将有序数组转换为二叉搜索树](#108. 将有序数组转换为二叉搜索树)
+
 [111. 二叉树的最小深度](#111. 二叉树的最小深度)
 
 [112. 路径总和](#112. 路径总和)
 
 [118.杨辉三角](#118.杨辉三角)
+
+[125. 验证回文串](#125. 验证回文串)
+
+[141. 环形链表](#141. 环形链表)
 
 [ 237.删除链表中的节点](# 237.删除链表中的节点)
 
@@ -1910,6 +1906,51 @@ var levelOrderBottom = function(root) {
 };
 ```
 
+#### 108. 将有序数组转换为二叉搜索树
+
+难度简单
+
+将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索树。
+
+本题中，一个高度平衡二叉树是指一个二叉树*每个节点* 的左右两个子树的高度差的绝对值不超过 1。
+
+**示例:**
+
+```
+给定有序数组: [-10,-3,0,5,9],
+
+一个可能的答案是：[0,-3,9,-10,null,5]，它可以表示下面这个高度平衡二叉搜索树：
+
+      0
+     / \
+   -3   9
+   /   /
+ -10  5
+```
+
+###### 递归 分治
+
+构建 root、构建 root.left 和 root.right
+构建 root 时，选数组的中点即可保证平衡
+递归函数的传参可以是数组，也可以是指针，因为传参数组所以每次都要切割数组
+
+```js
+ var sortedArrayToBST = function(nums) {
+    // 将数组分成两半，一半是左子树，另一半是右子树
+    if(nums.length === 0) return null;
+    const mid = nums.length >> 1;
+    const root = new  TreeNode(nums[mid]);
+
+    root.left = sortedArrayToBST(nums.slice(0, mid));
+    root.right = sortedArrayToBST(nums.slice(mid + 1))
+    return root;
+};
+```
+
+执行用时：76 ms, 在所有 JavaScript 提交中击败了93.39%的用户
+
+内存消耗：38.7 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
 #### 110. 平衡二叉树
 
 难度简单
@@ -2176,6 +2217,69 @@ var generate = function (numRows) {
 - 交换律：a ^ b = b ^ a
 - 任何数与0异或为其本身 0 ^ n = n
 - 相同的数异或为0: n ^ n = 0
+
+#### 141. 环形链表
+
+难度简单
+
+给定一个链表，判断链表中是否有环。
+
+为了表示给定链表中的环，我们使用整数 `pos` 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 `pos` 是 `-1`，则在该链表中没有环。
+
+**示例 1：**
+
+```
+输入：head = [3,2,0,-4], pos = 1
+输出：true
+解释：链表中有一个环，其尾部连接到第二个节点。
+```
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist.png)
+
+**示例 2：**
+
+```
+输入：head = [1], pos = -1
+输出：false
+解释：链表中没有环。
+```
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist_test3.png)
+
+###### 哈希表
+
+- 哈希表存储曾经遍历过的节点
+- 遍历每一个节点，都查看哈希表是否存在当前节点，如果存在，则说明链表有环
+- 如果不存在，则存入哈希表，并继续遍历下一节点
+
+```js
+var hasCycle = (head) => {
+  let map = new Map()
+  while (head) {
+    if (map.has(head)) return true
+    map.set(head, true)
+    head = head.next
+  }
+  return false
+}
+```
+
+###### 快慢指针
+
+- 从同一个起点出发，一个跑得快，一个跑得慢，在某一时刻，速度快的必定会追上速度慢的
+
+```js
+var hasCycle = function(head) {
+  let fast = head,slow = head
+  while (fast) { // 快指针没有指向null
+    if (fast.next == null) return false // 下一个为null了，没有环
+    slow = slow.next // 快的前面都有节点，慢的前面当然有
+    fast = fast.next.next // 推进2个节点
+    if (slow === fast) return true // 快慢指针相遇，有环
+  }
+  return false // fast为null始终不相遇
+};
+```
 
 #### 169. 多数元素
 
