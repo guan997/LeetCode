@@ -6,6 +6,8 @@
 
 [06.Z字形变换](#6.Z字形变换)
 
+[7. 整数反转](#7. 整数反转)
+
 [08.字符串转换整数(atoi)](#8.字符串转换整数(atoi))
 
 [09.回文数](#9.回文数)
@@ -72,13 +74,15 @@
 
 [141.环形链表](#141.环形链表)
 
-[169. 多数元素](#169. 多数元素)
+[169. 多数元素](#169.多数元素)
+
+[217.存在重复元素](#217.存在重复元素)
 
 [ 237.删除链表中的节点](#237.删除链表中的节点)
 
 [283.移动零](#283.移动零)
 
-[350. 两个数组的交集 II](#350. 两个数组的交集 II)
+[350.两个数组的交集II](#350.两个数组的交集II)
 
 [371.两整数之和](#371.两整数之和)
 
@@ -269,6 +273,53 @@ var convert = function(s, numRows) {
     return ans;
 };
 ```
+
+#### 7. 整数反转
+
+难度简单
+
+给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
+
+**示例 1:**
+
+```
+输入: 123
+输出: 321
+```
+
+ **示例 2:**
+
+```
+输入: -123
+输出: -321
+```
+
+**示例 3:**
+
+```
+输入: 120
+输出: 21
+```
+
+###### 数学解法
+
+- result * 10 + x % 10 取出末位 x % 10（无论正负），拼接到 result 中。
+- x / 10 去除末位，| 0 强制转换为32位有符号整数。
+- 通过 | 0 取整，无论正负，只移除小数点部分（正数向下取整，负数向上取整）。
+- result | 0 超过32位的整数转换结果不等于自身，可用作溢出判断。
+
+```js
+var reverse = function(x) {
+    let result = 0;
+    while(x !== 0) {
+        result = result * 10 + x % 10;
+        x = (x / 10) | 0;
+    }
+    return (result | 0) === result ? result : 0;
+};
+```
+
+
 
 #### 8.字符串转换整数(atoi)
 
@@ -2283,7 +2334,7 @@ var hasCycle = function(head) {
 };
 ```
 
-#### 169. 多数元素
+#### 169.多数元素
 
 难度简单
 
@@ -2690,82 +2741,7 @@ def rotate(self, nums: List[int], k: int) -> None:
     nums[:] = nums[lenth-k:]+nums[:lenth-k]
 ```
 
-#### 350. 两个数组的交集 II
-
-难度简单
-
-给定两个数组，编写一个函数来计算它们的交集。
-
-**示例 1:**
-
-```
-输入: nums1 = [1,2,2,1], nums2 = [2,2]
-输出: [2,2]
-
-```
-
-**示例 2:**
-
-```
-输入: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
-输出: [4,9]
-```
-
-**说明：**
-
-- 输出结果中每个元素出现的次数，应与元素在两个数组中出现的次数一致。
-- 我们可以不考虑输出结果的顺序。
-
-双指针
-
-- 两个数组排序
-- 设定两个为0的指针，比较两个指针的元素是否相等
-- 如果相等，元素push到返回值里，两个指针同时往前
-- 如果不相等，元素小的指针往前
-- 如果相等，那肯定比较过的元素就没用了，两个指针++
-
-如果不相等，那把元素小的数组指针++。
-
-因为大元素可能在小元素数组里存在，但是小元素在大元素所在数组肯定不存在。因为已经排过序了。
-
-```js
-var intersect = function(nums1, nums2) {
-    let p1 = 0
-    let p2 = 0
-    let res = []
-    nums1 = nums1.sort((a, b) => a - b)
-    nums2 = nums2.sort((a, b) => a - b)
-    while(p1 < nums1.length && p2 < nums2.length) {
-        if(nums1[p1] == nums2[p2]) {
-            res.push(nums1[p1])
-            p1++
-            p2++
-        } else if(nums1[p1] < nums2[p2]) {
-            p1++
-        } else {
-            p2++
-        }
-    }
-    return res
-};
-```
-
-###### 内置函数
-
-利用python List中append与remove方法的特点进行操作。循环遍历nums1中的元素，然后在nums2中查找是否存在。如果存在，加入临时list中，并且需要注意：把nums2中的对应元素删掉。比如nums1 = [1, 2, 2, 1]， nums2 = [2]。如果不删除，则会产生错误。因为nums1与nums2的元素个数要保持一致。
-
-```python
-class Solution:
-    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
-        nums=[]
-        for i in nums1:
-            if i in nums2:
-                nums.append(i)
-                nums2.remove(i)
-        return nums
-```
-
-#### 217. 存在重复元素
+#### 217.存在重复元素
 
 难度简单
 
@@ -2773,8 +2749,15 @@ class Solution:
 
 如果任意一值在数组中出现至少两次，函数返回 `true` 。如果数组中每个元素都不相同，则返回 `false` 
 
-解法1：集合法
-判断原数组和该数组的长度相不相等，一行解决：
+###### 解法1：集合法
+
+判断原数组和该数组的长度相不相等：
+
+```js
+var containsDuplicate = function(nums) {
+    return new Set(nums).size != nums.length;
+};
+```
 
 ```
 def containsDuplicate(self, nums: List[int]) -> bool:
@@ -2782,6 +2765,19 @@ def containsDuplicate(self, nums: List[int]) -> bool:
 ```
 
 解法2：哈希表
+
+```js
+var containsDuplicate = function(nums) {
+    let set = new Set();
+    for(let i = 0, len = nums.length; i < len; i++) {
+        if(set.has(nums[i])) {
+            return true;
+        }
+        set.add(nums[i])
+    }
+    return false;
+};
+```
 
 ```
 def containsDuplicate(self, nums: List[int]) -> bool:
@@ -2793,8 +2789,21 @@ def containsDuplicate(self, nums: List[int]) -> bool:
     return False
 ```
 
-解法3：排序法
+###### 解法3：排序法
+
 排序之后，相等元素必相邻：
+
+```js
+var containsDuplicate = function(nums) {
+    nums.sort((a,b) => a - b);
+    for(let i = 1, len = nums.length; i < len; i++) {
+        if(nums[i - 1] == nums[i]) {
+            return true;
+        }
+    }
+    return false;
+};
+```
 
 ```
 def containsDuplicate(self, nums: List[int]) -> bool:
@@ -2879,6 +2888,81 @@ def moveZeroes(self, nums: List[int]) -> None:
             if nums[j] != 0:
                 nums[i], nums[j] = nums[j], nums[i]
                 i += 1
+        return nums
+```
+
+#### 350.两个数组的交集II
+
+难度简单
+
+给定两个数组，编写一个函数来计算它们的交集。
+
+**示例 1:**
+
+```
+输入: nums1 = [1,2,2,1], nums2 = [2,2]
+输出: [2,2]
+
+```
+
+**示例 2:**
+
+```
+输入: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+输出: [4,9]
+```
+
+**说明：**
+
+- 输出结果中每个元素出现的次数，应与元素在两个数组中出现的次数一致。
+- 我们可以不考虑输出结果的顺序。
+
+双指针
+
+- 两个数组排序
+- 设定两个为0的指针，比较两个指针的元素是否相等
+- 如果相等，元素push到返回值里，两个指针同时往前
+- 如果不相等，元素小的指针往前
+- 如果相等，那肯定比较过的元素就没用了，两个指针++
+
+如果不相等，那把元素小的数组指针++。
+
+因为大元素可能在小元素数组里存在，但是小元素在大元素所在数组肯定不存在。因为已经排过序了。
+
+```js
+var intersect = function(nums1, nums2) {
+    let p1 = 0
+    let p2 = 0
+    let res = []
+    nums1 = nums1.sort((a, b) => a - b)
+    nums2 = nums2.sort((a, b) => a - b)
+    while(p1 < nums1.length && p2 < nums2.length) {
+        if(nums1[p1] == nums2[p2]) {
+            res.push(nums1[p1])
+            p1++
+            p2++
+        } else if(nums1[p1] < nums2[p2]) {
+            p1++
+        } else {
+            p2++
+        }
+    }
+    return res
+};
+```
+
+###### 内置函数
+
+利用python List中append与remove方法的特点进行操作。循环遍历nums1中的元素，然后在nums2中查找是否存在。如果存在，加入临时list中，并且需要注意：把nums2中的对应元素删掉。比如nums1 = [1, 2, 2, 1]， nums2 = [2]。如果不删除，则会产生错误。因为nums1与nums2的元素个数要保持一致。
+
+```python
+class Solution:
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        nums=[]
+        for i in nums1:
+            if i in nums2:
+                nums.append(i)
+                nums2.remove(i)
         return nums
 ```
 
