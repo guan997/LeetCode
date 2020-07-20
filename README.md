@@ -74,6 +74,8 @@
 
 [141.环形链表](#141.环形链表)
 
+[167.两数之和II-输入有序数组](#167.两数之和II-输入有序数组)
+
 [169. 多数元素](#169.多数元素)
 
 [217.存在重复元素](#217.存在重复元素)
@@ -2332,6 +2334,48 @@ var hasCycle = function(head) {
   }
   return false // fast为null始终不相遇
 };
+```
+
+#### 167.两数之和II-输入有序数组
+
+难度简单
+
+给定一个已按照***升序排列\*** 的有序数组，找到两个数使得它们相加之和等于目标数。
+
+函数应该返回这两个下标值 index1 和 index2，其中 index1 必须小于 index2*。*
+
+**说明:**
+
+- 返回的下标值（index1 和 index2）不是从零开始的。
+- 你可以假设每个输入只对应唯一的答案，而且你不可以重复使用相同的元素。
+
+**示例:**
+
+```
+输入: numbers = [2, 7, 11, 15], target = 9
+输出: [1,2]
+解释: 2 与 7 之和等于目标数 9 。因此 index1 = 1, index2 = 2 。
+```
+
+###### 双指针
+
+```js
+var twoSum = function (numbers, target) {
+  	let left = 0,
+    right = numbers.length - 1
+  	while (left < right) {
+    	// 当两个指针对应的元素和等于 target直接返回
+    	if (numbers[left] + numbers[right] === target) {
+     		 return [left + 1, right + 1]
+   		 } else if (numbers[left] + numbers[right] > target) {
+     		 // 当和大于target，则右侧减小(较大的值减小)
+      		right--
+   		 } else {
+     		 // 当和小于target，则左侧增大(较小的值增大)
+     		 left++
+    	 }
+   }
+}
 ```
 
 #### 169.多数元素
