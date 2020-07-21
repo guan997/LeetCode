@@ -321,7 +321,23 @@ var reverse = function(x) {
 };
 ```
 
+###### 转字符串反转处理
 
+- 数字转成字符串
+- 去掉符号，按正整数处理，反转字符串
+- 判断正负
+-  判断是否为32 位的有符号整数
+
+```js
+var reverse = function(x) {
+    let str = x.toString()
+    let l = parseInt(str.split("").reverse().join(""))
+    if(str[0] === "-") {
+        l = Number("-" + l)
+    }
+    return (l < Math.pow(-2,31) || l > Math.pow(2,31) - 1) ? 0 :  l
+};
+```
 
 #### 8.字符串转换整数(atoi)
 
