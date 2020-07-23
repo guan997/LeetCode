@@ -4,7 +4,9 @@
 
 [1.两数之和](#1.两数之和)
 
-[06.Z字形变换](#6.Z字形变换)
+[4. 寻找两个正序数组的中位数](#4. 寻找两个正序数组的中位数)
+
+[6.Z字形变换](#6.Z字形变换)
 
 [7. 整数反转](#7. 整数反转)
 
@@ -190,6 +192,60 @@ for i,num in enumerate(nums):
 请你找出这两个正序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
 
 可以假设 nums1 和 nums2 不会同时为空。
+
+#### 4. 寻找两个正序数组的中位数
+
+难度困难
+
+给定两个大小为 m 和 n 的正序（从小到大）数组 `nums1` 和 `nums2`。
+
+请你找出这两个正序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
+
+你可以假设 `nums1` 和 `nums2` 不会同时为空。
+
+**示例 1:**
+
+```
+nums1 = [1, 3]
+nums2 = [2]
+
+则中位数是 2.0
+```
+
+**示例 2:**
+
+```
+nums1 = [1, 2]
+nums2 = [3, 4]
+
+则中位数是 (2 + 3)/2 = 2.5
+```
+
+###### 合并两个数组并排序
+
+- 当某一个数组为空另一个只有一个元素是为特殊情况，直接返回即可
+- 合并两个数组并排序
+- 如果长度为奇数就直接返回中间的一个元素
+- 如果长度为偶数则是中间两位相加/2
+
+```js
+var findMedianSortedArrays = function(nums1, nums2) {
+    let result = []
+    result = nums1.concat(nums2)
+    if(result.length == 1){
+        return result[0]
+    }
+    result.sort((a,b) => a-b)
+    if( result.length%2 != 0){
+        return result[Math.floor(result.length/2)]
+    }
+    else{
+        return (result[result.length/2]+result[result.length/2-1])/2
+    }
+}
+```
+
+
 
 #### 6.Z字形变换
 
@@ -3439,53 +3495,4 @@ var rotate = function(matrix) {
   }
 };
 ```
-
-#### 4.寻找两个正序数组的中位数
-
-难度困难
-
-给定两个大小为 m 和 n 的正序（从小到大）数组 `nums1` 和 `nums2`。
-
-请你找出这两个正序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
-
-你可以假设 `nums1` 和 `nums2` 不会同时为空。
-
-示例 1:
-
-nums1 = [1, 3]
-nums2 = [2]
-
-则中位数是 2.0
-示例 2:
-
-nums1 = [1, 2]
-nums2 = [3, 4]
-
-则中位数是 (2 + 3)/2 = 2.5
-
-###### 合并两个数组并排序
-
-当某一个数组为空另一个只有一个元素是为特殊情况，直接领出来返回即可
-合并两个数组并排序
-如果长度为奇数就直接返回中间的一个元素
-如果长度为偶数则是中间两位相加/2
-
-```js
-var findMedianSortedArrays = function(nums1, nums2) {
-    let result = []
-    result = nums1.concat(nums2)
-    if(result.length == 1){
-        return result[0]
-    }
-    result.sort((a,b) => a-b)
-    if( result.length%2 != 0){
-        return result[Math.floor(result.length/2)]
-    }
-    else{
-        return (result[result.length/2]+result[result.length/2-1])/2
-    }
-}
-```
-
-###
 
