@@ -16,6 +16,10 @@
 
 [剑指 Offer 11. 旋转数组的最小数字](#剑指 Offer 11. 旋转数组的最小数字)
 
+[面试题 16.11. 跳水板](#面试题 16.11. 跳水板)
+
+[面试题17. 打印从1到最大的n位数](#面试题17. 打印从1到最大的n位数)
+
 [剑指 Offer 18. 删除链表的节点](#剑指 Offer 18. 删除链表的节点)
 
 [剑指 Offer 22.链表中倒数第k个节点](#剑指Offer 22.链表中倒数第k个节点)
@@ -25,10 +29,6 @@
 [剑指 Offer 57. 和为s的两个数字](#剑指 Offer 57. 和为s的两个数字)
 
 [面试题64. 求1+2+…+n](#面试题64. 求1+2+…+n)
-
-[面试题 16.11. 跳水板](#面试题 16.11. 跳水板)
-
-[面试题17. 打印从1到最大的n位数](#面试题17. 打印从1到最大的n位数)
 
 [剑指 Offer 24. 反转链表](#剑指 Offer 24. 反转链表)
 
@@ -544,6 +544,95 @@ var minArray = function(numbers) {
 };
 ```
 
+#### 面试题 16.11. 跳水板
+
+难度简单
+
+你正在使用一堆木板建造跳水板。有两种类型的木板，其中长度较短的木板长度为`shorter`，长度较长的木板长度为`longer`。你必须正好使用`k`块木板。编写一个方法，生成跳水板所有可能的长度。
+
+返回的长度需要从小到大排列。
+
+**示例：**
+
+```
+输入：
+shorter = 1
+longer = 2
+k = 3
+输出： {3,4,5,6}
+```
+
+**提示：**
+
+- 0 < shorter <= longer
+- 0 <= k <= 100000
+
+###### 数学归纳法
+
+k 等于0 时返回 空数组
+shorter == longer 相等时 返回一个 值 [shorter*k]
+
+当两类板长度不同时，短板数越多则总长就最短，依次排列即可。
+
+根据数学归纳法，2种长度板子，必须用k块，不同的情况共k+1中，公式为(k - i) * shorter + i * longer
+
+```js
+var divingBoard = function(shorter, longer, k) {
+    if(k == 0) return []
+    if(shorter == longer) return [shorter*k]
+    var arr = []
+    for(let i = 0;i <= k;i++){
+        arr.push(i * longer + shorter * (k-i))
+    }
+    //for(let i = 0,j = k; i < k+1, j > -1;j--, i++){
+      //  arr.push(j * shorter + longer * i)
+    //}
+    return arr
+};
+```
+
+执行用时 :152 ms, 在所有 JavaScript 提交中击败了99.00%的用户
+
+内存消耗 :47.7 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+#### 面试题17. 打印从1到最大的n位数
+
+难度简单
+
+输入数字 `n`，按顺序打印出从 1 到最大的 n 位十进制数。比如输入 3，则打印出 1、2、3 一直到最大的 3 位数 999。
+
+**示例 1:**
+
+```
+输入: n = 1
+输出: [1,2,3,4,5,6,7,8,9]
+```
+
+说明：
+
+- 用返回一个整数列表来代替打印
+- n 为正整数
+
+###### 内置函数
+
+先获取最大值，再建立一个循环，将1 - max的每一个值push到res数组中，最后返回
+
+```js
+var printNumbers = function(n) {
+    //const max = 10 ** n - 1;
+    const max = Math.pow(10, n) - 1;
+    const res = [];
+    for (let i = 1; i <= max; ++i) {
+        res.push(i);
+    }
+    return res;
+};
+```
+
+执行用时 :108 ms, 在所有 JavaScript 提交中击败了98.54%的用户
+
+内存消耗 :45.4 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
 #### 剑指 Offer 18. 删除链表的节点
 
 难度简单
@@ -779,95 +868,6 @@ var sumNums = function(n) {
     return n && (n + sumNums(n - 1));
 };
 ```
-
-#### 面试题 16.11. 跳水板
-
-难度简单
-
-你正在使用一堆木板建造跳水板。有两种类型的木板，其中长度较短的木板长度为`shorter`，长度较长的木板长度为`longer`。你必须正好使用`k`块木板。编写一个方法，生成跳水板所有可能的长度。
-
-返回的长度需要从小到大排列。
-
-**示例：**
-
-```
-输入：
-shorter = 1
-longer = 2
-k = 3
-输出： {3,4,5,6}
-```
-
-**提示：**
-
-- 0 < shorter <= longer
-- 0 <= k <= 100000
-
-###### 数学归纳法
-
-k 等于0 时返回 空数组
-shorter == longer 相等时 返回一个 值 [shorter*k]
-
-当两类板长度不同时，短板数越多则总长就最短，依次排列即可。
-
-根据数学归纳法，2种长度板子，必须用k块，不同的情况共k+1中，公式为(k - i) * shorter + i * longer
-
-```js
-var divingBoard = function(shorter, longer, k) {
-    if(k == 0) return []
-    if(shorter == longer) return [shorter*k]
-    var arr = []
-    for(let i = 0;i <= k;i++){
-        arr.push(i * longer + shorter * (k-i))
-    }
-    //for(let i = 0,j = k; i < k+1, j > -1;j--, i++){
-      //  arr.push(j * shorter + longer * i)
-    //}
-    return arr
-};
-```
-
-执行用时 :152 ms, 在所有 JavaScript 提交中击败了99.00%的用户
-
-内存消耗 :47.7 MB, 在所有 JavaScript 提交中击败了100.00%的用户
-
-#### 面试题17. 打印从1到最大的n位数
-
-难度简单
-
-输入数字 `n`，按顺序打印出从 1 到最大的 n 位十进制数。比如输入 3，则打印出 1、2、3 一直到最大的 3 位数 999。
-
-**示例 1:**
-
-```
-输入: n = 1
-输出: [1,2,3,4,5,6,7,8,9]
-```
-
-说明：
-
-- 用返回一个整数列表来代替打印
-- n 为正整数
-
-###### 内置函数
-
-先获取最大值，再建立一个循环，将1 - max的每一个值push到res数组中，最后返回
-
-```js
-var printNumbers = function(n) {
-    //const max = 10 ** n - 1;
-    const max = Math.pow(10, n) - 1;
-    const res = [];
-    for (let i = 1; i <= max; ++i) {
-        res.push(i);
-    }
-    return res;
-};
-```
-
-执行用时 :108 ms, 在所有 JavaScript 提交中击败了98.54%的用户
-
-内存消耗 :45.4 MB, 在所有 JavaScript 提交中击败了100.00%的用户
 
 #### 剑指 Offer 24. 反转链表
 

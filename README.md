@@ -92,7 +92,7 @@
 
 [371.两整数之和](#371.两整数之和)
 
-
+[392判断子序列](#392. 判断子序列)
 
 [15.三数之和](#15.三数之和)
 
@@ -3176,6 +3176,79 @@ var getSum = function(a, b) {
     let tmp = a ^ b
     let res =(a & b) << 1
     return res + tmp
+};
+```
+
+#### 392. 判断子序列
+
+难度简单
+
+给定字符串 **s** 和 **t** ，判断 **s** 是否为 **t** 的子序列。
+
+你可以认为 **s** 和 **t** 中仅包含英文小写字母。字符串 **t** 可能会很长（长度 ~= 500,000），而 **s** 是个短字符串（长度 <=100）。
+
+字符串的一个子序列是原始字符串删除一些（也可以不删除）字符而不改变剩余字符相对位置形成的新字符串。（例如，`"ace"`是`"abcde"`的一个子序列，而`"aec"`不是）。
+
+**示例 1:**
+**s** = `"abc"`, **t** = `"ahbgdc"`
+
+返回 `true`.
+
+**示例 2:**
+**s** = `"axc"`, **t** = `"ahbgdc"`
+
+返回 `false`.
+
+###### 双指针 
+
+- 两个指针分别扫描长串和短串，如果指向的字符相同，两个指针都移动考察下一个字符
+- 如果不相同，短串的指针不动，长串的指针移动考察下一个字符
+- 如果短串走完了，说明短串中的字符在长串中都有匹配
+- 如果短串没有走完，长串走完了，说明考察了整个长串也没能找齐短串的所有字符
+
+```js
+var isSubsequence = function(s, t) {
+    if(s.length === 0) return true;
+
+    let index = 0;
+    let subIndex = 0;
+    //判断长串是否走完
+    while(index < t.length) {
+        if(s[subIndex] === t[index]) {
+            //短串的指针移动到下一个字符
+            subIndex++;
+            //判断短串是否走完，如果短串走完了，说明短串中的字符在长串中都有匹配
+            if(subIndex > s.length - 1) {
+                return true
+            }
+        }
+        //长串的指针移动到下一个字符
+        index++;
+    } 
+    return false;
+};
+```
+
+######  递归
+
+如果`s`是空：
+
+- 返回`True`。
+
+```js
+var isSubsequence = function(s, t) {
+    if(s.length === 0) return true;
+
+    let i = 0;
+    while(i < t.length) {//判断长串是否走完
+        if(s[0] == t[i]) {
+            const rest_s = s.substring(1);
+            const rest_t = t.substring(i + 1);
+            return isSubsequence(rest_s, rest_t);
+        }
+        i++;
+    } 
+    return false
 };
 ```
 
