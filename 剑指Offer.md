@@ -24,15 +24,15 @@
 
 [剑指 Offer 22.链表中倒数第k个节点](#剑指Offer 22.链表中倒数第k个节点)
 
+[剑指 Offer 24. 反转链表](#剑指 Offer 24. 反转链表)
+
 [面试题29. 顺时针打印矩阵](#面试题29. 顺时针打印矩阵)
+
+[面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
 
 [剑指 Offer 57. 和为s的两个数字](#剑指 Offer 57. 和为s的两个数字)
 
 [面试题64. 求1+2+…+n](#面试题64. 求1+2+…+n)
-
-[剑指 Offer 24. 反转链表](#剑指 Offer 24. 反转链表)
-
-[面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
 
 #### 面试题 02.01. 移除重复节点
 
@@ -709,6 +709,38 @@ var getKthFromEnd = function(head, k) {
 };
 ```
 
+#### 剑指 Offer 24. 反转链表
+
+难度简单50
+
+定义一个函数，输入一个链表的头节点，反转该链表并输出反转后链表的头节点。
+
+**示例:**
+
+```
+输入: 1->2->3->4->5->NULL
+输出: 5->4->3->2->1->NULL
+```
+
+###### 双指针原地反转
+
+cur:游标，一直往后循环，最后会为null
+prev:记录前一个节点
+oldNext:变更方向时，需要先用oldNext记住改变前的next节点，否则无法向后循环
+
+```js
+var reverseList = function(head) {
+    var prev = null,cur = head,temp;
+    while(cur){
+        temp = cur.next;//修改前先记住下一个节点
+        cur.next = prev; //改别指向，第一个节点prev是null,
+        prev = cur; //记录前一个节点，供下次循环使用
+        cur = temp; // cur通过temp指向下一节点
+    }
+    return prev;//cur会多循环直到null
+};
+```
+
 #### 面试题29. 顺时针打印矩阵
 
 难度简单
@@ -740,6 +772,7 @@ var getKthFromEnd = function(head, k) {
 可以模拟打印矩阵的路径。初始位置是矩阵的左上角，初始方向是向右，当路径超出界限或者进入之前访问过的位置时，则顺时针旋转，进入下一个方向。
 
 - 一层层向里处理，按顺时针依次遍历：上层、右层、下层、左层
+
 - - 不再形成“环”了，剩下一行或一列，循环结束后单独判断
 
   ###### 矩阵不一定是方阵，循环结束时的情形：
@@ -776,128 +809,6 @@ var spiralOrder = function (matrix) {
   else if (left === right) // 剩下一列，从上到下依次添加
     for (let i = top; i <= bottom; i++) res.push(matrix[i][left])
   return res
-};
-```
-
-#### 剑指 Offer 57. 和为s的两个数字
-
-难度简单
-
-输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可。
-
-**示例 1：**
-
-```
-输入：nums = [2,7,11,15], target = 9
-输出：[2,7] 或者 [7,2]
-```
-
-**示例 2：**
-
-```
-输入：nums = [10,26,30,31,47,60], target = 40
-输出：[10,30] 或者 [30,10]
-```
-
-###### 双指针法
-
-设置左右两个指针，左指针指向数组首元素，右指针指向数组尾元素
-当左右指针指向的两个元素的和大于target时，右指针减一
-当左右指针指向的两个元素的和小于target时，左指针加一
-当左右指针指向的两个元素的和等于target时，将两元素保存到结果数组中，退出循环即可。
-
-```js
-var twoSum = function(nums, target) {
-    let left = 0;
-    let right = nums.length-1;
-    
-    while(left < right) {
-        let sum = nums[left] + nums[right];
-        if(sum === target) {
-            return [nums[left], nums[right]];
-        }else if(sum > target) {
-            -- right;
-        }else if(sum < target) {
-            ++ left;
-        }
-    }
-    return -1;
-};
-```
-
-#### 面试题64. 求1+2+…+n
-
-难度中等
-
-求 `1+2+...+n` ，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。
-
-**示例 1：**
-
-```
-输入: n = 3
-输出: 6
-```
-
-**示例 2：**
-
-```
-输入: n = 9
-输出: 45
-```
-
-**限制：**
-
-- `1 <= n <= 10000`
-
-###### 递归 和 &&
-
-&& 特性：
-
-对于 A && B 这个表达式，如果 A 表达式返回 False ，那么 A && B 已经确定为 False ，此时不会去执行表达式 B。同理，对于逻辑运算符 ||， 对于 A || B 这个表达式，如果 A 表达式返回 True ，那么 A || B 已经确定为 True ，此时不会去执行表达式 B
-
-如果左边表达式为 false，不执行右边； 左边为true继续执行右边。
-
-传入 n
-return n && n + (n-1) => n + (n-1)
-return 1 && n + (n-1) + ... + 1 => n + (n-1) + ... + 1
-return 0 && 不执行
-最后得到的结果： n + (n-1) + ... + 1
-
-```js
-var sumNums = function(n) {
-    return n && (n + sumNums(n - 1));
-};
-```
-
-#### 剑指 Offer 24. 反转链表
-
-难度简单50
-
-定义一个函数，输入一个链表的头节点，反转该链表并输出反转后链表的头节点。
-
-**示例:**
-
-```
-输入: 1->2->3->4->5->NULL
-输出: 5->4->3->2->1->NULL
-```
-
-###### 双指针原地反转
-
-cur:游标，一直往后循环，最后会为null
-prev:记录前一个节点
-oldNext:变更方向时，需要先用oldNext记住改变前的next节点，否则无法向后循环
-
-```js
-var reverseList = function(head) {
-    var prev = null,cur = head,temp;
-    while(cur){
-        temp = cur.next;//修改前先记住下一个节点
-        cur.next = prev; //改别指向，第一个节点prev是null,
-        prev = cur; //记录前一个节点，供下次循环使用
-        cur = temp; // cur通过temp指向下一节点
-    }
-    return prev;//cur会多循环直到null
 };
 ```
 
@@ -1031,7 +942,93 @@ const translateNum = (num) => {
 
 内存消耗 :32.3 MB, 在所有 JavaScript 提交中击败了100.00%的用户
 
+#### 剑指 Offer 57. 和为s的两个数字
 
+难度简单
 
+输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可。
 
+**示例 1：**
+
+```
+输入：nums = [2,7,11,15], target = 9
+输出：[2,7] 或者 [7,2]
+```
+
+**示例 2：**
+
+```
+输入：nums = [10,26,30,31,47,60], target = 40
+输出：[10,30] 或者 [30,10]
+```
+
+###### 双指针法
+
+设置左右两个指针，左指针指向数组首元素，右指针指向数组尾元素
+当左右指针指向的两个元素的和大于target时，右指针减一
+当左右指针指向的两个元素的和小于target时，左指针加一
+当左右指针指向的两个元素的和等于target时，将两元素保存到结果数组中，退出循环即可。
+
+```js
+var twoSum = function(nums, target) {
+    let left = 0;
+    let right = nums.length-1;
+    
+    while(left < right) {
+        let sum = nums[left] + nums[right];
+        if(sum === target) {
+            return [nums[left], nums[right]];
+        }else if(sum > target) {
+            -- right;
+        }else if(sum < target) {
+            ++ left;
+        }
+    }
+    return -1;
+};
+```
+
+#### 面试题64. 求1+2+…+n
+
+难度中等
+
+求 `1+2+...+n` ，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。
+
+**示例 1：**
+
+```
+输入: n = 3
+输出: 6
+```
+
+**示例 2：**
+
+```
+输入: n = 9
+输出: 45
+```
+
+**限制：**
+
+- `1 <= n <= 10000`
+
+###### 递归 和 &&
+
+&& 特性：
+
+对于 A && B 这个表达式，如果 A 表达式返回 False ，那么 A && B 已经确定为 False ，此时不会去执行表达式 B。同理，对于逻辑运算符 ||， 对于 A || B 这个表达式，如果 A 表达式返回 True ，那么 A || B 已经确定为 True ，此时不会去执行表达式 B
+
+如果左边表达式为 false，不执行右边； 左边为true继续执行右边。
+
+传入 n
+return n && n + (n-1) => n + (n-1)
+return 1 && n + (n-1) + ... + 1 => n + (n-1) + ... + 1
+return 0 && 不执行
+最后得到的结果： n + (n-1) + ... + 1
+
+```js
+var sumNums = function(n) {
+    return n && (n + sumNums(n - 1));
+};
+```
 
