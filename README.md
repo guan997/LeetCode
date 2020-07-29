@@ -60,6 +60,10 @@
 
 [88.删除排序链表中的重复元素](#88.删除排序链表中的重复元素)
 
+#### [树的遍历](#树的遍历)
+
+[94. 二叉树的中序遍历](#94. 二叉树的中序遍历)
+
 [100.相同的树](#100.相同的树)
 
 [101.对称二叉树](#101.对称二叉树)
@@ -1938,6 +1942,44 @@ nums2 = [2,5,6],       n = 3
 ```py
 def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
            nums1[:] = sorted(nums1[:m] + nums2)
+```
+
+### 树的遍历
+
+#### 94. 二叉树的中序遍历
+
+难度中等
+
+给定一个二叉树，返回它的*中序* 遍历。
+
+**示例:**
+
+```
+输入: [1,null,2,3]
+   1
+    \
+     2
+    /
+   3
+
+输出: [1,3,2]
+```
+
+###### 递归
+
+```js
+var inorderTraversal = function(root) {
+  const res = []
+  function traversal (root) {
+    if (root !== null) {
+      traversal(root.left)
+      res.push(root.val)
+      traversal(root.right)
+    }
+  }
+  traversal(root)
+  return res
+}
 ```
 
 #### 100. 相同的树
