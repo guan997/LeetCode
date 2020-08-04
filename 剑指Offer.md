@@ -10,6 +10,8 @@
 
 [面试题06. 从尾到头打印链表](#面试题06. 从尾到头打印链表)
 
+[剑指Offer07. 重建二叉树](#剑指Offer07. 重建二叉树)
+
 [面试题 08.03. 魔术索](#面试题 08.03. 魔术索)
 
 [面试题 08.06. 汉诺塔问题](#面试题 08.06. 汉诺塔问题)
@@ -349,6 +351,62 @@ function reverseLink(head) {
 执行用时 :80 ms, 在所有 JavaScript 提交中击败了60.56%的用户
 
 内存消耗 :37.3 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+#### 剑指Offer07. 重建二叉树
+
+难度中等
+
+输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
+
+例如，给出
+
+```
+前序遍历 preorder = [3,9,20,15,7]
+中序遍历 inorder = [9,3,15,20,7]
+```
+
+返回如下的二叉树：
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+注意：本题与主站 105 题重复
+
+###### 递归
+
+- 获取根节点区分左右子树，对于左子树的前序和中序采取同样的操作。
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {number[]} preorder
+ * @param {number[]} inorder
+ * @return {TreeNode}
+ */
+var buildTree = function (preorder, inorder) {
+    if (!preorder.length || !inorder.length) return null
+    let root = preorder[0]; // 前序遍历的第一个元素为根节点
+    let node = new TreeNode(root); // 确定根节点
+
+    let i = inorder.indexOf(root); // 获取根节点在中序遍历中的位置(用于分割左右子树)
+
+    // 递归
+    node.left = buildTree(preorder.slice(1, i + 1), inorder.slice(0, i));
+    node.right = buildTree(preorder.slice(i + 1), inorder.slice(i + 1));
+    return node
+};
+```
 
 #### 面试题 08.03. 魔术索
 
