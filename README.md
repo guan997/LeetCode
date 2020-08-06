@@ -76,9 +76,11 @@
 
 [108.将有序数组转换为二叉搜索树](#108.将有序数组转换为二叉搜索树)
 
-[111.二叉树的最小深度](#111.二叉树的最小深度)
+[111.二叉树的最小深度](#111. 二叉树的最小深度)
 
 [112.路径总和](#112.路径总和)
+
+[230. 二叉搜索树中第K小的元素](#230. 二叉搜索树中第K小的元素)
 
 [118.杨辉三角](#118.杨辉三角)
 
@@ -2457,9 +2459,85 @@ var hasPathSum = function(root, sum) {
 };
 ```
 
+#### 230. 二叉搜索树中第K小的元素
+
+难度中等
+
+给定一个二叉搜索树，编写一个函数 `kthSmallest` 来查找其中第 **k** 个最小的元素。
+
+**说明：**
+你可以假设 k 总是有效的，1 ≤ k ≤ 二叉搜索树元素个数。
+
+**示例 1:**
+
+```
+输入: root = [3,1,4,null,2], k = 1
+   3
+  / \
+ 1   4
+  \
+   2
+输出: 1
+```
+
+**示例 2:**
+
+```
+输入: root = [5,3,6,2,4,null,null,1], k = 3
+       5
+      / \
+     3   6
+    / \
+   2   4
+  /
+ 1
+输出: 3
+```
+
+###### 递归
+
+```js
+var kthSmallest = function (root, k) {
+  let arr = []
+  function traversal(node) {
+    if (node !== null && arr.length < k) {
+      traversal(node.left)
+      arr.push(node.val)
+      traversal(node.right)
+    }
+  }
+  traversal(root)
+  return arr[k - 1]
+}
+```
+
+###### 进一步优化, 使用O(1)的额外空间
+
+```js
+var kthSmallest = function (root, k) {
+  let res
+  let count = 0
+  function traversal(node) {
+    if (node !== null) {
+      if (count < k) {
+        traversal(node.left)
+      }
+      if (++count === k) {
+        res = node.val
+      }
+      if (count < k) {
+        traversal(node.right)
+      }
+    }
+  }
+  traversal(root)
+  return res
+}
+```
+
 #### 118. 杨辉三角
 
-难度简单309
+难度简单
 
 给定一个非负整数 *numRows，*生成杨辉三角的前 *numRows* 行。
 
@@ -2601,6 +2679,59 @@ var hasCycle = function(head) {
     if (slow === fast) return true // 快慢指针相遇，有环
   }
   return false // fast为null始终不相遇
+};
+```
+
+#### 114. 二叉树展开为链表
+
+难度中等
+
+给定一个二叉树，[原地](https://baike.baidu.com/item/原地算法/8010757)将它展开为一个单链表。
+
+例如，给定二叉树
+
+```
+    1
+   / \
+  2   5
+ / \   \
+3   4   6
+```
+
+将其展开为：
+
+```
+1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6
+```
+
+###### 遍历
+
+如果按先遍历 right 再遍历 left 生成的「后序遍历」，我们会发现这和 前序遍历 的结果刚好相反。利用这个特点，我们可以在 O(1)O(1) 的空间复杂度内解决这道题。
+
+```js
+var flatten = function(root) {
+    const helper = (root) => {
+        if (!root) {
+            return
+        }
+        helper(root.right)
+        helper(root.left)
+        root.right = prev
+        root.left = null
+        prev = root
+    }
+    let prev = null
+    helper(root)
 };
 ```
 
