@@ -32,6 +32,8 @@
 
 [剑指 Offer 24. 反转链表](#剑指 Offer 24. 反转链表)
 
+[剑指 Offer 27. 二叉树的镜像](#剑指 Offer 27. 二叉树的镜像)
+
 [剑指 Offer 28. 对称的二叉树](#剑指 Offer 28. 对称的二叉树)
 
 [面试题29. 顺时针打印矩阵](#面试题29. 顺时针打印矩阵)
@@ -907,6 +909,62 @@ var reverseList = function(head) {
         cur = temp; // cur通过temp指向下一节点
     }
     return prev;//cur会多循环直到null
+};
+```
+
+#### 剑指 Offer 27. 二叉树的镜像
+
+难度简单
+
+请完成一个函数，输入一个二叉树，该函数输出它的镜像。
+
+例如输入：
+
+`   4  /  \ 2   7 / \  / \1  3 6  9`
+镜像输出：
+
+```
+   4  /  \ 7   2 / \  / \9  6 3  1
+```
+
+**示例 1：**
+
+```
+输入：root = [4,2,7,1,3,6,9]
+输出：[4,7,2,9,6,3,1]
+```
+
+限制：
+
+0 <= 节点个数 <= 1000
+
+注意：本题与主站 226 题相同：https://leetcode-cn.com/problems/invert-binary-tree/
+
+###### 递归
+
+- 时间复杂度：O(n)
+- 空间复杂度：O(n)
+- 递归交换当前节点的左右节点，当节点为null时返回
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {TreeNode}
+ */
+var mirrorTree = function(root) {
+    if(!root) return null
+    const left = mirrorTree(root.left)
+    const right = mirrorTree(root.right)
+    root.left = right
+    root.right = left
+    return root
 };
 ```
 
