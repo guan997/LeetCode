@@ -40,6 +40,8 @@
 
 [面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
 
+[剑指 Offer 55 - I. 二叉树的深度](#剑指 Offer 55 - I. 二叉树的深度)
+
 [剑指 Offer 55 - II. 平衡二叉树](#剑指 Offer 55 - II. 平衡二叉树)
 
 [剑指 Offer 57. 和为s的两个数字](#剑指 Offer 57. 和为s的两个数字)
@@ -1221,6 +1223,43 @@ const translateNum = (num) => {
 执行用时 :68 ms, 在所有 JavaScript 提交中击败了50.99%的用户
 
 内存消耗 :32.3 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+#### 剑指 Offer 55 - I. 二叉树的深度
+
+难度简单
+
+输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度。
+
+例如：
+
+给定二叉树 `[3,9,20,null,null,15,7]`，
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回它的最大深度 3 。
+
+**提示：**
+
+1. `节点总数 <= 10000`
+
+注意：本题与主站 104 题相同：https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/
+
+###### 递归
+
+```js
+var maxDepth = function(root) {
+    if(!root){
+        return 0
+    }
+    return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1
+};
+```
 
 #### 剑指 Offer 55 - II. 平衡二叉树
 
