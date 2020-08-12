@@ -40,6 +40,8 @@
 
 [面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
 
+[剑指 Offer 54. 二叉搜索树的第k大节点](#剑指 Offer 54. 二叉搜索树的第k大节点)
+
 [剑指 Offer 55 - I. 二叉树的深度](#剑指 Offer 55 - I. 二叉树的深度)
 
 [剑指 Offer 55 - II. 平衡二叉树](#剑指 Offer 55 - II. 平衡二叉树)
@@ -47,6 +49,8 @@
 [剑指 Offer 57. 和为s的两个数字](#剑指 Offer 57. 和为s的两个数字)
 
 [面试题64. 求1+2+…+n](#面试题64. 求1+2+…+n)
+
+[剑指 Offer 68 - I. 二叉搜索树的最近公共祖先](#剑指 Offer 68 - I. 二叉搜索树的最近公共祖先)
 
 #### 面试题 02.01. 移除重复节点
 
@@ -1224,6 +1228,68 @@ const translateNum = (num) => {
 
 内存消耗 :32.3 MB, 在所有 JavaScript 提交中击败了100.00%的用户
 
+#### 剑指 Offer 54. 二叉搜索树的第k大节点
+
+难度简单
+
+给定一棵二叉搜索树，请找出其中第k大的节点。
+
+**示例 1:**
+
+```
+输入: root = [3,1,4,null,2], k = 1
+   3
+  / \
+ 1   4
+  \
+   2
+输出: 4
+```
+
+**示例 2:**
+
+```
+输入: root = [5,3,6,2,4,null,null,1], k = 3
+       5
+      / \
+     3   6
+    / \
+   2   4
+  /
+ 1
+输出: 4
+```
+
+######  递归
+
+- 最终返回的倒数第k个元素就是arr.length-1-k+1 ，即以arr.length-k为下标的元素
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} k
+ * @return {number}
+ */
+var kthLargest = function(root, k) {
+    let arr = []
+    function traversal(node) {
+        if(!node) return
+        traversal(node.left)
+        arr.push(node.val)
+        traversal(node.right)
+    }
+    traversal(root)
+    return arr[arr.length - k]
+};
+```
+
 #### 剑指 Offer 55 - I. 二叉树的深度
 
 难度简单
@@ -1387,12 +1453,6 @@ var twoSum = function(nums, target) {
 
 返回 `true` 。
 
-###### 递归
-
-```js
-
-```
-
 **示例 2:**
 
 给定二叉树 `[1,2,2,3,3,null,null,4,4]`
@@ -1407,7 +1467,43 @@ var twoSum = function(nums, target) {
  4   4
 ```
 
-返回 `false` 。面试题64. 求1+2+…+n
+返回 `false` 。
+
+###### 递归
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isBalanced = function(root) {
+    if (!root) {
+        return true
+    }
+    // 判断左右子树的高度差，如果超过 1 那么立即返回 false
+    if (Math.abs(getHeight(root.left) - getHeight(root.right)) > 1) {
+        return false
+    }
+    // 分别递归左右子树
+    return isBalanced(root.left) && isBalanced(root.right)
+    // 获取某个子树的高度
+    function getHeight (root) {
+        if (!root) {
+            return 0
+        }
+        return Math.max(getHeight(root.left), getHeight(root.right)) + 1
+    }
+};
+```
+
+#### 剑指 Offer 64. 求1+2+…+n
 
 难度中等
 
@@ -1448,6 +1544,70 @@ return 0 && 不执行
 ```js
 var sumNums = function(n) {
     return n && (n + sumNums(n - 1));
+};
+```
+
+#### 剑指 Offer 68 - I. 二叉搜索树的最近公共祖先
+
+难度简单
+
+给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
+
+[百度百科](https://baike.baidu.com/item/最近公共祖先/8918834?fr=aladdin)中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（**一个节点也可以是它自己的祖先**）。”
+
+例如，给定如下二叉搜索树: root = [6,2,8,0,4,7,9,null,null,3,5]
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/14/binarysearchtree_improved.png)
+
+ 
+
+**示例 1:**
+
+```
+输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
+输出: 6 
+解释: 节点 2 和节点 8 的最近公共祖先是 6。
+```
+
+**示例 2:**
+
+```
+输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
+输出: 2
+解释: 节点 2 和节点 4 的最近公共祖先是 2, 因为根据定义最近公共祖先节点可以为节点本身。
+```
+
+**说明:**
+
+- 所有节点的值都是唯一的。
+- p、q 为不同节点且均存在于给定的二叉搜索树中。
+
+注意：本题与主站 235 题相同：https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+
+###### 递归
+
+- 既然是BST，如果p和q都比root.val小，则递归左子树，如果都比root.val大，则递归右子树，否则，root 即为所求
+- 因为 root 为 p,q 的最近公共祖先，只可能是下面的情况
+  - p,q 分居root的两个子树
+  - p 为 root ，q 在root的左或右子树中
+  - q 为 root ， p 在root 的左或右子树中
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+const lowestCommonAncestor = (root, p, q) => {
+  if (p.val < root.val && q.val < root.val) {
+    return lowestCommonAncestor(root.left, p, q);
+  }
+  if (p.val > root.val && q.val > root.val) {
+    return lowestCommonAncestor(root.right, p, q);
+  }
+  return root;
 };
 ```
 
