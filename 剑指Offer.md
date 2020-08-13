@@ -38,6 +38,8 @@
 
 [面试题29. 顺时针打印矩阵](#面试题29. 顺时针打印矩阵)
 
+[剑指 Offer 32 - I. 从上到下打印二叉树](#剑指 Offer 32 - I. 从上到下打印二叉树)
+
 [面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
 
 [剑指 Offer 54. 二叉搜索树的第k大节点](#剑指 Offer 54. 二叉搜索树的第k大节点)
@@ -1095,6 +1097,61 @@ var spiralOrder = function (matrix) {
   else if (left === right) // 剩下一列，从上到下依次添加
     for (let i = top; i <= bottom; i++) res.push(matrix[i][left])
   return res
+};
+```
+
+#### 剑指 Offer 32 - I. 从上到下打印二叉树
+
+难度中等
+
+从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。
+
+例如:
+给定二叉树: `[3,9,20,null,null,15,7]`,
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回：
+
+```
+[3,9,20,15,7]
+```
+
+###### 队列
+
+- 利用队列的数据结构，将根节点先保存在队列中，左子树或右子树不为空时，队列中加入该节点
+- 另外使用一个数组res，保存队列先进先出的值
+- 时间复杂度为O(N),空间复杂度为O(N)
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var levelOrder = function(root) {
+   if(!root) return [];
+   const queue=[root];
+    let res=[];
+   while(queue.length){
+       let t=queue.shift();
+       res.push(t.val);
+       if(t.left) queue.push(t.left);
+       if(t.right) queue.push(t.right);
+   }
+   return res;
 };
 ```
 
