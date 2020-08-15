@@ -40,6 +40,8 @@
 
 [剑指 Offer 32 - I. 从上到下打印二叉树](#剑指 Offer 32 - I. 从上到下打印二叉树)
 
+[剑指 Offer 32 - III. 从上到下打印二叉树 III](#剑指 Offer 32 - III. 从上到下打印二叉树 III)
+
 [面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
 
 [剑指 Offer 54. 二叉搜索树的第k大节点](#剑指 Offer 54. 二叉搜索树的第k大节点)
@@ -1152,6 +1154,72 @@ var levelOrder = function(root) {
        if(t.right) queue.push(t.right);
    }
    return res;
+};
+```
+
+#### 剑指 Offer 32 - III. 从上到下打印二叉树 III
+
+难度中等
+
+请实现一个函数按照之字形顺序打印二叉树，即第一行按照从左到右的顺序打印，第二层按照从右到左的顺序打印，第三行再按照从左到右的顺序打印，其他行以此类推。
+
+例如:
+给定二叉树: `[3,9,20,null,null,15,7]`,
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回其层次遍历结果：
+
+```
+[
+  [3],
+  [20,9],
+  [15,7]
+]
+```
+
+###### BFS深度遍历
+
+- level: 当前层级;
+- ltor: 当前是否from left to right
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[][]}
+ */
+var levelOrder = function(root) {
+    const res = [];
+
+    function dfs(root, level, ltor) {
+        if (!root) return;
+        res[level] = res[level] || [];
+
+        if (ltor) {
+            res[level].push(root.val);
+        } else {
+            res[level].unshift(root.val);
+        }
+
+        dfs(root.left, level + 1, !ltor);
+        dfs(root.right, level + 1, !ltor);
+    }
+
+    dfs(root, 0, true);
+    return res;
 };
 ```
 
