@@ -42,6 +42,8 @@
 
 [剑指 Offer 32 - III. 从上到下打印二叉树 III](#剑指 Offer 32 - III. 从上到下打印二叉树 III)
 
+[剑指 Offer 34. 二叉树中和为某一值的路径](#剑指 Offer 34. 二叉树中和为某一值的路径)
+
 [面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
 
 [剑指 Offer 54. 二叉搜索树的第k大节点](#剑指 Offer 54. 二叉搜索树的第k大节点)
@@ -1223,6 +1225,82 @@ var levelOrder = function(root) {
 };
 ```
 
+#### 剑指 Offer 34. 二叉树中和为某一值的路径
+
+难度中等
+
+输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。
+
+**示例:**
+给定如下二叉树，以及目标和 `sum = 22`，
+
+```
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \    / \
+        7    2  5   1
+```
+
+返回:
+
+```
+[
+   [5,4,11,2],
+   [5,8,4,5]
+]
+```
+
+ 
+
+**提示：**
+
+1. `节点总数 <= 10000`
+
+注意：本题与主站 113 题相同：https://leetcode-cn.com/problems/path-sum-ii/
+
+###### 先序遍历+回溯
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} sum
+ * @return {number[][]}
+ */
+var pathSum = function(root, sum) {
+    var path=[], //保存路径
+        res=[];  //保存路经的数组
+    /*辅助函数---增加参数列表，用来实现对res,path的引用值的传递，因为res，path为数组，是对象范畴
+      本题目中需要根据条件，回溯更新路径path直到符合条件.
+    */
+    var resuc = function (root, sum, res, path) {
+        if (root) {                    
+            //单个节点要做的事
+            path.push(root.val);
+            if (!root.left && !root.right && sum-root.val == 0) {
+                res.push([...path]);
+            }
+
+            //左右子节点递归调用
+            resuc(root.left, sum - root.val,res, path);
+            resuc(root.right, sum - root.val, res, path);
+            path.pop();   //回溯先序遍历一条路径结束，不符合条件时，将最后一个数弹出如5,4,4,7-->5,4,4,-2。
+        }
+        return res;
+    }
+    return resuc(root, sum, res, path); 
+};
+```
+
 #### 面试题46. 把数字翻译成字符串
 
 难度中等
@@ -1488,7 +1566,9 @@ var maxDepth = function(root) {
 
 返回 `false` 。
 
-###### 递归
+###### 自顶向下的递归
+
+类似于二叉树的前序遍历，即对于当前遍历到的节点，首先计算左右子树的高度，如果左右子树的高度差是否不超过 1，再分别递归地遍历左右子节点，并判断左子树和右子树是否平衡。这是一个自顶向下的递归的过程。
 
 ```js
 var isBalanced = function(root) {
@@ -1508,6 +1588,44 @@ var isBalanced = function(root) {
             return 0
         }
         return Math.max(getHeight(root.left), getHeight(root.right)) + 1
+    }
+};
+```
+
+时间复杂度：O(n ^ 2)
+
+空间复杂度：O(n)
+
+###### 方法二：自底向上的递归
+
+自底向上递归的做法类似于后序遍历，对于当前遍历到的节点，先递归地判断其左右子树是否平衡，再判断以当前节点为根的子树是否平衡。如果一棵子树是平衡的，则返回其高度（高度一定是非负整数），否则返回 -1。如果存在一棵子树不平衡，则整个二叉树一定不平衡。
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isBalanced = function(root) {
+    return height(root) >= 0
+
+    function height(root){
+        if(root == null){
+            return 0
+        }
+        let leftHeight = height(root.left)
+        let rightHeight = height(root.right)
+        if(leftHeight == -1 || rightHeight == -1 || Math.abs(leftHeight - rightHeight) > 1){
+            return -1
+        }else{
+            return Math.max(leftHeight,rightHeight) + 1
+        }
     }
 };
 ```
