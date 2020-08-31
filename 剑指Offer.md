@@ -56,6 +56,8 @@
 
 [剑指 Offer 58 - I. 翻转单词顺序](#剑指 Offer 58 - I. 翻转单词顺序)
 
+[剑指Offer 58 - II.左旋转字符串](#剑指Offer 58 - II.左旋转字符串)
+
 [面试题64. 求1+2+…+n](#面试题64. 求1+2+…+n)
 
 [剑指 Offer 68 - I. 二叉搜索树的最近公共祖先](#剑指 Offer 68 - I. 二叉搜索树的最近公共祖先)
@@ -1799,6 +1801,86 @@ var reverseWords = function(s) {
 
 - 时间复杂度 O(N)
 - 空间复杂度 O(N)
+
+#### 剑指Offer 58 - II.左旋转字符串
+
+难度简单
+
+字符串的左旋转操作是把字符串前面的若干个字符转移到字符串的尾部。请定义一个函数实现字符串左旋转操作的功能。比如，输入字符串"abcdefg"和数字2，该函数将返回左旋转两位得到的结果"cdefgab"。
+
+######  字符串切片
+
+-  切片，使用 "++" 运算符拼接
+  - slice(start, end) end省略时代表到尾部
+    substring(start, end)提取一个字符串,end不支持负数
+    substr(start, len)提取一个长度为len的字符串
+
+```js
+var reverseLeftWords = function(s, n) {
+    return s.slice(n) + s.slice(0, n)
+    //return s.substring(n) + s.substring(n, 0);
+    //return s.substr(n,s.length-n+1) + s.substr(0, n);
+};
+```
+
+###### 列表遍历拼接
+
+- 新建一个[]，记为 res ；
+- 先向 res添加 “第 n + 1位至末位的字符” ；
+- 再向 res 添加 “首位至第 n位的字符” ；
+- 将 res转化为字符串并返回。
+
+```js
+var reverseLeftWords = function(s, n) {
+    var res = []
+    for(var i = n; i < s.length; i++){
+        res.push(s[i])
+    }
+    for(var i = 0; i < n; i++){
+        res.push(s[i])
+    }
+    return res.join('')
+}
+```
+
+利用求余运算，简化代码
+
+```js
+var reverseLeftWords = function(s, n) {
+    var res = []
+    for(var i = n; i < n + s.length; i++){
+        res.push(s[i % s.length])
+    }
+    return res.join('')
+}
+```
+
+###### 字符串遍历拼接
+
+```js
+var reverseLeftWords = function(s, n) {
+    var res = ""
+    for(var i = n; i < s.length; i++){
+        res += s[i]
+    }
+    for(var i = 0; i < n; i++){
+        res += s[i]
+    }
+    return res
+};
+```
+
+同理，利用求余运算，简化代码
+
+```js
+var reverseLeftWords = function(s, n) {
+    var res = ""
+    for(var i = n; i < n + s.length; i++){
+        res += s[i % s.length]
+    }
+    return res
+};
+```
 
 #### 剑指 Offer 64. 求1+2+…+n
 
