@@ -110,7 +110,7 @@
 
 [657. 机器人能否返回原点](#657. 机器人能否返回原点)
 
-
+[1185. 一周中的第几天](#1185. 一周中的第几天)
 
 #### 1.两数之和
 
@@ -3670,6 +3670,69 @@ var judgeCircle = function(moves) {
    return x === 0 && y === 0
 };
 ```
+
+#### 1185. 一周中的第几天
+
+难度简单
+
+给你一个日期，请你设计一个算法来判断它是对应一周中的哪一天。
+
+输入为三个整数：`day`、`month` 和 `year`，分别表示日、月、年。
+
+您返回的结果必须是这几个值中的一个 `{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}`。
+
+###### 内置函数
+
+```js
+var dayOfTheWeek = function (day, month, year) {
+    let listQuery = new Date(year + '-' + month + '-' + day).getDay()
+    let tempArr = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    return tempArr[listQuery]
+};
+```
+
+###### 模拟
+
+- 计算和1971第一天相隔的天数，然后取余
+
+```js
+/**
+ * @param {number} day
+ * @param {number} month
+ * @param {number} year
+ * @return {string}
+ */
+var dayOfTheWeek = function(day, month, year) {
+    var weekStr = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    //记录每月天数
+    var months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    var sum = 4
+    if(year > 1971){
+        //计算从查找的那一年和1971间隔多少天
+        for(var i = 1971; i < year; i++){
+            //天数相加
+            sum += 365
+            if(i % 4 == 0 && i % 100 != 0 || i % 400 == 0){
+                //如果是闰年天数再加1
+                sum++
+            }
+        }
+        //加上查找的那一年每月的天数
+        for(var i = 0; i < month -1; i++){
+            sum += months[i]
+        }
+        if(month >= 3 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)){
+            sum ++
+        }
+        //加上查找的那一年当月的天数
+        sum += day
+        //取余
+        return weekStr[sum % 7]
+    }  
+};
+```
+
+
 
 #### 2. 两数相加
 
