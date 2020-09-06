@@ -78,9 +78,13 @@
 
 [108.将有序数组转换为二叉搜索树](#108.将有序数组转换为二叉搜索树)
 
-[111.二叉树的最小深度](#111. 二叉树的最小深度)
+[111.二叉树的最小深度](#111.二叉树的最小深度)
 
 [112.路径总和](#112.路径总和)
+
+[114. 二叉树展开为链表](#)
+
+[257. 二叉树的所有路径](#257. 二叉树的所有路径)
 
 [230. 二叉搜索树中第K小的元素](#230. 二叉搜索树中第K小的元素)
 
@@ -100,11 +104,11 @@
 
 [283.移动零](#283.移动零)
 
-[343. 整数拆分](#343. 整数拆分)
+[343.整数拆分](#343.整数拆分)
 
 [350.两个数组的交集II](#350.两个数组的交集II)
 
-[371. 两整数之和](#371. 两整数之和)
+[371.两整数之和](#371.两整数之和)
 
 [392. 判断子序列](#392. 判断子序列)
 
@@ -2102,27 +2106,6 @@ function checkNode(left, right) {
 
 给你一个二叉树，请你返回其按 **层序遍历** 得到的节点值。 （即逐层地，从左到右访问所有节点）。
 
-**示例：**
-二叉树：`[3,9,20,null,null,15,7]`,
-
-```
-    3
-   / \
-  9  20
-    /  \
-   15   7
-```
-
-返回其层次遍历结果：
-
-```
-[
-  [3],
-  [9,20],
-  [15,7]
-]
-```
-
 ###### 递归
 
 ```js
@@ -2177,7 +2160,7 @@ var levelOrder = function(root) {
 
 返回它的最大深度 3 。
 
-###### 递归DFS
+###### DFS
 
 ```js
 var maxDepth = function(root) {
@@ -2220,27 +2203,40 @@ var maxDepth = function (root) {
 
 给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
 
-例如：
-给定二叉树 `[3,9,20,null,null,15,7]`,
+###### BFS
 
-```
-    3
-   / \
-  9  20
-    /  \
-   15   7
+```JS
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[][]}
+ */
+var levelOrderBottom = function(root) {
+    if(!root) return []
+    let q = [root], res = []
+    while(q.length){
+        let size = q.length, tmp = []
+        for(let i = 0; i < size; i++){
+            let node = q.shift()
+            tmp.push(node.val)
 
+            if(node.left) q.push(node.left)
+            if(node.right) q.push(node.right)
+        }
+        res.unshift(tmp)
+    }
+    return res
+};
 ```
 
-返回其自底向上的层次遍历为：
-
-```
-[
-  [15,7],
-  [9,20],
-  [3]
-]
-```
+- 时间复杂度：O(n)
+- 空间复杂度：O(n)
 
 ###### DFS
 
@@ -2381,7 +2377,7 @@ var isBalanced = function(root) {
 };
 ```
 
-#### 111. 二叉树的最小深度
+#### 111.二叉树的最小深度
 
 难度简单
 
@@ -2490,6 +2486,93 @@ var hasPathSum = function(root, sum) {
   return hasPathSum(root.left, sum) || hasPathSum(root.right, sum);
 };
 ```
+
+#### 114. 二叉树展开为链表
+
+难度中等
+
+给定一个二叉树，[原地](https://baike.baidu.com/item/原地算法/8010757)将它展开为一个单链表。
+
+例如，给定二叉树
+
+```
+    1
+   / \
+  2   5
+ / \   \
+3   4   6
+```
+
+将其展开为：
+
+```
+1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6
+```
+
+###### 遍历
+
+如果按先遍历 right 再遍历 left 生成的「后序遍历」，我们会发现这和 前序遍历 的结果刚好相反。利用这个特点，我们可以在 O(1)O(1) 的空间复杂度内解决这道题。
+
+```js
+var flatten = function(root) {
+    const helper = (root) => {
+        if (!root) {
+            return
+        }
+        helper(root.right)
+        helper(root.left)
+        root.right = prev
+        root.left = null
+        prev = root
+    }
+    let prev = null
+    helper(root)
+};
+```
+
+#### 257. 二叉树的所有路径
+
+难度简单
+
+给定一个二叉树，返回所有从根节点到叶子节点的路径。
+
+**说明:** 叶子节点是指没有子节点的节点。
+
+###### 深度优先搜索
+
+```js
+var binaryTreePaths = function(root) {
+    const paths = [];
+    const construct_paths = (root, path) => {
+        if (root) {
+            path += root.val.toString();
+            if (root.left === null && root.right === null) { // 当前节点是叶子节点
+                paths.push(path); // 把路径加入到答案中
+            } else {
+                path += "->"; // 当前节点不是叶子节点，继续递归遍历
+                construct_paths(root.left, path);
+                construct_paths(root.right, path);
+            }
+        }
+    }
+    construct_paths(root, "");
+    return paths;
+};
+```
+
+时间复杂度：O(N^2)
+
+空间复杂度：O(N^2)
 
 #### 230. 二叉搜索树中第K小的元素
 
@@ -2714,58 +2797,7 @@ var hasCycle = function(head) {
 };
 ```
 
-#### 114. 二叉树展开为链表
 
-难度中等
-
-给定一个二叉树，[原地](https://baike.baidu.com/item/原地算法/8010757)将它展开为一个单链表。
-
-例如，给定二叉树
-
-```
-    1
-   / \
-  2   5
- / \   \
-3   4   6
-```
-
-将其展开为：
-
-```
-1
- \
-  2
-   \
-    3
-     \
-      4
-       \
-        5
-         \
-          6
-```
-
-###### 遍历
-
-如果按先遍历 right 再遍历 left 生成的「后序遍历」，我们会发现这和 前序遍历 的结果刚好相反。利用这个特点，我们可以在 O(1)O(1) 的空间复杂度内解决这道题。
-
-```js
-var flatten = function(root) {
-    const helper = (root) => {
-        if (!root) {
-            return
-        }
-        helper(root.right)
-        helper(root.left)
-        root.right = prev
-        root.left = null
-        prev = root
-    }
-    let prev = null
-    helper(root)
-};
-```
 
 #### 167.两数之和II-输入有序数组
 
@@ -3366,7 +3398,7 @@ def moveZeroes(self, nums: List[int]) -> None:
         return nums
 ```
 
-#### 343. 整数拆分
+#### 343.整数拆分
 
 难度中等
 
@@ -3483,7 +3515,7 @@ class Solution:
         return nums
 ```
 
-#### 371. 两整数之和
+#### 371.两整数之和
 
 难度简单
 
