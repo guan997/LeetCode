@@ -46,6 +46,8 @@
 
 [面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
 
+[剑指 Offer 50. 第一个只出现一次的字符](#剑指 Offer 50. 第一个只出现一次的字符)
+
 [剑指 Offer 54. 二叉搜索树的第k大节点](#剑指 Offer 54. 二叉搜索树的第k大节点)
 
 [剑指 Offer 55 - I. 二叉树的深度](#剑指 Offer 55 - I. 二叉树的深度)
@@ -1481,6 +1483,41 @@ const translateNum = (num) => {
 执行用时 :68 ms, 在所有 JavaScript 提交中击败了50.99%的用户
 
 内存消耗 :32.3 MB, 在所有 JavaScript 提交中击败了100.00%的用户
+
+#### 剑指 Offer 50. 第一个只出现一次的字符
+
+难度简单
+
+在字符串 s 中找出第一个只出现一次的字符。如果没有，返回一个单空格。 s 只包含小写字母。
+
+###### map两次遍历
+
+遍历字符串，将每个字符的值与出现次数记录到 map 中
+再次遍历 map.keys() ，获取 map 中每个字符出现的次数，判断是否仅仅只有 1 次，返回第一个仅出现一次的字符
+
+```js
+var firstUniqChar = function(s) {
+    if(!s) return " "
+    let map = new Map()
+    for(let c of s) {
+        if(map.has(c)) {
+            map.set(c, map.get(c) + 1)
+        } else {
+            map.set(c, 1)
+        }
+    }
+    for(let c of map.keys()) {
+        if(map.get(c) === 1) {
+            return c
+        }
+    }
+
+    return  " "
+};
+```
+
+- 时间复杂度：O(n)
+- 空间复杂度：O(n)
 
 #### 剑指 Offer 54. 二叉搜索树的第k大节点
 
