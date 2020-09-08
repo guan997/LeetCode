@@ -1157,6 +1157,120 @@ var spiralOrder = function (matrix) {
 };
 ```
 
+#### 剑指Offer 30.包含min函数的栈
+
+难度简单
+
+定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的 min 函数在该栈中，调用 min、push 及 pop 的时间复杂度都是 O(1)。
+
+###### 辅助栈
+
+- 当一个元素要入栈时，我们取当前辅助栈的栈顶存储的最小值，与当前元素比较得出最小值，将这个最小值插入辅助栈中；
+- 当一个元素要出栈时，我们把辅助栈的栈顶元素也一并弹出；
+- 在任意一个时刻，栈内元素的最小值就存储在辅助栈的栈顶元素中。
+
+```js
+var MinStack = function() {
+    this.x_stack = [];
+    this.min_stack = [Infinity];
+};
+
+MinStack.prototype.push = function(x) {
+    this.x_stack.push(x);
+    this.min_stack.push(Math.min(this.min_stack[this.min_stack.length - 1], x));
+};
+
+MinStack.prototype.pop = function() {
+    this.x_stack.pop();
+    this.min_stack.pop();
+};
+
+MinStack.prototype.top = function() {
+    return this.x_stack[this.x_stack.length - 1];
+};
+
+MinStack.prototype.getMin = function() {
+    return this.min_stack[this.min_stack.length - 1];
+};
+```
+
+- 时间复杂度：O(1）
+
+- 空间复杂度：O(n)
+
+###### 同步双栈 即两个数组的长度永远保持一致
+
+```js
+var arr = [], sortArr = [];
+
+var MinStack = function() {
+    arr = [];
+    sortArr = [];
+};
+
+//将元素 x 推入栈中
+MinStack.prototype.push = function(x) {
+    arr.push(x);
+    if(!sortArr.length){
+        sortArr.push(x);
+    }else{
+        sortArr.push(x < sortArr[sortArr.length - 1] ? x : sortArr[sortArr.length - 1]);
+    }
+};
+
+//删除栈顶的元素
+MinStack.prototype.pop = function() {
+    arr.pop();
+    sortArr.pop();
+};
+
+//获取栈顶元素
+MinStack.prototype.top = function() {
+    return arr[arr.length - 1];
+};
+
+//检索栈中的最小元素
+MinStack.prototype.getMin = function() {
+    return sortArr[sortArr.length - 1];
+};
+```
+
+###### 非同步双栈
+
+```js
+var arr = [], sortArr = [];
+
+var MinStack = function() {
+    arr = [];
+    sortArr = [];
+};
+
+//将元素 x 推入栈中
+MinStack.prototype.push = function(x) {
+    arr.push(x);
+    if(!sortArr.length || x <= sortArr[sortArr.length - 1]){
+        sortArr.push(x);
+    }
+};
+
+//删除栈顶的元素
+MinStack.prototype.pop = function() {
+    if(arr.pop() == sortArr[sortArr.length - 1]){
+        sortArr.pop();
+    }
+};
+
+//获取栈顶元素
+MinStack.prototype.top = function() {
+    return arr[arr.length - 1];
+};
+
+//检索栈中的最小元素
+MinStack.prototype.getMin = function() {
+    return sortArr[sortArr.length - 1];
+};
+```
+
 #### 剑指 Offer 32 - I. 从上到下打印二叉树
 
 难度中等
