@@ -1,4 +1,4 @@
-# 关于LeetCode的JavaScriptn解答
+# 关于LeetCode的JavaScript解答
 
 # 目录
 
