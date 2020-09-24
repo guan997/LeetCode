@@ -52,6 +52,8 @@
 
 [剑指 Offer 50. 第一个只出现一次的字符](#剑指 Offer 50. 第一个只出现一次的字符)
 
+[剑指Offer 52. 两个链表的第一个公共节点](#剑指Offer 52. 两个链表的第一个公共节点)
+
 [剑指 Offer 54. 二叉搜索树的第k大节点](#剑指 Offer 54. 二叉搜索树的第k大节点)
 
 [剑指 Offer 55 - I. 二叉树的深度](#剑指 Offer 55 - I. 二叉树的深度)
@@ -1707,6 +1709,40 @@ var firstUniqChar = function(s) {
 
 - 时间复杂度：O(n)
 - 空间复杂度：O(n)
+
+#### 剑指Offer 52. 两个链表的第一个公共节点
+
+难度简单
+
+输入两个链表，找出它们的第一个公共节点。
+
+如下面的两个链表**：**
+
+[![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/14/160_statement.png)](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/14/160_statement.png)
+
+在节点 c1 开始相交。
+
+###### 双指针
+
+解题思路：
+
+尝试消除 A、B 链表的长度差，同步遍历链表节点，判断是否有相同节点，若有相同则是两链表相交，返回第一个相同节点 即可。否则返回 null ，两链表不相交。
+
+```js
+var getIntersectionNode = function(headA, headB) {
+    let headNodeA = headA,headNodeB = headB;
+
+    while(headNodeA || headNodeB) {
+        if(headNodeA === headNodeB) return headNodeA
+        headNodeA = headNodeA === null ? headB : headNodeA.next
+        headNodeB = headNodeB === null ? headA : headNodeB.next
+    }
+    return null
+};
+```
+
+- 时间复杂度：O(N)。
+- 空间复杂度：O(1)。
 
 #### 剑指 Offer 54. 二叉搜索树的第k大节点
 
