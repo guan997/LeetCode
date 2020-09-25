@@ -964,24 +964,52 @@ var getKthFromEnd = function(head, k) {
 输出: 5->4->3->2->1->NULL
 ```
 
-###### 双指针原地反转
+###### 迭代
 
-cur:游标，一直往后循环，最后会为null
-prev:记录前一个节点
-oldNext:变更方向时，需要先用oldNext记住改变前的next节点，否则无法向后循环
+- 将单链表中的每个节点的后继指针指向它的前驱节点
 
 ```js
 var reverseList = function(head) {
-    var prev = null,cur = head,temp;
+    if (!head || !head.next) return head;
+    var prev = null,cur = head, temp;
     while(cur){
-        temp = cur.next;//修改前先记住下一个节点
-        cur.next = prev; //改别指向，第一个节点prev是null,
-        prev = cur; //记录前一个节点，供下次循环使用
+        temp = cur.next;//修改前先存储 cur 后继节点
+        cur.next = prev; // // 反转 cur 的后继指针
+        prev = cur; //变更prev、cur
         cur = temp; // cur通过temp指向下一节点
     }
-    return prev;//cur会多循环直到null
+    return prev;//cur会循环直到null
 };
 ```
+
+- 时间复杂度：O(n)
+
+- 空间复杂度：O(1)
+
+###### 递归
+
+-  **不断递归反转当前节点 `head` 的后继节点 `next`**
+
+- **最先调用的函数会在递归过程中最后被执行，而最后调用的会最先执行**
+- **最先返回最后两个节点 然后开始反转操作，依次从后面两两节点开始反转**
+
+```js
+var reverseList = function(head) {
+    // 如果只有一个节点 或者 递归到了尾节点，返回当前节点 
+    if(!head || !head.next) return head;
+    // 存储当前节点的下一个节点
+    let next = head.next;
+    let reverseHead = reverseList(next);
+    // 断开 head 
+    head.next = null;
+    // 反转，后一个节点连接当前节点 2.next = 1 1.next = null
+    next.next = head;
+    return reverseHead;
+};
+```
+
+- **时间复杂度：O(n)**
+- **空间复杂度：O(n)**
 
 #### 剑指 Offer 25. 合并两个排序的链表
 

@@ -22,7 +22,11 @@
 
 [20.有效的括号](#20.有效的括号)
 
+[链表](#链表)
+
 [21.合并两个有序链表](#21.合并两个有序链表)
+
+[206. 反转链表](#206. 反转链表)
 
 [22.括号生成](#22.括号生成)
 
@@ -864,6 +868,8 @@ var isValid = function (s) {
     return !leftArr.length //防止全部为左括号
 ```
 
+### 链表
+
 #### 21.合并两个有序链表
 
 难度简单
@@ -875,28 +881,6 @@ var isValid = function (s) {
 ```
 输入：1->2->4, 1->3->4
 输出：1->1->2->3->4->4
-```
-
-###### py and 和 or
-
-and 和 or 有提前截至运算的功能。
-
-and：如果 and 前面的表达式已经为 False，那么 and 之后的表达式将被 跳过，返回左表达式结果
-or：如果 or 前面的表达式已经为 True，那么 or 之后的表达式将被跳过，直接返回左表达式的结果
-例子：[] and 7 等于 []
-代码流程：（按行数）
-
-判断 l1 或 l2 中是否有一个节点为空，如果存在，那么我们只需要把不为空的节点接到链表后面即可
-对 l1 和 l2 重新赋值，使得 l1 指向比较小的那个节点对象
-修改 l1 的 next 属性为递归函数返回值
-返回 l1，注意：如果 l1 和 l2 同时为 None，此时递归停止返回 None
-
-```python
-def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
-    if l1 and l2:
-        if l1.val > l2.val: l1, l2 = l2, l1
-        l1.next = self.mergeTwoLists(l1.next, l2)
-    return l1 or l2
 ```
 
 ###### 递归
@@ -921,6 +905,105 @@ var mergeTwoLists = function(l1, l2) {
     }
 };
 ```
+
+- 时间复杂度：O(n + m)
+- 空间复杂度：O(n + m)
+
+###### 迭代
+
+```js
+var mergeTwoLists = function(l1, l2) {
+    let res = new ListNode();
+    let end = res;
+    while (l1 && l2) {
+        if (l1.val < l2.val) {
+            end.next = l1;
+            l1 = l1.next;
+        } else {
+            end.next = l2;
+            l2 = l2.next;
+        }
+        end = end.next;
+    }
+    end.next = l1 || l2;
+    return res.next;
+};
+```
+
+- 时间复杂度：O(n + m)
+- 空间复杂度：O(1)
+
+py and 和 or
+
+- and 和 or 有提前截至运算的功能。
+- and：如果 and 前面的表达式已经为 False，那么 and 之后的表达式将被 跳过，返回左表达式结果
+- or：如果 or 前面的表达式已经为 True，那么 or 之后的表达式将被跳过，直接返回左表达式的结果
+
+- 判断 l1 或 l2 中是否有一个节点为空，如果存在，那么我们只需要把不为空的节点接到链表后面即可
+- 对 l1 和 l2 重新赋值，使得 l1 指向比较小的那个节点对象
+- 修改 l1 的 next 属性为递归函数返回值
+- 返回 l1，注意：如果 l1 和 l2 同时为 None，此时递归停止返回 None
+
+```python
+def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+    if l1 and l2:
+        if l1.val > l2.val: l1, l2 = l2, l1
+        l1.next = self.mergeTwoLists(l1.next, l2)
+    return l1 or l2
+```
+
+#### 206. 反转链表
+
+难度简单
+
+反转一个单链表。
+
+###### 迭代
+
+- 将单链表中的每个节点的后继指针指向它的前驱节点
+
+```js
+var reverseList = function(head) {
+    if (!head || !head.next) return head;
+    var prev = null,cur = head, temp;
+    while(cur){
+        temp = cur.next;//修改前先存储 cur 后继节点
+        cur.next = prev; // // 反转 cur 的后继指针
+        prev = cur; //变更prev、cur
+        cur = temp; // cur通过temp指向下一节点
+    }
+    return prev;//cur会循环直到null
+};
+```
+
+- 时间复杂度：O(n)
+
+- 空间复杂度：O(1)
+
+###### 递归
+
+-  **不断递归反转当前节点 `head` 的后继节点 `next`**
+
+- **最先调用的函数会在递归过程中最后被执行，而最后调用的会最先执行**
+- **最先返回最后两个节点 然后开始反转操作，依次从后面两两节点开始反转**
+
+```js
+var reverseList = function(head) {
+    // 如果只有一个节点 或者 递归到了尾节点，返回当前节点 
+    if(!head || !head.next) return head;
+    // 存储当前节点的下一个节点
+    let next = head.next;
+    let reverseHead = reverseList(next);
+    // 断开 head 
+    head.next = null;
+    // 反转，后一个节点连接当前节点 2.next = 1 1.next = null
+    next.next = head;
+    return reverseHead;
+};
+```
+
+- **时间复杂度：O(n)**
+- **空间复杂度：O(n)**
 
 #### 22.括号生成
 
