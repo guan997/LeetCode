@@ -28,6 +28,10 @@
 
 [206. 反转链表](#206. 反转链表)
 
+[876. 链表的中间结点](#876. 链表的中间结点)
+
+[19. 删除链表的倒数第N个节点](#19. 删除链表的倒数第N个节点)
+
 [22.括号生成](#22.括号生成)
 
 [26.删除排序数组中的重复项](#26.删除排序数组中的重复项)
@@ -1004,6 +1008,106 @@ var reverseList = function(head) {
 
 - **时间复杂度：O(n)**
 - **空间复杂度：O(n)**
+
+#### 876. 链表的中间结点
+
+难度简单
+
+给定一个带有头结点 `head` 的非空单链表，返回链表的中间结点。
+
+如果有两个中间结点，则返回第二个中间结点。
+
+###### 快慢指针法
+
+- 用两个指针 `slow` 与 `fast` 一起遍历链表。`slow` 一次走一步，`fast` 一次走两步。那么当 `fast` 到达链表的末尾时，`slow` 必然位于中间。
+
+```js
+var middleNode = function(head) {
+    slow = fast = head;
+    while (fast && fast.next) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    return slow;
+};
+```
+
+- 时间复杂度：O(N)
+- 空间复杂度：O(1)
+
+###### 数组
+
+- 对链表进行遍历，将遍历到的元素依次放入数组 `A` 中。如果遍历到了 `N` 个元素，那么链表以及数组的长度也为 `N`，对应的中间节点即为 `A[N/2]`。
+
+```js
+var middleNode = function(head) {
+    let A = [head];
+    while (A[A.length - 1].next != null)
+        A.push(A[A.length - 1].next);
+    return A[Math.trunc(A.length / 2)];
+};
+```
+
+- 时间复杂度：O(N)
+- 空间复杂度：O(N)
+
+#### 19. 删除链表的倒数第N个节点
+
+难度中等
+
+给定一个链表，删除链表的倒数第 *n* 个节点，并且返回链表的头结点。
+
+###### 两次遍历算法
+
+- 解题思路：在第一次遍历中，我们找出列表的长度 L。然后设置一个指向哑结点的指针，并移动它遍历列表，直至它到达第 (L - n) 个结点那里。我们把第 (L - n) 个结点的 next 指针重新链接至第 (L - n + 2)个结点
+
+```js
+var removeNthFromEnd = function(head, n) {
+ let dummy = new ListNode(0);
+    dummy.next = head;
+    let length = 0;
+    let first = head;
+    while(first != null){
+        length++;
+        first = first.next;
+    }
+    length -= n;
+    first = dummy;
+    while(length > 0){
+        length--;
+        first = first.next;
+    }
+    first.next = first.next.next;
+    return dummy.next;
+};
+```
+
+- 时间复杂度：O(N)
+- 空间复杂度：O(1)
+
+###### 双指针，一次遍历算法
+
+- 指针fast 先走n步，然后指针fast和指针slow同步往前继续遍历链表，直至fast的后续结点为空，此时指针slow到达被删除结点的前置结点。
+
+```js
+var removeNthFromEnd = function(head, n) {
+    let fast = head, slow = head;
+    while(--n){
+        fast = fast.next;
+    }
+    if(!fast.next) return head.next;
+    fast = fast.next;
+    while(fast && fast.next){
+        fast = fast.next;
+        slow = slow.next;
+    }
+    slow.next = slow.next.next;
+    return head;
+};
+```
+
+- 时间复杂度：O(N)
+- 空间复杂度：O(1)
 
 #### 22.括号生成
 
