@@ -41,6 +41,7 @@ var reverseString = function(s) {
 var reverseString = function(s) {
     let x = 0, y = s.length - 1;
     while(x < y){
+        //等号的左边和右边相等。
         [s[x], s[y]] = [s[y], s[x]];
         x++,y--;
     }
@@ -50,3 +51,63 @@ var reverseString = function(s) {
 
 - 时间复杂度：O(N)
 - 空间复杂度：O(1)
+
+## [151. 翻转字符串里的单词](https://leetcode-cn.com/problems/reverse-words-in-a-string/)
+
+难度中等
+
+给定一个字符串，逐个翻转字符串中的每个单词。
+
+**说明：**
+
+- 无空格字符构成一个 **单词** 。
+- 输入字符串可以在前面或者后面包含多余的空格，但是反转后的字符不能包括。
+- 如果两个单词间有多余的空格，将反转后单词间的空格减少到只含一个。
+
+#### 正则 + JS API
+
+- 使用 `split` 把一个字符串分割成字符串数组。
+- 使用`trim`去除首尾空格
+- 使用 `reverse` 将字符串数组进行反转；
+- 使用 `join` 方法将字符串数组拼成一个字符串。
+
+```js
+var reverseWords = function(s) {
+    return s.trim().split(/\s+/).reverse().join(' ');
+};
+```
+
+- 时间复杂度：O(N)
+- 空间复杂度：O(N)
+
+##### 双端队列
+
+- 首先去除字符串左右空格
+- 逐个读取字符串中的每个单词，依次放入双端队列的对头
+- 再将队列转换成字符串输出（已空格为分隔符）
+
+```js
+var reverseWords = function(s) {
+    let left = 0
+    let right = s.length - 1
+    let queue = []
+    let word = ''
+    while (s.charAt(left) === ' ') left ++
+    while (s.charAt(right) === ' ') right --
+    while (left <= right) {
+        let char = s.charAt(left)
+        if (char === ' ' && word) {
+            queue.unshift(word)
+            word = ''
+        } else if (char !== ' '){
+            word += char
+        }
+        left++
+    }
+    queue.unshift(word)
+    return queue.join(' ')
+};
+```
+
+- 时间复杂度：O(N)
+- 空间复杂度：O(N)
