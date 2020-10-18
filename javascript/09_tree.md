@@ -94,4 +94,67 @@ var hasPathSum = function(root, sum) {
 };
 ```
 
-#### 
+## [98. 验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree/)
+
+难度中等
+
+给定一个二叉树，判断其是否是一个有效的二叉搜索树。
+
+假设一个二叉搜索树具有如下特征：
+
+- 节点的左子树只包含**小于**当前节点的数。
+- 节点的右子树只包含**大于**当前节点的数。
+- 所有左子树和右子树自身必须也是二叉搜索树。
+
+#### 递归
+
+- 如果该二叉树的左子树不为空，则左子树上所有节点的值均小于它的根节点的值； 若它的右子树不空，则右子树上所有节点的值均大于它的根节点的值；它的左右子树也为二叉搜索树。
+- `helper(root, -inf, +inf)`， `inf` 表示一个无穷大的值。
+
+```js
+const helper = (root, lower, upper) => {
+    if (root === null) {
+        return true;
+    }
+    if (root.val <= lower || root.val >= upper) {
+        return false;
+    }
+    return helper(root.left, lower, root.val) && helper(root.right, root.val, upper);
+}
+var isValidBST = function(root) {
+    return helper(root, -Infinity, Infinity);
+};
+```
+
+- 时间复杂度 : O(n)
+- 空间复杂度 : O(n)
+
+#### 中序遍历
+
+- 叉搜索树「中序遍历」得到的值构成的序列一定是升序的
+- 检查当前节点的值是否大于前一个中序遍历到的节点的值即可。如果均大于说明这个序列是升序的，整棵树是二叉搜索树，否则不是
+
+```js
+var isValidBST = function(root) {
+    let stack = [];
+    let inorder = -Infinity;
+
+    while (stack.length || root !== null) {
+        while (root !== null) {
+            stack.push(root);
+            root = root.left;
+        }
+        root = stack.pop();
+        // 如果中序遍历得到的节点的值小于等于前一个 inorder，说明不是二叉搜索树
+        if (root.val <= inorder) {
+            return false;
+        }
+        inorder = root.val;
+        root = root.right;
+    }
+    return true;
+};
+```
+
+- 时间复杂度 : O(n)
+- 空间复杂度 : O(n)
