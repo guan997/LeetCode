@@ -1738,6 +1738,89 @@ var firstUniqChar = function(s) {
 - 时间复杂度：O(n)
 - 空间复杂度：O(n)
 
+#### 剑指 Offer 51. 数组中的逆序对
+
+难度困难
+
+在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。
+
+######  暴力法（TLE）
+
+双重循环，挨个检查是否为逆序对。
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var reversePairs = function(nums) {
+    let res = 0;
+    const length = nums.length;
+    for (let i = 0; i < length; ++i) {
+        for (let j = i + 1; j < length; ++j) {
+            nums[i] > nums[j] && ++res;
+        }
+    }
+
+    return res;
+};
+```
+
+ * 时间复杂度是O(N^2)，无法通过
+
+###### 归并排序
+
+- 递归调用，拿到左子数组和右子数组的逆序对（此时，左子数组和右子数组也都排序完成了）
+- 指针 i 和 j 分别指向左子数组和右子数组的最右侧，此时会有 2 种情况：
+  - arr[i] > arr[j]：那么说明arr[i]大于右子数组中所有元素，逆序对增加j - start - length，向左边移动指针 i
+  - arr[i] <= arr[j]: 对arr[i]来说，不存在逆序对，向左边移动指针 j
+- i 和 j 遍历完各自数组后，最后返回逆序对之和
+
+```js
+var reversePairs = function(nums) {
+    return findInversePairNum(nums, 0, nums.length - 1);
+};
+
+function findInversePairNum(arr, start, end) {
+    if (start >= end) return 0;
+
+    const copy = new Array(end - start + 1);
+    const length = Math.floor((end - start) / 2); // 左数组长度
+    const leftNum = findInversePairNum(arr, start, start + length);
+    const rightNum = findInversePairNum(arr, start + length + 1, end);
+
+    let i = start + length;
+    let j = end;
+    let copyIndex = end - start;
+    let num = 0;
+    while (i >= start && j >= start + length + 1) {
+        if (arr[i] > arr[j]) {
+            num += j - start - length;
+            copy[copyIndex--] = arr[i--];
+        } else {
+            copy[copyIndex--] = arr[j--];
+        }
+    }
+
+    while (i >= start) {
+        copy[copyIndex--] = arr[i--];
+    }
+
+    while (j >= start + length + 1) {
+        copy[copyIndex--] = arr[j--];
+    }
+
+    for (let k = start; k <= end; ++k) {
+        arr[k] = copy[k - start];
+    }
+
+    return num + leftNum + rightNum;
+}
+```
+
+- 时间复杂度是O(NlogN)
+- 空间复杂度是O(N)
+
 #### 剑指Offer 52. 两个链表的第一个公共节点
 
 难度简单
