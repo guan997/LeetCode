@@ -54,6 +54,8 @@
 
 [剑指Offer 52. 两个链表的第一个公共节点](#剑指Offer 52. 两个链表的第一个公共节点)
 
+[剑指 Offer 53 - I. 在排序数组中查找数字 I](#剑指 Offer 53 - I. 在排序数组中查找数字 I)
+
 [剑指 Offer 54. 二叉搜索树的第k大节点](#剑指 Offer 54. 二叉搜索树的第k大节点)
 
 [剑指 Offer 55 - I. 二叉树的深度](#剑指 Offer 55 - I. 二叉树的深度)
@@ -1856,6 +1858,69 @@ var getIntersectionNode = function(headA, headB) {
 
 - 时间复杂度：O(N)。
 - 空间复杂度：O(1)。
+
+#### 剑指 Offer 53 - I. 在排序数组中查找数字 I
+
+难度简单
+
+统计一个数字在排序数组中出现的次数。
+
+**示例 1:**
+
+```
+输入: nums = [5,7,7,8,8,10], target = 8
+输出: 2
+```
+
+**示例 2:**
+
+```
+输入: nums = [5,7,7,8,8,10], target = 6
+输出: 0
+```
+
+######  二分查找
+
+- 二分查找到等于当前值的索引，把索引赋值给 left，或者直到左指针大于等于右指针停下
+- 判断 nums[left] 是否等于 target，不等，返回 0
+- 从 left 指针的位置往两边找，看看这个数重复几次，返回
+
+```js
+var search = function(nums, target) {
+  let count = 0,
+      n = nums.length,
+      left = 0,
+      right = n - 1;
+  
+  while (left < right) {
+    let mid = (left + right) >> 1;
+    if (nums[mid] === target) {
+      left = mid;
+      break;
+    } else if (nums[mid] < target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+  
+  if (nums[left] !== target) return 0;
+  
+  // 找到起始位置, 从当前位置往两边找，看看重复几次
+  let copy = left - 1;
+  while (copy >= 0 && nums[copy] === target) {
+    copy--;
+    count++;
+  }
+  
+  while (nums[left] === target && left < n) {
+    left++;
+    count++;
+  }
+  
+  return count;
+};
+```
 
 #### 剑指 Offer 54. 二叉搜索树的第k大节点
 
