@@ -66,6 +66,8 @@
 
 [剑指 Offer 56 - I. 数组中数字出现的次数](#剑指 Offer 56 - I. 数组中数字出现的次数)
 
+[剑指 Offer 56 - II. 数组中数字出现的次数 II](#剑指 Offer 56 - II. 数组中数字出现的次数 II)
+
 [剑指 Offer 57. 和为s的两个数字](#剑指 Offer 57. 和为s的两个数字)
 
 [剑指 Offer 58 - I. 翻转单词顺序](#剑指 Offer 58 - I. 翻转单词顺序)
@@ -2231,6 +2233,47 @@ var singleNumbers = function(nums) {
   return [num1, num2]
 };
 ```
+
+#### 剑指 Offer 56 - II. 数组中数字出现的次数 II
+
+难度中等
+
+在一个数组 `nums` 中除一个数字只出现一次之外，其他数字都出现了三次。请找出那个只出现一次的数字。
+
+##### 异或
+
+异或的性质
+
+- 两个数字异或的结果a^b是将 a 和 b 的二进制每一位进行运算，得出的数字。 运算的逻辑是
+  如果同一位的数字相同则为 0，不同则为 1
+
+异或的规律
+
+- 任何数和本身异或则为0
+- 任何数和 0 异或是本身
+
+###### 位运算
+
+不开辟额外空间
+
+```js
+var singleNumber = function(nums) {
+  let res = 0;
+  for (let i = 0; i < 32; i++) {
+    let cnt = 0;
+    let bit = 1 << i;
+    for (let j = 0; j < nums.length; j++) {
+      if (nums[j] & bit) cnt++;
+    }
+    if (cnt % 3 != 0) res = res | bit;
+  }
+  return res;
+};
+```
+
+- 时间复杂度是O(N)
+
+- 空间复杂度是O(1)
 
 #### 剑指 Offer 57. 和为s的两个数字
 
