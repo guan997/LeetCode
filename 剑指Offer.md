@@ -952,18 +952,38 @@ var divingBoard = function(shorter, longer, k) {
 解释: 2-2 = 1/22 = 1/4 = 0.25
 ```
 
-###### 分治+递归
+###### 递归
+
+- x是1或者n是0的时候，直接返回1即可
+- n大于0的时候要分为两种情况，一种是偶数，一种是奇数。
+  - 偶数次幂可以直接二分
+  - 奇数次幂(n - 1) / 2) * x
+- n小于0的时候，需要把它转化为正数方便计算，同时1/myPow(x, -n)。
 
 ```js
-var myPow = function(x, n) {
-   if(n===0)return 1 // n=0直接返回1
-   if(n<0){   				//n<0时 x的n次方等于1除以x的-n次方分
-       return 1/myPow(x,-n)
-   }
-   if(n%2){    //n是奇数时 x的n次方 = x*x的n-1次方
-       return x*myPow(x,n-1)
-   }
-   return myPow(x*x,n/2) //n是偶数，使用分治，一分为二，等于x*x的n/2次方 
+function myPow(x, n) {
+  // 几种特殊情况，直接返回结果
+  if (x === 1 || n === 0) {
+    return 1;
+  }
+  if (x === -1) {
+    return n % 2 === 0 ? 1 : -1;
+  }
+  // n === 1 作为递归的出口，也可以用 n === 0
+  if (n === 1) {
+    return x;
+  }
+  // 负数指数
+  if (n < 0) {
+    return 1 / myPow(x, -n);
+  }
+  // 偶数次幂可以直接二分
+  if (n % 2 === 0) {
+    return myPow(x * x, n / 2);
+  } else {
+    // 奇数次幂
+    return myPow(x * x, (n - 1) / 2) * x;
+  }
 }
 ```
 
