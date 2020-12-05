@@ -1,6 +1,72 @@
-### 数组
+# 数组
 
-#### [15. 三数之和](https://leetcode-cn.com/problems/3sum/)
+## [88. 合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/)
+
+难度简单
+
+给你两个有序整数数组 *nums1* 和 *nums2*，请你将 *nums2* 合并到 *nums1* 中*，*使 *nums1* 成为一个有序数组。
+
+**说明：**
+
+- 初始化 *nums1* 和 *nums2* 的元素数量分别为 *m* 和 *n* 。
+- 你可以假设 *nums1* 有足够的空间（空间大小大于或等于 *m + n*）来保存 *nums2* 中的元素。
+
+**示例：**
+
+```
+输入：
+nums1 = [1,2,3,0,0,0], m = 3
+nums2 = [2,5,6],       n = 3
+
+输出：[1,2,2,3,5,6]
+```
+
+#### 合并后排序
+
+数组拼接后`sort`排序。缺点是没有利用`nums1`和`nums2`本身是有序数组的优势。
+
+```js
+var merge = function(nums1, m, nums2, n) {
+    for(var i = 0; i < nums2.length; i++){
+        nums1[ m + i] = nums2[i];
+    }
+    nums1.sort((a, b) => {
+        return a-b;
+    });
+};
+```
+
+- 时间复杂度 : O((n + m)log(n + m))。
+- 空间复杂度 : O(1)。
+
+#### 双指针 / 从后向前
+
+- 因为 nums1 的空间都集中在后面，所以从后向前处理排序的数据会更好，节省空间，一边遍历一边将值填充进去
+- 设置指针 len1 和 len2 分别指向 nums1 和 nums2 的有数字尾部，从尾部值开始比较遍历，同时设置指针 len 指向 nums1 的最末尾，每次遍历比较值大小之后，则进行填充
+  当 len1<0 时遍历结束，此时 nums2 中还有数据未拷贝完全，将其直接拷贝到 nums1 的前面，最后得到结果数组
+- 时间复杂度：O(m+n)
+
+```js
+var merge = function(nums1, m, nums2, n) {
+    let len1 = m - 1;
+    let len2 = n - 1;
+    let len = m + n - 1;
+    while(len1 >= 0 && len2 >= 0) {
+        // 注意--符号在后面，表示先进行计算再减1，这种缩写缩短了代码
+        nums1[len--] = nums1[len1] > nums2[len2] ? nums1[len1--] : nums2[len2--];
+    }
+    function arrayCopy(src, srcIndex, dest, destIndex, length) {
+        dest.splice(destIndex, length, ...src.slice(srcIndex, srcIndex + length));
+    }
+    // 表示将nums2数组从下标0位置开始，拷贝到nums1数组中，从下标0位置开始，长度为len2+1
+    arrayCopy(nums2, 0, nums1, 0, len2 + 1);
+};
+```
+
+- 时间复杂度 : O(n + m)。
+- 空间复杂度 : O(1)。
+
+## [15. 三数之和](https://leetcode-cn.com/problems/3sum/)
 
 难度中等
 
@@ -8,7 +74,7 @@
 
 **注意：**答案中不可以包含重复的三元组。
 
-###### 数组遍历
+#### 数组遍历
 
 - 首先对数组进行排序，排序后固定一个数 nums[i]，再使用左右指针指向 nums[i]后面的两端，数字分别为 nums[L] 和 nums[R]，计算三个数的和 sum 判断是否满足为 0，满足则添加进结果集
 - 如果 nums[i]大于 0，则三数之和必然无法等于 0，结束循环
@@ -48,7 +114,7 @@ var threeSum = function(nums) {
 
 `转载自`[画手大鹏](https://leetcode-cn.com/problems/3sum/solution/hua-jie-suan-fa-15-san-shu-zhi-he-by-guanpengchn/)
 
-#### [169. 多数元素](https://leetcode-cn.com/problems/majority-element/)
+## [169. 多数元素](https://leetcode-cn.com/problems/majority-element/)
 
 难度简单
 
@@ -72,7 +138,7 @@ var majorityElement = function(nums) {
 - 时间复杂度: O(n) 
 - 空间复杂度: O(n) 
 
-#### [41. 缺失的第一个正数](https://leetcode-cn.com/problems/first-missing-positive/)
+## [41. 缺失的第一个正数](https://leetcode-cn.com/problems/first-missing-positive/)
 
 难度困难
 
