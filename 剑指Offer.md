@@ -34,6 +34,8 @@
 
 [剑指 Offer 18. 删除链表的节点](#剑指 Offer 18. 删除链表的节点)
 
+[剑指 Offer 21. 调整数组顺序使奇数位于偶数前面](#剑指 Offer 21. 调整数组顺序使奇数位于偶数前面)
+
 [剑指 Offer 22.链表中倒数第k个节点](#剑指Offer 22.链表中倒数第k个节点)
 
 [剑指 Offer 24. 反转链表](#剑指 Offer 24. 反转链表)
@@ -1064,6 +1066,39 @@ var deleteNode = function(head, val) {
     }
     head.next = deleteNode(head.next,val);
     return head
+};
+```
+
+#### 剑指 Offer 21. 调整数组顺序使奇数位于偶数前面
+
+难度简单
+
+输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。
+
+**示例：**
+
+```
+输入：nums = [1,2,3,4]
+输出：[1,3,2,4] 
+注：[3,1,2,4] 也是正确的答案之一。
+```
+
+###### 排序
+
+- 指针p表示已经遇到的奇数元素的个数，初始值为0；
+- 只有遍历到的nums[i]全为奇数时，p和i保持相同大小，如果遇到偶数元素，那么i直接跳过继续i++,而p则会停留在为偶数元素的位置上，nums[i]和nums[p]互换，这样才能在一次遍历中把奇数元素位置的元素变为偶数。
+
+```js
+var exchange = function(nums) {
+    let p = 0, len = nums.length;
+    for(let i = 0; i < len; i++){
+        if(nums[i] % 2 != 0){
+            let temp = nums[i];
+            nums[i] = nums[p];
+            nums[p++] = temp;
+        }
+    }
+    return nums;
 };
 ```
 
