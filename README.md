@@ -3592,6 +3592,8 @@ def deleteNode(self, node):
 
 9的倍数递减
 
+num%9，若不为0则返回num，为0则返回9
+
 ```js
 var addDigits = function(num) {
     if (num < 10) return num
@@ -3602,15 +3604,14 @@ var addDigits = function(num) {
 - 时间复杂度：O(1)
 - 空间复杂度：O(1)
 
-###### 暴力解法
+###### 数字转字符，分割，相加
 
 ```js
 function addNumber(num) {
-    let sum = 0
-    for (let item of num ) {
-        sum += +item
+    while(num >= 10){
+        num = num.toString().split('').reduce((res,i)=>res+=parseInt(i),0);
     }
-    return sum
+    return num;
 }
 ```
 
