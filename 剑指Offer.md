@@ -56,6 +56,8 @@
 
 [剑指 Offer 34. 二叉树中和为某一值的路径](#剑指 Offer 34. 二叉树中和为某一值的路径)
 
+[剑指 Offer 39. 数组中出现次数超过一半的数字](#剑指 Offer 39. 数组中出现次数超过一半的数字)
+
 [面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
 
 [剑指 Offer 50. 第一个只出现一次的字符](#剑指 Offer 50. 第一个只出现一次的字符)
@@ -1710,8 +1712,6 @@ var levelOrder = function(root) {
 ]
 ```
 
- 
-
 **提示：**
 
 1. `节点总数 <= 10000`
@@ -1757,6 +1757,62 @@ var pathSum = function(root, sum) {
     return resuc(root, sum, res, path); 
 };
 ```
+
+#### 剑指 Offer 39. 数组中出现次数超过一半的数字
+
+难度简单
+
+数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
+
+你可以假设数组是非空的，并且给定的数组总是存在多数元素。
+
+**示例 1:**
+
+```
+输入: [1, 2, 3, 2, 2, 2, 5, 4, 2]
+输出: 2
+```
+
+注意：本题与主站 169 题相同：https://leetcode-cn.com/problems/majority-element/
+
+###### 排序
+
+如果将数组 nums 中的所有元素按照单调递增或单调递减的顺序排序，那么下标为 n/2的元素（下标从 0 开始）一定是众数
+
+ ```js
+var majorityElement = function(nums) {
+    nums.sort((a, b) => a - b);
+    return nums[Math.floor(nums.length / 2)];
+};
+ ```
+
+- 时间复杂度：O(nlogn)。将数组排序的时间复杂度为O(nlogn)。
+- 空间复杂度：O(logn)。如果使用语言自带的排序算法，需要使用 O(logn) 的栈空间。如果自己编写堆排序，则只需要使用 O(1)的额外空间。
+
+###### 投票算法
+
+投票算法的原理是通过不断消除不同元素直到没有不同元素，剩下的元素就是我们要找的元素。
+
+```js
+var majorityElement = function(nums) {
+    let count = 1;
+    let majority = nums[0];
+    for(let i = 1; i < nums.length; i++) {
+        if (count === 0) {
+            majority = nums[i];
+        }
+        if (nums[i] === majority) {
+            count ++;
+        } else {
+            count --;
+        }
+    }
+    return majority;
+};
+```
+
+- 时间复杂度：O(N)，其中N为数组长度
+- 空间复杂度：O(1)
 
 #### 面试题46. 把数字翻译成字符串
 
