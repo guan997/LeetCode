@@ -1793,6 +1793,16 @@ var majorityElement = function(nums) {
 
 投票算法的原理是通过不断消除不同元素直到没有不同元素，剩下的元素就是我们要找的元素。
 
+- 我们维护一个候选众数 majority和它出现的次数 count。初始时 majority可以为nums[0]，count 为 1；
+
+- 我们遍历数组 nums 中的所有元素，对于每个元素 i，在判断 i之前，如果 count 的值为 0，我们先将 i的值赋予 majority，随后我们判断 i：
+
+  - 如果 i与 majority相等，那么计数器 count 的值增加 1；
+  - 如果 i与 majority不等，那么计数器 count 的值减少 1。
+
+  在遍历完成后，majority即为整个数组的众数。
+
+
 ```js
 var majorityElement = function(nums) {
     let count = 1;
