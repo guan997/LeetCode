@@ -58,6 +58,8 @@
 
 [剑指 Offer 39. 数组中出现次数超过一半的数字](#剑指 Offer 39. 数组中出现次数超过一半的数字)
 
+[剑指 Offer 40. 最小的k个数](#剑指 Offer 40. 最小的k个数)
+
 [面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
 
 [剑指 Offer 50. 第一个只出现一次的字符](#剑指 Offer 50. 第一个只出现一次的字符)
@@ -1823,6 +1825,117 @@ var majorityElement = function(nums) {
 
 - 时间复杂度：O(N)，其中N为数组长度
 - 空间复杂度：O(1)
+
+#### 剑指 Offer 40. 最小的k个数
+
+难度简单
+
+输入整数数组 `arr` ，找出其中最小的 `k` 个数。例如，输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。
+
+**示例 1：**
+
+```
+输入：arr = [3,2,1], k = 2
+输出：[1,2] 或者 [2,1]
+```
+
+**示例 2：**
+
+```
+输入：arr = [0,1,2,1], k = 1
+输出：[0]
+```
+
+###### 排序
+
+- 对原数组从小到大排序后取出前 k个数即可。
+
+ ```js
+var getLeastNumbers = function(arr, k) {
+    let vec = Array(k);
+    arr.sort((a, b) => a - b);
+    for(let i = 0; i < k; ++i){
+        vec[i] = arr[i];
+    }
+    return vec;
+};
+ ```
+
+- 时间复杂度：O(nlogn)，其中 n 是数组 arr 的长度。算法的时间复杂度即排序的时间复杂度。
+- 空间复杂度：O(logn)，排序所需额外的空间复杂度为 (logn)
+
+###### 构建大顶堆求 Top k问题
+
+从数组中取出 k 个元素构造一个大顶堆，然后将其余元素与大顶堆对比，如果小于堆顶则替换堆顶，然后堆化，所有元素遍历完成后，堆中的元素即为前 k 个最小值
+
+具体步骤如下：
+
+- 从数组中取前 k 个数（ 0 到 k-1 位），构造一个大顶堆
+- 从 k 位开始遍历数组，每一个数据都和大顶堆的堆顶元素进行比较，如果大于堆顶元素，则不做任何处理，继续遍历下一元素；如果小于堆顶元素，则将这个元素替换掉堆顶元素，然后再堆化成一个大顶堆。
+- 遍历完成后，堆中的数据就是前 K 小的数据
+
+```js
+let getLeastNumbers = function(arr, k) {
+    // 从 arr 中取出前 k 个数，构建一个大顶堆
+    let heap = [,], i = 0
+    while(i < k) {
+       heap.push(arr[i++]) 
+    }
+    buildHeap(heap, k)
+    
+    // 从 k 位开始遍历数组
+    for(let i = k; i < arr.length; i++) {
+        if(heap[1] > arr[i]) {
+            // 替换并堆化
+            heap[1] = arr[i]
+            heapify(heap, k, 1)
+        }
+    }
+    
+    // 删除heap中第一个元素
+    heap.shift()
+    return heap
+};
+
+// 原地建堆，从后往前，自上而下式建大顶堆
+let buildHeap = (arr, k) => {
+    if(k === 1) return
+    // 从最后一个非叶子节点开始，自上而下式堆化
+    for(let i = Math.floor(k/2); i>=1 ; i--) {
+        heapify(arr, k, i)
+    }
+}
+
+// 堆化
+let heapify = (arr, k, i) => {
+    // 自上而下式堆化
+    while(true) {
+        let maxIndex = i
+        if(2*i <= k && arr[2*i] > arr[i]) {
+            maxIndex = 2*i
+        }
+        if(2*i+1 <= k && arr[2*i+1] > arr[maxIndex]) {
+            maxIndex = 2*i+1
+        }
+        if(maxIndex !== i) {
+            swap(arr, i, maxIndex)
+            i = maxIndex
+        } else {
+            break
+        }
+    }
+}
+
+// 交换
+let swap = (arr, i , j) => {
+    let temp = arr[i]
+    arr[i] = arr[j]
+    arr[j] = temp
+}
+```
+
+- 时间复杂度：遍历数组需要 O(n) 的时间复杂度，一次堆化需要 O(logk) 时间复杂度，所以利用堆求 Top k 问题的时间复杂度为 O(nlogk)
+- 空间复杂度：O(k)
 
 #### 面试题46. 把数字翻译成字符串
 
