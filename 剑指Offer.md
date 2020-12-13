@@ -60,6 +60,8 @@
 
 [剑指 Offer 40. 最小的k个数](#剑指 Offer 40. 最小的k个数)
 
+[剑指 Offer 42. 连续子数组的最大和](#剑指 Offer 42. 连续子数组的最大和)
+
 [面试题46. 把数字翻译成字符串](#面试题46. 把数字翻译成字符串)
 
 [剑指 Offer 50. 第一个只出现一次的字符](#剑指 Offer 50. 第一个只出现一次的字符)
@@ -1936,6 +1938,118 @@ let swap = (arr, i , j) => {
 
 - 时间复杂度：遍历数组需要 O(n) 的时间复杂度，一次堆化需要 O(logk) 时间复杂度，所以利用堆求 Top k 问题的时间复杂度为 O(nlogk)
 - 空间复杂度：O(k)
+
+#### 剑指 Offer 42. 连续子数组的最大和
+
+难度简单
+
+输入一个整型数组，数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。
+
+要求时间复杂度为O(n)。
+
+**示例1:**
+
+```
+输入: nums = [-2,1,-3,4,-1,2,1,-5,4]
+输出: 6
+解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+```
+
+**提示：**
+
+- `1 <= arr.length <= 10^5`
+- `-100 <= arr[i] <= 100`
+
+注意：本题与主站 53 题相同：https://leetcode-cn.com/problems/maximum-subarray/
+
+######  动态规划
+
+- 动态规划的是首先对数组进行遍历，当前最大连续子序列和为 sum，结果为 ans
+- 如果 sum > 0，则说明 sum 对结果有增益效果，则 sum 保留并加上当前遍历数字
+- 如果 sum <= 0，则说明 sum 对结果无增益效果，需要舍弃，则 sum 直接更新为当前遍历数字
+- 每次比较 sum 和 ans的大小，将最大值置为ans，遍历结束返回结果
+
+```js
+var maxSubArray = function(nums) {
+    let ans = nums[0];
+    let sum = 0;
+    for(const num of nums) {
+        if(sum > 0) {
+            sum += num;
+        } else {
+            sum = num;
+        }
+        ans = Math.max(ans, sum);
+    }
+    return ans;
+};
+```
+
+- 时间复杂度：O(n)，其中 n 为 nums 数组的长度。我们只需要遍历一遍数组即可求得答案。
+- 空间复杂度：O(1)。我们只需要常数空间存放若干变量。
+
+###### 分治
+
+这个分治方法类似于「线段树求解 LCIS 问题」的 pushUp 操作。 也许读者还没有接触过线段树，没有关系，方法二的内容假设你没有任何线段树的基础。当然，如果读者有兴趣的话，推荐看一看线段树区间合并法解决 多次询问 的「区间最长连续上升序列问题」和「区间最大子段和问题」，还是非常有趣的。
+
+我们定义一个操作 get(a, l, r) 表示查询 a 序列 [l, r][l,r] 区间内的最大子段和，那么最终我们要求的答案就是 get(nums, 0, nums.size() - 1)。如何分治实现这个操作呢？对于一个区间 [l, r]，我们取 m = {l + r}/{2}，对区间 [l, m]和 [m + 1, r]分治求解。当递归逐层深入直到区间长度缩小为 11 的时候，递归「开始回升」。这个时候我们考虑如何通过 [l, m]区间的信息和 [m + 1, r]区间的信息合并成区间 [l, r]的信息。最关键的两个问题是：
+
+- 我们要维护区间的哪些信息呢？
+- 我们如何合并这些信息呢？
+
+对于一个区间 [l, r]，我们可以维护四个量：
+
+- lSum 表示 [l, r][l,r] 内以 ll 为左端点的最大子段和
+- rSum 表示 [l, r][l,r] 内以 rr 为右端点的最大子段和
+- mSum 表示 [l, r][l,r] 内的最大子段和
+- iSum 表示 [l, r][l,r] 的区间和
+
+以下简称 [l, m][l,m] 为 [l, r][l,r] 的「左子区间」，[m+1,r] 为 [l, r][l,r] 的「右子区间」。我们考虑如何维护这些量呢（如何通过左右子区间的信息合并得到[l,r] 的信息）？对于长度为 11 的区间 [i, i][i,i]，四个量的值都和a i相等。对于长度大于 1的区间：
+
+- 首先最好维护的是 iSum，区间[l,r] 的 iSum 就等于「左子区间」的 iSum 加上「右子区间」的 iSum。
+- 对于 [l, r]的 lSum，存在两种可能，它要么等于「左子区间」的 lSum，要么等于「左子区间」的 iSum 加上「右子区间」的 lSum，二者取大。
+- 对于 [l, r]的 rSum，同理，它要么等于「右子区间」的 rSum，要么等于「右子区间」的 iSum 加上「左子区间」的 rSum，二者取大。
+- 当计算好上面的三个量之后，就很好计算 [l, r] 的 mSum 了。我们可以考虑 [l, r]的 mSum 对应的区间是否跨越 mm——它可能不跨越 mm，也就是说 [l, r]的 mSum 可能是「左子区间」的 mSum 和 「右子区间」的 mSum 中的一个；它也可能跨越 mm，可能是「左子区间」的 rSum 和 「右子区间」的 lSum 求和。三者取大。
+
+这样问题就得到了解决。
+
+`力扣（LeetCode）`
+
+```js
+function Status(l, r, m, i) {
+    this.lSum = l;
+    this.rSum = r;
+    this.mSum = m;
+    this.iSum = i;
+}
+
+const pushUp = (l, r) => {
+    const iSum = l.iSum + r.iSum;
+    const lSum = Math.max(l.lSum, l.iSum + r.lSum);
+    const rSum = Math.max(r.rSum, r.iSum + l.rSum);
+    const mSum = Math.max(Math.max(l.mSum, r.mSum), l.rSum + r.lSum);
+    return new Status(lSum, rSum, mSum, iSum);
+}
+
+const getInfo = (a, l, r) => {
+    if (l === r) {
+        return new Status(a[l], a[l], a[l], a[l]);
+    }
+    const m = (l + r) >> 1;
+    const lSub = getInfo(a, l, m);
+    const rSub = getInfo(a, m + 1, r);
+    return pushUp(lSub, rSub);
+}
+
+var maxSubArray = function(nums) {
+    return getInfo(nums, 0, nums.length - 1).mSum;
+};
+```
+
+假设序列 a 的长度为 n。
+
+- 时间复杂度：假设我们把递归的过程看作是一颗二叉树的先序遍历，那么这颗二叉树的深度的渐进上界为O(logn)，这里的总时间相当于遍历这颗二叉树的所有节点，故总时间的渐进上界是O(∑i=1logn2i−1)=O(n)，故渐进时间复杂度为 O(n)。
+- 空间复杂度：递归会使用 O(logn) 的栈空间，故渐进空间复杂度为 O(logn)。
 
 #### 面试题46. 把数字翻译成字符串
 
