@@ -3082,7 +3082,54 @@ var reverseLeftWords = function(s, n) {
  1  3  -1  -3  5 [3  6  7]      7
 ```
 
+###### 暴力法
 
+直接移动这个滑动窗口，每次统计窗口中的最大值即可。
+
+```js
+var maxSlidingWindow = function(nums, k) {
+    if (k <= 1) return nums;
+    const res = [];
+    for (let i = 0; i < nums.length - k + 1; ++i) {
+        res.push(Math.max(...nums.slice(i, i + k)));
+    }
+    return res;
+};
+```
+
+- 时间复杂度是O(kN)，其中 k 是滑动窗口的长度。
+- 空间复杂度是*O*(*N*)。
+
+###### 基于单调队列
+
+基于单调队列,js数组模拟队列操作
+
+```js
+var maxSlidingWindow = function(nums, k) {
+  if (!nums || !nums.length || k <= 0) return []
+  if (k === 1) return nums
+
+  let res = [], queue = []
+
+  for (let i = 0; i < nums.length; i++) {
+    
+    if(i >= k) {
+      // 尾部元素出滑动窗口
+      let outElem = nums[i - k]
+      if (outElem === queue[0]) queue.shift()
+      
+    }
+    // 当前元素进入滑动窗口
+    let inElem = nums[i]
+    while (queue.length && queue[queue.length - 1] < inElem) queue.pop()
+    queue.push(inElem)
+
+    if (i >= k - 1) res.push(queue[0])
+  }
+
+  return res
+};
+```
 
 #### 剑指 Offer 64. 求1+2+…+n
 
