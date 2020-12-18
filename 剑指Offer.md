@@ -90,6 +90,8 @@
 
 [剑指 Offer 59 - I. 滑动窗口的最大值](#剑指 Offer 59 - I. 滑动窗口的最大值)
 
+[剑指 Offer 60. n个骰子的点数](#剑指 Offer 60. n个骰子的点数)
+
 [剑指 Offer 61. 扑克牌中的顺子](#剑指 Offer 61. 扑克牌中的顺子)
 
 [剑指 Offer 62. 圆圈中最后剩下的数字](#剑指 Offer 62. 圆圈中最后剩下的数字)
@@ -3136,6 +3138,89 @@ var maxSlidingWindow = function(nums, k) {
   return res
 };
 ```
+
+#### 剑指 Offer 60. n个骰子的点数
+
+难度中等
+
+把n个骰子扔在地上，所有骰子朝上一面的点数之和为s。输入n，打印出s的所有可能的值出现的概率。
+
+你需要用一个浮点数数组返回答案，其中第 i 个元素代表这 n 个骰子所能掷出的点数集合中第 i 小的那个的概率。
+
+**示例 1:**
+
+```
+输入: 1
+输出: [0.16667,0.16667,0.16667,0.16667,0.16667,0.16667]
+```
+
+**示例 2:**
+
+```
+输入: 2
+输出: [0.02778,0.05556,0.08333,0.11111,0.13889,0.16667,0.13889,0.11111,0.08333,0.05556,0.02778]
+```
+
+**限制：**
+
+```
+1 <= n <= 11
+```
+
+解题思路：
+
+- 用一个数组cnts，cnts[i] 表示点数之和，那么cnts[i] 就等于前面六个相加，或者前面五个相加
+- 从后往前遍历，逻辑可以统一为 cnts[i] 等于前面六个cnts[j]相加，其中j等于i - 1, i - 2, i - 3, i - 4, i - 5, i - 6。
+- 如果使用迭代，只需要迭代n - 1次，每次迭代相当于一次投掷，而内层循环的逻辑就是上面提到的，我们每次投掷都去更新cnts[i]
+
+###### 迭代
+
+```js
+var twoSum = function(n) {
+      if (n < 1) {
+        return [];
+      }
+      const res = [0, 1, 1, 1, 1, 1, 1];
+      for (let i = 1; i < n; i++) {
+        for (let j = 6 * n; j > 0; j--) {
+          res[j] = res
+            .slice(Math.max(0, j - 6), j)
+            .reduce((acc, cur) => acc + cur, 0);
+        }
+      }
+      return res.slice(1).map(num => num / Math.pow(6, n)).filter(Boolean);
+};
+```
+
+###### 递归
+
+```js
+/**
+ * @param {number} n
+ * @return {number[]}
+ */
+var twoSum = function(n) {
+      function diceCnt(n) {
+        if (n === 1) {
+            return [0, 1, 1, 1, 1, 1, 1];
+        }
+
+        cnts = diceCnt(n - 1);
+        for (let i = 6 * n; i > 0; i--) {
+            cnts[i] = cnts
+            .slice(Math.max(i - 6, 0), i)
+            .reduce((acc, cur) => acc + cur, 0);
+        }
+
+        return cnts;
+        }
+        return diceCnt(n)
+            .map(num => num / Math.pow(6, n))
+            .filter(Boolean)
+};
+```
+
+
 
 #### 剑指 Offer 61. 扑克牌中的顺子
 
