@@ -66,6 +66,8 @@
 
 [剑指 Offer 50. 第一个只出现一次的字符](#剑指 Offer 50. 第一个只出现一次的字符)
 
+[剑指 Offer 51. 数组中的逆序对](#剑指 Offer 51. 数组中的逆序对)
+
 [剑指Offer 52. 两个链表的第一个公共节点](#剑指Offer 52. 两个链表的第一个公共节点)
 
 [剑指 Offer 53 - I. 在排序数组中查找数字 I](#剑指 Offer 53 - I. 在排序数组中查找数字 I)
@@ -2244,7 +2246,9 @@ var reversePairs = function(nums) {
     const length = nums.length;
     for (let i = 0; i < length; ++i) {
         for (let j = i + 1; j < length; ++j) {
-            nums[i] > nums[j] && ++res;
+            if(nums[i] > nums[j]){
+                res++;
+            }
         }
     }
 
@@ -2253,8 +2257,17 @@ var reversePairs = function(nums) {
 ```
 
  * 时间复杂度是O(N^2)，无法通过
+ * 空间复杂度：O(1)
 
 ###### 归并排序
+
+引自[xin-tan](https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/solution/liang-chong-si-lu-he-jie-fa-bao-li-fa-gui-bing-pai/)
+
+借助归并排序的思路，在归并的过程中，快速统计逆序对。应用归并排序的题目真的不多，这题很有研究和收藏意义。
+
+核心的解决逻辑都封装在 findInversePairNum 函数中。它的职能就是统计数组arr[start, end]范围中的逆序对，并且统计完后，arr[start, end]范围中的元素会被排序（这点和归并排序的过程一样）。
+
+那么函数又是如何快速统计逆序对的呢？大体过程如下：
 
 - 递归调用，拿到左子数组和右子数组的逆序对（此时，左子数组和右子数组也都排序完成了）
 - 指针 i 和 j 分别指向左子数组和右子数组的最右侧，此时会有 2 种情况：
@@ -2279,15 +2292,16 @@ function findInversePairNum(arr, start, end) {
     let j = end;
     let copyIndex = end - start;
     let num = 0;
-    while (i >= start && j >= start + length + 1) {
+    while (i >= start && j >= start + length + 1) {//对左子数组和右子数组排序
         if (arr[i] > arr[j]) {
+            //arr[i]大于右子数组中所有元素，逆序对增加j - start - length，向左边移动指针 i
             num += j - start - length;
             copy[copyIndex--] = arr[i--];
-        } else {
+        } else {//不存在逆序对，向左边移动指针 j
             copy[copyIndex--] = arr[j--];
         }
     }
-
+	//i 和 j 遍历各自数组
     while (i >= start) {
         copy[copyIndex--] = arr[i--];
     }
