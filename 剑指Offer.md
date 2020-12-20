@@ -2261,7 +2261,13 @@ var reversePairs = function(nums) {
 
 ###### 归并排序
 
-引自[xin-tan](https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/solution/liang-chong-si-lu-he-jie-fa-bao-li-fa-gui-bing-pai/)
+归并排序的核心思想：
+
+- 如果要排序一个数组，我们先把数组从中间分成前后两部分，然后对前后两部分分别排序，再将排好序的两部分合并在一起，这样整个数组就都有序了。  
+
+归并排序使用的就是分治思想。分治，顾名思义，就是分而治之，将一个大问题分解成小的子问题来解决。小的子问题解决了，大问题也就解决了。  
+
+以下引自[xin-tan](https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/solution/liang-chong-si-lu-he-jie-fa-bao-li-fa-gui-bing-pai/)
 
 借助归并排序的思路，在归并的过程中，快速统计逆序对。应用归并排序的题目真的不多，这题很有研究和收藏意义。
 
