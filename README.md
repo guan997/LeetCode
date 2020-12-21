@@ -110,6 +110,8 @@
 
 [169. 多数元素](#169.多数元素)
 
+[203. 移除链表元素](#203. 移除链表元素)
+
 [217.存在重复元素](#217.存在重复元素)
 
 [ 237.删除链表中的节点](#237.删除链表中的节点)
@@ -3467,8 +3469,6 @@ class Solution(object):
 1、将-k个元素添加到nums的开始，
 2、注意，为什么是nums[lenth-k:]而不是nums[-k:]，因为是为了避免k=0的情况
 
-##### 代码
-
 ```py
 def rotate(self, nums: List[int], k: int) -> None:
     """
@@ -3478,6 +3478,44 @@ def rotate(self, nums: List[int], k: int) -> None:
     lenth = len(nums)
     nums[:] = nums[lenth-k:]+nums[:lenth-k]
 ```
+
+#### 203. 移除链表元素
+
+难度简单
+
+删除链表中等于给定值 ***val\*** 的所有节点。
+
+**示例:**
+
+```
+输入: 1->2->6->3->4->5->6, val = 6
+输出: 1->2->3->4->5
+```
+
+###### 哨兵节点
+
+- 初始化哨兵节点为 ListNode 且设置 res.next = head。
+- 比较当前节点的值和目标值是否相等，若相等则将指针指向下一个节点；不等，则等于指向当前节点
+- 返回 res.next。
+
+```js
+var removeElements = function(head, val) {
+    let res = new ListNode();//哑节点
+    res.next = head;
+    let now = res;
+    while (now.next) {
+        if (now.next.val == val) {
+            now.next = now.next.next;
+        } else {
+            now = now.next;
+        }
+    }
+    return res.next;
+};
+```
+
+- 时间复杂度：O(*N*)，只遍历了一次。
+- 空间复杂度：O(1)。
 
 #### 217.存在重复元素
 
@@ -3556,23 +3594,49 @@ def containsDuplicate(self, nums: List[int]) -> bool:
 
 难度简单
 
-请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点，你将只被给定要求被删除的节点。
+请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点。传入函数的唯一参数为 **要被删除的节点** 。
 
 现有一个链表 -- head = [4,5,1,9]，它可以表示为:
 
 ![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2019/01/19/237_example.png)
 
+ 
+
+**示例 1：**
+
 ```
-def deleteNode(self, node):
-    """
-    :type node: ListNode
-    :rtype: void Do not return anything, modify node in-place instead.
-    """
-    node.val = node.next.val
-    node.next = node.next.next
+输入：head = [4,5,1,9], node = 5
+输出：[4,1,9]
+解释：给定你链表中值为 5 的第二个节点，那么在调用了你的函数之后，该链表应变为 4 -> 1 -> 9.
 ```
 
-由于只输入了需要删除的节点node，因此无法获取删除节点node的前一个节点pre，从而也就无法将前一个节点pre指向删除节点的下一个节点nex；既然无法通过修改指针完成，那么肯定要修改链表节点的值了。将删除节点node的值和指针都改为下一个节点nex的值和指针即可。
+**示例 2：**
+
+```
+输入：head = [4,5,1,9], node = 1
+输出：[4,5,9]
+解释：给定你链表中值为 1 的第三个节点，那么在调用了你的函数之后，该链表应变为 4 -> 5 -> 9.
+```
+
+**提示：**
+
+- 链表至少包含两个节点。
+- 链表中所有节点的值都是唯一的。
+- 给定的节点为非末尾节点并且一定是链表中的一个有效节点。
+- 不要从你的函数中返回任何结果。
+
+###### 链表与下一个节点交换
+
+因链表无法获取删除节点的上一个节点，所以将删除节点赋值为下一个节点，然后直接删除下一个节点即可
+
+```js
+var deleteNode = function(node) {
+    node.val = node.next.val;
+    node.next = node.next.next;
+};
+```
+
+- 时间和空间复杂度都是：*O*(1)。
 
 #### 258. 各位相加
 
