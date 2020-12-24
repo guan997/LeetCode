@@ -40,6 +40,8 @@
 
 [28.实现strStr()](#28.实现strStr())
 
+[29. 两数相除](#29. 两数相除)
+
 [35.搜索插入位置](#35.搜索插入位置)
 
 [38.外观数列](#38.外观数列)
@@ -1411,6 +1413,74 @@ var searchInsert = function(nums, target) {
         if(nums[i]>target)return i;
     }
     return nums.length;
+}
+```
+
+#### 29. 两数相除
+
+难度中等
+
+给定两个整数，被除数 `dividend` 和除数 `divisor`。将两数相除，要求不使用乘法、除法和 mod 运算符。
+
+返回被除数 `dividend` 除以除数 `divisor` 得到的商。
+
+整数除法的结果应当截去（`truncate`）其小数部分，例如：`truncate(8.345) = 8` 以及 `truncate(-2.7335) = -2`
+
+**示例 1:**
+
+```
+输入: dividend = 10, divisor = 3
+输出: 3
+解释: 10/3 = truncate(3.33333..) = truncate(3) = 3
+```
+
+**示例 2:**
+
+```
+输入: dividend = 7, divisor = -3
+输出: -2
+解释: 7/-3 = truncate(-2.33333..) = -2
+```
+
+**提示：**
+
+- 被除数和除数均为 32 位有符号整数。
+- 除数不为 0。
+- 假设我们的环境只能存储 32 位有符号整数，其数值范围是 [−231, 231 − 1]。本题中，如果除法结果溢出，则返回 231 − 1。
+
+###### 减法
+
+```js
+var divide = function(dividend, divisor) {
+    var INT_MAX = 0x7FFFFFFF;
+    var INT_MIN = 1 << 31;
+    if(dividend == 0) return 0;
+    if(divisor == 1) return dividend;
+    if(divisor == -1){
+        if(dividend > INT_MIN) return -dividend;// 只要不是最小的那个整数，都是直接返回相反数
+        return INT_MAX;// 是最小的那个，那就返回最大的整数
+    }
+    let a = dividend;
+    let b = divisor;
+    let sign = 1;
+    if((a > 0 && b < 0) || (a < 0 && b > 0)){
+        sign = -1;
+    }
+    a = a > 0 ? a : -a;
+    b = b > 0 ? b : -b;
+    let res = div(a, b);
+    if(sign > 0) return res > INT_MAX ? INT_MAX :res;
+    return -res;
+};
+function div(a, b){
+    if(a<b) return 0;
+        let count = 1;
+        let tb = b; 
+        while((tb+tb)<=a){
+            count = count + count; // 最小解翻倍
+            tb = tb+tb; // 当前测试的值也翻倍
+        }
+        return count + div(a-tb,b);
 }
 ```
 
@@ -3397,9 +3467,9 @@ var firstUniqChar = function(s) {
 
 我们可以对方法一进行修改，使得第二次遍历的对象从字符串变为哈希映射。
 
-具体地，对于哈希映射中的每一个键值对，键表示一个字符，值表示它的首次出现的索引（如果该字符只出现一次）或者 -1−1（如果该字符出现多次）。当我们第一次遍历字符串时，设当前遍历到的字符为 cc，如果 cc 不在哈希映射中，我们就将 cc 与它的索引作为一个键值对加入哈希映射中，否则我们将 cc 在哈希映射中对应的值修改为 -1−1。
+具体地，对于哈希映射中的每一个键值对，键表示一个字符，值表示它的首次出现的索引（如果该字符只出现一次）或者 −1（如果该字符出现多次）。当我们第一次遍历字符串时，设当前遍历到的字符为 c，如果 c 不在哈希映射中，我们就将 c 与它的索引作为一个键值对加入哈希映射中，否则我们将 c 在哈希映射中对应的值修改为 -1。
 
-在第一次遍历结束后，我们只需要再遍历一次哈希映射中的所有值，找出其中不为 -1−1 的最小值，即为第一个不重复字符的索引。如果哈希映射中的所有值均为 -1−1，我们就返回 -1−1。
+在第一次遍历结束后，我们只需要再遍历一次哈希映射中的所有值，找出其中不为 −1 的最小值，即为第一个不重复字符的索引。如果哈希映射中的所有值均为 −1，我们就返回 −1。
 
 ```js
 var firstUniqChar = function(s) {
