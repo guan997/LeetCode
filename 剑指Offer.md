@@ -1838,6 +1838,93 @@ var majorityElement = function(nums) {
 - 时间复杂度：O(N)，其中N为数组长度
 - 空间复杂度：O(1)
 
+#### 剑指 Offer 39. 数组中出现次数超过一半的数字(进阶)
+
+数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。
+
+**示例 1:**
+
+```
+输入: [1, 2, 3, 2, 2, 2, 5, 4, 2]
+输出: 2
+```
+
+```js
+输入: [1,2,3,2,4,2,5,2,3]
+输出: 0
+```
+
+###### 哈希法
+
+根据题目意思，显然可以先遍历一遍数组，在hash中存每个元素出现的次数，然后再遍历一次数组，找出众数。
+
+```js
+function MoreThanHalfNum_Solution(numbers)
+{
+    let hash = {};
+    numbers.forEach(item => {
+        if(hash[item]){
+            hash[item]++;
+        }else{
+            hash[item] = 1;
+        }
+    })
+    for(const key in hash){
+        if(hash[key] > numbers.length / 2){
+            return key;
+        }
+    }
+    return 0;
+}
+```
+
+时间复杂度：O(n)
+空间复杂度：O(n)
+
+###### 投票法/候选法
+
+假如数组中存在众数，那么众数一定大于数组的长度的一半。
+思想就是：如果两个数不相等，就消去这两个数，最坏情况下，每次消去一个众数和一个非众数，那么如果存在众数，最后留下的数肯定是众数。
+
+具体做法：
+
+1. 初始化：候选人majority= numbers[0]， 候选人的投票次数count= 0
+2. 遍历数组，如果count=0， 表示没有候选人，则选取当前数为候选人，随后我们判断 i：
+   - 如果 i与 majority相等，那么计数器 count 的值增加 1；
+   - 如果 i与 majority不等，那么计数器 count 的值减少 1。
+
+3. 直到数组遍历完毕，最后检查majority是否为众数
+
+```js
+function MoreThanHalfNum_Solution(numbers)
+{
+    let count = 1;
+    let majority = numbers[0];
+    for(let i = 1; i < numbers.length; i++){
+        if(count === 0){
+            majority = numbers[i];
+        }
+        if(numbers[i] === majority){
+            count ++;
+        }else{
+            count --;
+        }
+    }
+    count = 0;
+    for(let i = 0; i < numbers.length; i++){
+        if(numbers[i] === majority){
+            count++;
+        }
+    }
+    return count > numbers.length / 2 ? majority : 0;
+};
+```
+
+时间复杂度：O(n)
+空间复杂度：O(1)
+
+###### 
+
 #### 剑指 Offer 40. 最小的k个数
 
 难度简单
