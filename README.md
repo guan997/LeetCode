@@ -3849,7 +3849,7 @@ function addNumber(num) {
 1. `1` 是丑数。
 2. 输入不会超过 32 位有符号整数的范围: [−231, 231 − 1]。
 
-**对num 不断除以 2,3,5**
+###### **对num 不断除以 2,3,5**
 
 ```js
 /**
@@ -3862,6 +3862,27 @@ var isUgly = function(num) {
     while(num % a === 0 && num > 1) num /= a
   }
   return num == 1
+};
+```
+
+```js
+/**
+ * @param {number} num
+ * @return {boolean}
+ */
+var isUgly = function (num) {
+    if (num < 1) return false;
+    if (num === 1) return true;
+    while (num % 5 === 0) {
+        num /= 5;
+    }
+    while (num % 3 === 0) {
+        num /= 3;
+    }
+    while (num % 2 === 0) {
+        num /= 2;
+    }
+    return num === 1;
 };
 ```
 
