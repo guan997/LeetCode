@@ -2,6 +2,8 @@
 
 [面试题 02.01. 移除重复节点](#面试题02.01.移除重复节点)
 
+[面试题 02.03. 删除中间节点](#面试题 02.03. 删除中间节点)
+
 [面试题03. 数组中重复的数字](#面试题03. 数组中重复的数字)
 
 [剑指 Offer 04. 二维数组中的查找](#剑指 Offer 04. 二维数组中的查找)
@@ -179,6 +181,57 @@ var removeDuplicateNodes = function(head) {
         p = p.next;
     }
     return head;
+};
+```
+
+#### 面试题 02.03. 删除中间节点
+
+难度简单
+
+实现一种算法，删除单向链表中间的某个节点（即不是第一个或最后一个节点），假定你只能访问该节点。
+
+**示例：**
+
+```
+输入：单向链表a->b->c->d->e->f中的节点c
+结果：不返回任何数据，但该链表变为a->b->d->e->f
+```
+
+解题思路：
+
+1->2->3->4->5
+
+1.当我们想要删除节点3,因为单向链表，我们只知道3，我们这时候是找不到2的。但是我们可以获得4这个节点，也可以获得指向5的指针。也就是说向后是随便找的，都能找到。
+
+那我们现在可以做的是，直接把第4个节点的值赋给第三个，让第三个节点冒充第四个节点。
+
+2.然后，因为我们可以获得指向5的指针，比如说指针i吧，我们把这个i赋给第三个节点的next不就完事了吗？
+
+3.然后我们把第四个节点的next设置成null，等下次js垃圾回收，他没有被引用，则会默认被回收
+
+但是为什么说结尾不行呢？
+
+比如我们需要删除第五个节点的时候
+
+我们只能获取到他的next指针指向null,我们再回看我们的代码， node.next.val，node.next.next，由于null不是object类型，不具备属性，所以会被报错。所以这个代码只能删除中间节点。
+
+- 把当前节点的下一个节点的值拿过来覆盖掉要删除的值，然后把当前节点的 `next` 指向下一个节点的 `next` 即可。
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} node
+ * @return {void} Do not return anything, modify node in-place instead.
+ */
+var deleteNode = function (node) {
+  node.val = node.next.val
+  node.next = node.next.next
 };
 ```
 
