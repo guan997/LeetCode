@@ -2423,6 +2423,55 @@ const translateNum = (num) => {
      请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
 ```
 
+###### 数组
+
+解题思路： 使用一个数组来维护滑动窗口
+
+遍历字符串，判断字符是否在滑动窗口数组里
+
+- 不在则 push 进数组
+- 在则删除滑动窗口数组里相同字符及相同字符前的字符，然后将当前字符 push 进数组
+- 然后将 max 更新为当前最长子串的长度
+
+遍历完，返回 max 即可
+
+```js
+var lengthOfLongestSubstring = function(s) {
+    let arr = [], max = 0
+    for(let i = 0; i < s.length; i++) {
+        let index = arr.indexOf(s[i])
+        if(index !== -1) {
+            arr.splice(0, index+1);
+        }
+        arr.push(s.charAt(i))
+        max = Math.max(arr.length, max) 
+    }
+    return max
+};
+```
+
+- 时间复杂度：O(n<sup>2</sup>)， 其中 arr.indexOf() 时间复杂度为 O(n) ，arr.splice(0, index+1) 的时间复杂度也为 O(n)
+- 空间复杂度：O(n)
+
+###### 维护下标
+
+```js
+var lengthOfLongestSubstring = function(s) {
+    let index = 0, max = 0
+    for(let i = 0, j = 0; j < s.length; j++) {
+        index = s.substring(i, j).indexOf(s[j]) 
+        if(index !== -1) { 
+            i = i + index + 1 
+        } 
+        max = Math.max(max, j - i + 1) 
+    }
+    return max
+};
+```
+
+- 时间复杂度：O(n<sup>2</sup>)
+- 空间复杂度：O(n)
+
 ###### 哈希集合
 
 ```js
