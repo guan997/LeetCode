@@ -500,7 +500,17 @@ function reverseLink(head) {
 
 ###### 递归
 
-- 获取根节点区分左右子树，对于左子树的前序和中序采取同样的操作。
+根据前序遍历/后序遍历+中序遍历可以重建一个二叉树，这道题考察的就是前序遍历+中序遍历重建二叉树。
+对于
+
+```js
+前序遍历 preorder = [3,9,20,15,7]
+中序遍历 inorder = [9,3,15,20,7]
+```
+
+前序遍历中的3即为根节点的值，由于输入的前序遍历和后序遍历的结果中都不含重复的数字，那么在中序遍历中，3
+前面的节点都是左子树上的节点，3后面的节点都是右子树上的节点，这一步可以获得根节点和左右两个子树，再递归地对左右子树进行
+重建，即可构建出一个新的二叉树。
 
 ```js
 /**
@@ -522,7 +532,9 @@ var buildTree = function (preorder, inorder) {
 
     let i = inorder.indexOf(root); // 获取根节点在中序遍历中的位置(用于分割左右子树)
 
-    // 递归
+    // preorder.slice(1,index+1)是左子树的前序遍历
+    // inorder.slice(0,index) 是左子树的中序遍历
+    // 这一步递归的对左子树进行重建
     node.left = buildTree(preorder.slice(1, i + 1), inorder.slice(0, i));
     node.right = buildTree(preorder.slice(i + 1), inorder.slice(i + 1));
     return node
