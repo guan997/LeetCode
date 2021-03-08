@@ -417,6 +417,7 @@ var reverse = function(x) {
 -  判断是否为32 位的有符号整数
 
 ```js
+
 var reverse = function(x) {
     let str = x.toString()
     let l = parseInt(str.split("").reverse().join(""))
@@ -4264,7 +4265,7 @@ var findDisappearedNumbers = function(nums) {
     }
     const ret = [];
     for (const [i, num] of nums.entries()) {
-        if (num <= n) {
+        if (num <= n) {//若 nums[i] 未大于 n，就说明没有遇到过数 i+1
             ret.push(i + 1);
         }
     }
@@ -4484,7 +4485,67 @@ var dayOfTheWeek = function(day, month, year) {
 };
 ```
 
+#### 1672. 最富有客户的资产总量
 
+难度简单
+
+给你一个 `m x n` 的整数网格 `accounts` ，其中 `accounts[i][j]` 是第 `i` 位客户在第 `j` 家银行托管的资产数量。返回最富有客户所拥有的 **资产总量** 。
+
+客户的 **资产总量** 就是他们在各家银行托管的资产数量之和。最富有客户就是 **资产总量** 最大的客户。
+
+**示例 1：**
+
+```
+输入：accounts = [[1,2,3],[3,2,1]]
+输出：6
+解释：
+第 1 位客户的资产总量 = 1 + 2 + 3 = 6
+第 2 位客户的资产总量 = 3 + 2 + 1 = 6
+两位客户都是最富有的，资产总量都是 6 ，所以返回 6 。
+```
+
+**示例 2：**
+
+```
+输入：accounts = [[1,5],[7,3],[3,5]]
+输出：10
+解释：
+第 1 位客户的资产总量 = 6
+第 2 位客户的资产总量 = 10 
+第 3 位客户的资产总量 = 8
+第 2 位客户是最富有的，资产总量是 10
+```
+
+**示例 3：**
+
+```
+输入：accounts = [[2,8,7],[7,1,3],[1,9,5]]
+输出：17
+```
+
+######  暴力解法
+
+```js
+/**
+ * @param {number[][]} accounts
+ * @return {number}
+ */
+var maximumWealth = function(accounts) {
+    let max = 0, sum = 0;
+    for (let i = 0; i < accounts.length; i++) {
+        for (let j = 0; j < accounts[i].length; j++) {
+            sum = accounts[i][j] + sum;
+        }
+        if (sum > max) {
+            max = sum;
+            sum = 0;
+        }else {
+            sum = 0;
+        }
+    }
+    return max;
+};
+```
 
 #### 2. 两数相加
 
@@ -4525,7 +4586,7 @@ var addTwoNumbers = function(l1, l2) {
 };
 ```
 
-####15. 三数之和
+15. #### 三数之和
 
 难度中等
 
