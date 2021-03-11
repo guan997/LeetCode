@@ -2110,8 +2110,6 @@ function MoreThanHalfNum_Solution(numbers)
 时间复杂度：O(n)
 空间复杂度：O(1)
 
-###### 
-
 #### 剑指 Offer 40. 最小的k个数
 
 难度简单
