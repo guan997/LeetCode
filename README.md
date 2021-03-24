@@ -142,6 +142,8 @@
 
 [448. 找到所有数组中消失的数字](#448. 找到所有数组中消失的数字)
 
+[456. 132 模式](#456. 132 模式)
+
 [538. 把二叉搜索树转换为累加树](#538. 把二叉搜索树转换为累加树)
 
 [617. 合并二叉树](#617. 合并二叉树)
@@ -4562,6 +4564,68 @@ var findDisappearedNumbers = function(nums) {
 
 - 时间复杂度：*O*(*n*)。其中 n 是数组 *nums* 的长度。
 - 空间复杂度：*O*(1)。返回值不计入空间复杂度。
+
+#### 456. 132 模式
+
+难度中等
+
+给你一个整数数组 `nums` ，数组中共有 `n` 个整数。**132 模式的子序列** 由三个整数 `nums[i]`、`nums[j]` 和 `nums[k]` 组成，并同时满足：`i < j < k` 和 `nums[i] < nums[k] < nums[j]` 。
+
+如果 `nums` 中存在 **132 模式的子序列** ，返回 `true` ；否则，返回 `false` 。
+
+**进阶：**很容易想到时间复杂度为 `O(n^2)` 的解决方案，你可以设计一个时间复杂度为 `O(n logn)` 或 `O(n)` 的解决方案吗？
+
+**示例 1：**
+
+```
+输入：nums = [1,2,3,4]
+输出：false
+解释：序列中不存在 132 模式的子序列。
+```
+
+**示例 2：**
+
+```
+输入：nums = [3,1,4,2]
+输出：true
+解释：序列中有 1 个 132 模式的子序列： [1, 4, 2] 。
+```
+
+**示例 3：**
+
+```
+输入：nums = [-1,3,2,0]
+输出：true
+解释：序列中有 3 个 132 模式的的子序列：[-1, 3, 2]、[-1, 3, 0] 和 [-1, 2, 0] 。
+```
+
+######  枚举
+
+```js
+var find132pattern = function(nums) {
+    const n = nums.length;
+    const candidate_k = [nums[n - 1]];
+    let max_k = -Number.MAX_SAFE_INTEGER;
+
+    for (let i = n - 2; i >= 0; --i) {
+        if (nums[i] < max_k) {
+            return true;
+        }
+        while (candidate_k.length && nums[i] > candidate_k[candidate_k.length - 1]) {
+            max_k = candidate_k[candidate_k.length - 1];
+            candidate_k.pop();
+        }
+        if (nums[i] > max_k) {
+            candidate_k.push(nums[i]);
+        }
+    }
+    return false;
+};
+```
+
+时间复杂度：O(n)，枚举 i 的次数为 O(n)，由于每一个元素最多被加入和弹出单调栈各一次，因此操作单调栈的时间复杂度一共为 O(n)，总时间复杂度为 O(n)。
+
+空间复杂度：O(n)，即为单调栈需要使用的空间。
 
 #### 538. 把二叉搜索树转换为累加树
 
