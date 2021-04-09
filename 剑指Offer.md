@@ -106,6 +106,8 @@
 
 [剑指 Offer 65. 不用加减乘除做加法](#剑指 Offer 65. 不用加减乘除做加法)
 
+[剑指 Offer 66. 构建乘积数组](#剑指 Offer 66. 构建乘积数组)
+
 [剑指 Offer 67. 把字符串转换成整数](#剑指 Offer 67. 把字符串转换成整数)
 
 [剑指 Offer 68 - I. 二叉搜索树的最近公共祖先](#剑指 Offer 68 - I. 二叉搜索树的最近公共祖先)
@@ -4061,7 +4063,75 @@ var strToInt = function(str) {
 };
 ```
 
+#### 剑指 Offer 66. 构建乘积数组
 
+难度中等
+
+给定一个数组 `A[0,1,…,n-1]`，请构建一个数组 `B[0,1,…,n-1]`，其中 `B[i]` 的值是数组 `A` 中除了下标 `i` 以外的元素的积, 即 `B[i]=A[0]×A[1]×…×A[i-1]×A[i+1]×…×A[n-1]`。不能使用除法。
+
+**示例:**
+
+```
+输入: [1,2,3,4,5]
+输出: [120,60,40,30,24]
+```
+
+ **解题思路**
+
+b[当前] = 左积 * 右积
+
+先循环两次 分别获取 当前位置 左边 和 右边的积, 最后再循环一次得到`b`的每一项, b[当前] = 左积 * 右积
+
+```js
+/**
+ * @param {number[]} a
+ * @return {number[]}
+ */
+var constructArr = function(a) {
+  let n = a.length
+  // 一. 获取 当前 之前的累积
+  let left = Array(n)
+  left[0] = 1
+  for(let i = 1; i < n; i++){
+    left[i] = left[i - 1] * a[i - 1]
+  }
+  // 二. 获取 当前 之后的累积 
+  let right = Array(n)
+  right[n - 1] = 1
+  for(let i = n - 2; i >= 0; i--){
+    right[i] = right[i + 1] * a[i + 1]
+  }
+  // 三. b[i] = 左积 *  右积
+  let b = []
+  for(let i = 0; i < n; i++){
+    b[i] = left[i] * right[i]
+  }
+  return b
+};
+```
+
+合起来就是
+
+```js
+var constructArr = function(a) {
+  let n = a.length
+  // 一. 获取 i 的左积
+  let left = Array(n)
+  left[0] = 1
+  for(let i = 1; i < n; i++){
+    left[i] = left[i - 1] * a[i - 1]
+  }
+  // 二. 获取 i 的右积 同时 得出 b
+  let b = []
+  let right = 1
+  b[n - 1] = left[n - 1] * right
+  for(let i = n - 2; i >= 0; i--){
+    right *= a[i + 1]
+    b[i] = left[i] * right
+  }
+  return b
+};
+```
 
 #### 剑指 Offer 68 - I. 二叉搜索树的最近公共祖先
 
