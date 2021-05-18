@@ -1739,21 +1739,10 @@ MinStack.prototype.getMin = function() {
 - 时间复杂度为O(N),空间复杂度为O(N)
 
 ```js
-/**
- * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
- * }
- */
-/**
- * @param {TreeNode} root
- * @return {number[]}
- */
 var levelOrder = function(root) {
    if(!root) return [];
    const queue=[root];
-    let res=[];
+   let res=[];
    while(queue.length){
        let t=queue.shift();
        res.push(t.val);
@@ -1762,6 +1751,51 @@ var levelOrder = function(root) {
    }
    return res;
 };
+```
+
+#### 剑指 Offer 32 - II. 从上到下打印二叉树 II
+
+难度简单
+
+从上到下按层打印二叉树，同一层的节点按从左到右的顺序打印，每一层打印到一行。
+
+例如:
+给定二叉树: `[3,9,20,null,null,15,7]`,
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回其层次遍历结果：
+
+```
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+```
+
+###### 深度优先搜索
+
+```js
+var levelOrder = function(root) {
+   let res = []
+   dfs(root, res, 0)
+   return res
+};
+
+function dfs(root, arr, i) {
+  if(!root) return
+  if(!arr[i]) arr[i] = []
+  arr[i].push(root.val)
+  dfs(root.left, arr, i + 1)
+  dfs(root.right, arr, i + 1)
+}
 ```
 
 #### 剑指 Offer 32 - III. 从上到下打印二叉树 III
@@ -1797,17 +1831,6 @@ var levelOrder = function(root) {
 - ltor: 当前是否from left to right
 
 ```js
-/**
- * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
- * }
- */
-/**
- * @param {TreeNode} root
- * @return {number[][]}
- */
 var levelOrder = function(root) {
     const res = [];
 
